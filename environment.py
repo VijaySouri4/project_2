@@ -39,9 +39,9 @@ class Env:
         loop_iter = int(self.number_of_nodes / 2)
         while loop_iter > 0:
             #loop_iter = loop_iter - 1
-            rand_node_1 = random.randint(0,self.number_of_nodes)
+            rand_node_1 = random.randint(0,self.number_of_nodes - 1) # now it should run well everytime
             # check if the selected node has a degree of 3, proceed if not
-            temp_node = self.lis[rand_node_1]
+            temp_node = self.lis[rand_node_1] # This is breaking. Why? # lol, your range for generating random numbers is improper
             if temp_node.degree < 3:   
                 loop_iter = loop_iter - 1
                 temp_node.degree = temp_node.degree + 1
@@ -105,7 +105,7 @@ class Env:
 
 
 def main():
-    test = Env(20)
+    test = Env(50)
 
 if __name__ == '__main__':
     main()
