@@ -139,7 +139,8 @@ class Env:
         print(self.shortest_paths)
 
 
-    """Recursive BFS algo"""
+    """Recursive BFS algo, returns array of shortest paths from node to i, where array [i] =
+    (distance , path), the path for node to i is [node index, ... i - 1]"""
 
     def node_bfs(self, node, depth = 0, visited = None):
         index = node.index
