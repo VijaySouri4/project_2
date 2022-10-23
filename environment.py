@@ -1,10 +1,13 @@
 from ast import main
+from copy import copy
+from operator import index
 from queue import Empty
 import node
 import matplotlib.pyplot as plt
 import networkx as nx
 import random
 import math
+import numpy as np
 
 class Env:
 
@@ -17,6 +20,8 @@ class Env:
     def construct(self):
         # main list that holds all the node objects
         self.lis = []
+        # list that holds shortest paths for each node
+        self.shortest_paths = []
         # set that contains all the edges with respect to the index of nodes
         edges_lis = set()
         # initialising the circular nodes
@@ -80,7 +85,8 @@ class Env:
                     # add the edge into the edge set
                     edges_lis.add((rand_node_1,choice[0]))
 
-
+        #calls recursive bfs and stores results in 2D array
+        self.generate_shortest_paths()
 
         G = nx.Graph()
         #create circular position for graph
@@ -125,6 +131,47 @@ class Env:
 
         return output
 
+    """Runs recursive BFS for each node and stores it in 2D array"""
+    
+    def generate_shortest_paths(self):
+        for node in self.lis:
+            self.shortest_paths.append(self.node_bfs(node))
+        print(self.shortest_paths)
+
+
+    """Recursive BFS algo"""
+
+    def node_bfs(self, node, depth = 0, visited = None):
+        index = node.index
+        
+        if visited is None:   #base case for first call
+                  
+            visited = [(math.inf,[])] * self.number_of_nodes
+            #print(visited)
+            visited[index] = (0, [])
+        
+        right = node.right_node_index
+        left = node.left_node_index
+        other = node.other_node_index
+        if visited[right][0] > depth + 1:         #run recursive bfs on right node
+            new_list = visited[index][1][:]
+            new_list.append(index) 
+            visited[right] = (depth + 1, new_list)
+            self.node_bfs(self.lis[right], depth+1, visited)
+
+        if visited[left][0] > depth + 1:       #run recursive bfs on left node
+            new_list = visited[index][1][:]
+            new_list.append(index) 
+            visited[left] = (depth + 1, new_list)
+            self.node_bfs(self.lis[left], depth+1, visited)
+
+        if not np.isnan(other) and visited[other][0] > depth + 1:  #run recursive bfs on other node if exists
+            new_list = visited[index][1][:]
+            new_list.append(index)     
+            visited[other] = (depth + 1, new_list)
+            self.node_bfs(self.lis[other], depth+1, visited)
+
+        return visited
 
 
 
