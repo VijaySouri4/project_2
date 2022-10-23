@@ -1,8 +1,10 @@
 from ast import main
+from queue import Empty
 import node
 import matplotlib.pyplot as plt
 import networkx as nx
 import random
+import math
 
 class Env:
 
@@ -21,18 +23,24 @@ class Env:
         for i in range(self.number_of_nodes):
             if i == 0:
                 nd = node.Node(i,self.number_of_nodes - 1,i+1,degree=2)
-                edges_lis.add((i,i+1))
-                edges_lis.add((i,self.number_of_nodes - 1))
+                if (i+1,i) not in edges_lis:        #prevent duplicate edges
+                    edges_lis.add((i,i+1))
+                if ((self.number_of_nodes - 1), i) not in edges_lis:    #prevent duplicate edges
+                    edges_lis.add((i,self.number_of_nodes - 1))
                 self.lis.append(nd)
             elif i == self.number_of_nodes - 1: # lol sorry for the roundabout implementation 
                 nd = node.Node(i,i-1,0,degree=2)
-                edges_lis.add((i,0))
-                edges_lis.add((i,i-1))
+                if (0,i) not in edges_lis:  #prevent duplicate edges
+                    edges_lis.add((i,0))
+                if (i-1, i) not in edges_lis:
+                    edges_lis.add((i,i-1))  #prevent duplicate edges
                 self.lis.append(nd)
             else:
                 nd = node.Node(i,i-1,i+1,degree=2)
-                edges_lis.add((i,i+1))
-                edges_lis.add((i,i-1))
+                if (i+1, i) not in edges_lis:   #prevent duplicate edges
+                    edges_lis.add((i,i+1))
+                if (i-1, i) not in edges_lis:   #prevent duplicate edges
+                    edges_lis.add((i,i-1))
                 self.lis.append(nd)
         
         # Randomly create edges between graph nodes
@@ -48,14 +56,17 @@ class Env:
                 
                 # implement a function to get the five surrounding neighbor's indexes
                 neighbors = self.get_five_neighbors(rand_node_1)
+                if not neighbors:   #check if list is empty
+                    continue
                 choice = random.choices(neighbors,weights=None,k=1)
+                
 
-                try:
+                try:    #not sure if needed anymore since I updated get_five_neightbors so only degree of < 3
                     selected_node = self.lis[choice[0]]
                 except:
                     continue
                 if selected_node.degree < 3:
-                    print(choice[0])
+                    #print(choice[0])
 
                     # Now change the other node value for both the objects and increment the degree by one to both the nodes
                     temp_node.other_node_index = choice[0]
@@ -72,9 +83,16 @@ class Env:
 
 
         G = nx.Graph()
+        #create circular position for graph
+        for i in range(self.number_of_nodes):
+            con = 360/self.number_of_nodes * i
+            x_pos = (1*math.cos(math.radians(con)))
+            y_pos = (1*math.sin(math.radians(con)))
+            G.add_node(i,pos = (x_pos,y_pos))
         G.add_edges_from(edges_lis)
-        nx.draw_networkx(G)
+        nx.draw_networkx(G, nx.get_node_attributes(G,'pos'), node_size=80, alpha=0.75, font_size=8, font_weight=0.5)
         plt.show()
+        print(f"Additional Edges: {len(edges_lis)- self.number_of_nodes}")
 
     def get_five_neighbors(self,index):
         up_counter = 5
@@ -82,22 +100,28 @@ class Env:
         output = []
         while up_counter > 0:
             up_counter = up_counter - 1
-            if (temp_index + 1) > self.number_of_nodes:
+            if (temp_index + 1) >= self.number_of_nodes:
+                original_temp_index = temp_index + 1
                 temp_index = 0
-                output.append(temp_index)
+                if self.lis[temp_index].degree < 3 and original_temp_index != index + 1: #prevent it from adding indexes with degree of 3 or node that is directly next to it
+                    output.append(temp_index)
             else:
                 temp_index = temp_index + 1
-                output.append(temp_index)
+                if self.lis[temp_index].degree < 3 and temp_index != index + 1: #prevent it from adding indexes with degree of 3 or node that is directly next to it
+                    output.append(temp_index)
         up_counter = 5
         temp_index = index
         while up_counter > 0:
             up_counter = up_counter - 1
             if (temp_index - 1) < 0:
-                temp_index = self.number_of_nodes
-                output.append(temp_index)
+                original_temp_index = temp_index - 1
+                temp_index = self.number_of_nodes - 1
+                if self.lis[temp_index].degree < 3 and original_temp_index != index - 1: #prevent it from adding indexes with degree of 3 or node that is directly next to it
+                    output.append(temp_index)
             else:
                 temp_index = temp_index - 1
-                output.append(temp_index)
+                if self.lis[temp_index].degree < 3 and temp_index != index - 1: #prevent it from adding indexes with degree of 3 or node that is directly next to it
+                    output.append(temp_index)
 
         return output
 
