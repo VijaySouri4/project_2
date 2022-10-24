@@ -88,6 +88,7 @@ class Env:
         #calls recursive bfs and stores results in 2D array
         self.generate_shortest_paths()
 
+        """
         G = nx.Graph()
         #create circular position for graph
         for i in range(self.number_of_nodes):
@@ -98,7 +99,8 @@ class Env:
         G.add_edges_from(edges_lis)
         nx.draw_networkx(G, nx.get_node_attributes(G,'pos'), node_size=80, alpha=0.75, font_size=8, font_weight=0.5)
         plt.show()
-        print(f"Additional Edges: {len(edges_lis)- self.number_of_nodes}")
+        """
+        #print(f"Additional Edges: {len(edges_lis)- self.number_of_nodes}")
 
     def get_five_neighbors(self,index):
         up_counter = 5
@@ -136,7 +138,7 @@ class Env:
     def generate_shortest_paths(self):
         for node in self.lis:
             self.shortest_paths.append(self.node_bfs(node))
-        print(self.shortest_paths)
+        #print(self.shortest_paths)
 
 
     """Recursive BFS algo, returns array of shortest paths from node to i, where array [i] =
@@ -156,19 +158,19 @@ class Env:
         other = node.other_node_index
         if visited[right][0] > depth + 1:         #run recursive bfs on right node
             new_list = visited[index][1][:]
-            new_list.append(index) 
+            new_list.append(right) 
             visited[right] = (depth + 1, new_list)
             self.node_bfs(self.lis[right], depth+1, visited)
 
         if visited[left][0] > depth + 1:       #run recursive bfs on left node
             new_list = visited[index][1][:]
-            new_list.append(index) 
+            new_list.append(left) 
             visited[left] = (depth + 1, new_list)
             self.node_bfs(self.lis[left], depth+1, visited)
 
-        if not np.isnan(other) and visited[other][0] > depth + 1:  #run recursive bfs on other node if exists
+        if other != index and visited[other][0] > depth + 1:  #run recursive bfs on other node if exists
             new_list = visited[index][1][:]
-            new_list.append(index)     
+            new_list.append(other)     
             visited[other] = (depth + 1, new_list)
             self.node_bfs(self.lis[other], depth+1, visited)
 

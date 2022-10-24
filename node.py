@@ -5,5 +5,8 @@ class Node:
         self.index = index
         self.left_node_index = left_node_index
         self.right_node_index = right_node_index
-        self.other_node_index = other_node_index
+        if other_node_index is np.nan:
+           self.other_node_index = index
+        else:
+            self.other_node_index = other_node_index 
         self.degree = degree
