@@ -6,16 +6,8 @@ import random
 import copy
 
 def main():
-    input_predator = predator.Predator()
-    input_prey = prey.Prey()
-    input_environment = environment.Env(50)
-    input_pos = random.choice(range(0,49))
 
-    #make sure agent doesnt start in occupied node
-    while input_prey.pos == input_pos or input_predator.pos == input_pos:
-        input_pos = random.choice(range(0,49))
-
-    total_runs = 250
+    total_runs = 3000
 
     a1_caught = 0
     a1_died = 0
@@ -27,6 +19,15 @@ def main():
 
     for i in range(total_runs):
         print(f"{i} ", end="", flush=True)
+
+        input_environment = environment.Env(50)
+        input_predator = predator.Predator()
+        input_prey = prey.Prey() 
+        input_pos = random.choice(range(0,49))
+
+        #make sure agent doesnt start in occupied node
+        while input_prey.pos == input_pos or input_predator.pos == input_pos:
+            input_pos = random.choice(range(0,49))
 
         test_agent_1 = agent_1.Agent_1(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
         result = test_agent_1.move()

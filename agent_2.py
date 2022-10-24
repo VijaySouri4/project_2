@@ -48,21 +48,27 @@ class Agent_2:
             else:
                 predator_next_pos = self.predator.pos
 
-            #sets value to furthest possible position of prey in next move
-            longest_prey_dist = -1
+            #potential moves of prey
+            
             options = [self.environment.lis[self.prey.pos].index, 
             self.environment.lis[self.prey.pos].left_node_index,  
             self.environment.lis[self.prey.pos].right_node_index,  
             self.environment.lis[self.prey.pos].other_node_index]
 
-            results = []
-            for i in options:
-                dist, path = self.environment.shortest_paths[self.prey.pos][self.pos]
-                if longest_prey_dist < dist:
-                    results = [path[0]]
-                elif longest_prey_dist == dist:
-                    results.append(path[0])
-            prey_next_pos = random.choice(results)
+            #sets value to furthest possible position of prey in next move, or if it is adjacent to the current position
+            if self.environment.shortest_paths[self.prey.pos][self.pos][0] == 1:
+                prey_next_pos = self.prey.pos
+            else:
+                results = []
+                longest_prey_dist = -1
+                for i in options:
+                    dist, path = self.environment.shortest_paths[i][self.pos]
+                    if longest_prey_dist < dist:
+                        results = [i]
+                    elif longest_prey_dist == dist:
+                        results.append(i)
+                prey_next_pos = random.choice(results)
+
 
             current_node = self.environment.lis[self.pos]
             shortest_paths = self.environment.shortest_paths
@@ -85,7 +91,7 @@ class Agent_2:
             left_prey_dist = shortest_paths[current_node.left_node_index][prey_next_pos ][0]
             right_prey_dist = shortest_paths[current_node.right_node_index][prey_next_pos ][0]
             other_prey_dist = shortest_paths[current_node.other_node_index][prey_next_pos ][0]
-            cur_prey_dist = shortest_paths[self.pos][prey_next_pos ][0]
+            cur_prey_dist = shortest_paths[self.pos][prey_next_pos][0]
 
             #puts distances from prey in array
             prey_dist_array = [left_prey_dist, right_prey_dist, other_prey_dist]
