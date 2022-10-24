@@ -2,6 +2,7 @@ import random
 import predator
 import prey
 import environment
+import math
 
 class Agent_2:
 
@@ -37,16 +38,44 @@ class Agent_2:
 
     def move(self):
         #runs for 100 steps else returns false
-        while self.steps < 100:
+        while self.steps <= 100:
             self.steps += 1
 
+            """ Made performance worse
             #gets the most likely next position of the predator
             dist, path = self.environment.shortest_paths[self.predator.pos][self.pos]
             #sets value to next position of predator unless the next position is the agents position
-            if dist != 0:
+            if dist > 0:
                 predator_next_pos = path[0]
             else:
                 predator_next_pos = self.predator.pos
+            """
+
+            """ Made performance slightly worse
+            #all possible future move of agent
+            options = [self.environment.lis[self.pos].index, 
+            self.environment.lis[self.pos].left_node_index,  
+            self.environment.lis[self.pos].right_node_index,  
+            self.environment.lis[self.pos].other_node_index]
+
+            #Finds agent move that causes the closest possible predator and makes that the worsst next pos
+
+            if self.environment.shortest_paths[self.predator.pos][self.pos][0] == 1:
+                predator_next_pos = self.predator.pos
+            else:
+                results = []
+                shortest_predator_dist = math.inf
+                for i in options:
+                    dist, path = self.environment.shortest_paths[self.predator.pos][i]
+                    if shortest_predator_dist > dist:
+                        shortest_predator_dist = dist
+                        results = [i]
+                    elif shortest_predator_dist == dist:
+                        results.append(i)
+                predator_next_pos = random.choice(results)
+            """
+
+            predator_next_pos = self.predator.pos
 
             #potential moves of prey
             
@@ -64,6 +93,7 @@ class Agent_2:
                 for i in options:
                     dist, path = self.environment.shortest_paths[i][self.pos]
                     if longest_prey_dist < dist:
+                        longest_prey_dist = dist
                         results = [i]
                     elif longest_prey_dist == dist:
                         results.append(i)
