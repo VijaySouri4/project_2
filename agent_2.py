@@ -54,7 +54,7 @@ class Agent_2:
             self.environment.lis[self.prey.pos].left_node_index,  
             self.environment.lis[self.prey.pos].right_node_index,  
             self.environment.lis[self.prey.pos].other_node_index]
-            
+
             results = []
             for i in options:
                 dist, path = self.environment.shortest_paths[self.prey.pos][self.pos]
@@ -117,10 +117,10 @@ class Agent_2:
 
             self.pos = result_index
             #returns 0 if moves into predator or predator moves into it
-            if predator_pos == self.pos or not self.predator.move(self.environment,self.pos):
+            if self.predator.pos == self.pos or not self.predator.move(self.environment,self.pos):
                 return 0
             #returns 1 if moves into prey or prey moves into it
-            if prey_pos == self.pos or not self.prey.move(self.environment,self.pos):
+            if self.prey.pos == self.pos or not self.prey.move(self.environment,self.pos):
                 return 1
         #returns -1 if timeout
         return -1

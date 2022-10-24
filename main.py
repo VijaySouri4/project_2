@@ -15,7 +15,7 @@ def main():
     while input_prey.pos == input_pos or input_predator.pos == input_pos:
         input_pos = random.choice(range(0,49))
 
-    total_runs = 1000
+    total_runs = 250
 
     a1_caught = 0
     a1_died = 0
@@ -37,7 +37,7 @@ def main():
         elif result == -1:
             a1_time_out +=1
         
-        test_agent_2 = agent_1.Agent_1(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
+        test_agent_2 = agent_2.Agent_2(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
         result = test_agent_2.move()
         if result == 1:
             a2_caught += 1
