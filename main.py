@@ -1,7 +1,7 @@
 import agent_1
 
 def main():
-    total = 3000
+    total = 100
     caught = 0
     died = 0
     time_out = 0
