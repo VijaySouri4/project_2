@@ -3,7 +3,7 @@ import predator
 import prey
 import environment
 
-class Agent_1:
+class Agent_2:
 
     def __init__(self, input_predator = None, input_prey = None, input_environment = None, input_pos = None) -> None:
         if input_predator is None:
@@ -39,8 +39,31 @@ class Agent_1:
         #runs for 100 steps else returns false
         while self.steps < 100:
             self.steps += 1
-            predator_pos = self.predator.pos
-            prey_pos = self.prey.pos
+
+            #gets the most likely next position of the predator
+            dist, path = self.environment.shortest_paths[self.predator.pos][self.pos]
+            #sets value to next position of predator unless the next position is the agents position
+            if dist != 0:
+                predator_next_pos = path[0]
+            else:
+                predator_next_pos = self.predator.pos
+
+            #sets value to furthest possible position of prey in next move
+            longest_prey_dist = -1
+            options = [self.environment.lis[self.prey.pos].index, 
+            self.environment.lis[self.prey.pos].left_node_index,  
+            self.environment.lis[self.prey.pos].right_node_index,  
+            self.environment.lis[self.prey.pos].other_node_index]
+            
+            results = []
+            for i in options:
+                dist, path = self.environment.shortest_paths[self.prey.pos][self.pos]
+                if longest_prey_dist < dist:
+                    results = [path[0]]
+                elif longest_prey_dist == dist:
+                    results.append(path[0])
+            prey_next_pos = random.choice(results)
+
             current_node = self.environment.lis[self.pos]
             shortest_paths = self.environment.shortest_paths
 
@@ -50,19 +73,19 @@ class Agent_1:
             current_node.other_node_index]
 
             #gets distances to predator from each direction
-            left_pred_dist = shortest_paths[current_node.left_node_index][predator_pos][0]
-            right_pred_dist = shortest_paths[current_node.right_node_index][predator_pos][0]
-            other_pred_dist = shortest_paths[current_node.other_node_index][predator_pos][0]
-            cur_pred_dist = shortest_paths[self.pos][predator_pos][0]
+            left_pred_dist = shortest_paths[current_node.left_node_index][predator_next_pos][0]
+            right_pred_dist = shortest_paths[current_node.right_node_index][predator_next_pos][0]
+            other_pred_dist = shortest_paths[current_node.other_node_index][predator_next_pos][0]
+            cur_pred_dist = shortest_paths[self.pos][predator_next_pos][0]
 
             #puts distances from predator in array
             pred_dist_array = [left_pred_dist, right_pred_dist, other_pred_dist]
 
             #gets distances to prey from each direction
-            left_prey_dist = shortest_paths[current_node.left_node_index][prey_pos][0]
-            right_prey_dist = shortest_paths[current_node.right_node_index][prey_pos][0]
-            other_prey_dist = shortest_paths[current_node.other_node_index][prey_pos][0]
-            cur_prey_dist = shortest_paths[self.pos][prey_pos][0]
+            left_prey_dist = shortest_paths[current_node.left_node_index][prey_next_pos ][0]
+            right_prey_dist = shortest_paths[current_node.right_node_index][prey_next_pos ][0]
+            other_prey_dist = shortest_paths[current_node.other_node_index][prey_next_pos ][0]
+            cur_prey_dist = shortest_paths[self.pos][prey_next_pos ][0]
 
             #puts distances from prey in array
             prey_dist_array = [left_prey_dist, right_prey_dist, other_prey_dist]
