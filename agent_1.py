@@ -5,12 +5,29 @@ import environment
 
 class Agent_1:
 
-    def __init__(self, predator = predator.Predator(), prey = prey.Prey(), environment = environment.Env(50), pos = random.choice(range(0,49))) -> None:
-        self.predator = predator
-        self.prey = prey
-        self.environment = environment
+    def __init__(self, input_predator = None, input_prey = None, input_environment = None, input_pos = None) -> None:
+        if input_predator is None:
+            self.predator = predator.Predator()
+        else: 
+            self.predator = input_predator
+        
+        if input_prey is None:
+            self.prey = prey.Prey()
+        else:
+            self.prey = input_prey
+
+        if input_environment is None:
+            self.environment = environment.Env(50)
+        else:
+            self.environment = input_environment
+        
+        if input_pos is None:
+            self.pos = random.choice(range(0,49))
+        else:
+            self.pos = input_pos
+
         self.steps = 0
-        self.pos = pos
+
         #make sure agent doesnt start in occupied node
         while self.prey.pos == self.pos or self.prey.pos == self.pos:
             self.pos = random.choice(range(0,49))
