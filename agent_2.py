@@ -49,9 +49,9 @@ class Agent_2:
                 predator_next_pos = path[0]
             else:
                 predator_next_pos = self.predator.pos
-            """
+            
 
-            """ Made performance slightly worse
+            #Didnt really help perf
             #all possible future move of agent
             options = [self.environment.lis[self.pos].index, 
             self.environment.lis[self.pos].left_node_index,  

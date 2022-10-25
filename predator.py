@@ -10,7 +10,7 @@ class Predator:
     def move(self, environment, agent_pos):
         dist, path = environment.shortest_paths[self.pos][agent_pos]
         if dist != 0:
-            self.pos = path[0]
+            self.pos = random.choice(path[0])
             return True
         else:
             return False

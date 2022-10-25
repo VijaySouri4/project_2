@@ -139,12 +139,13 @@ class Env:
         for node in self.lis:
             self.shortest_paths.append(self.node_bfs(node))
         #print(self.shortest_paths)
+        return
 
 
     """Recursive BFS algo, returns array of shortest paths from node to i, where array [i] =
     (distance , path), the path for node to i is [node index, ... i - 1]"""
 
-    def node_bfs(self, node, depth = 0, visited = None):
+    def node_bfs(self, node, depth = 0, visited = None, prev_list = []):
         index = node.index
         
         if visited is None:   #base case for first call
@@ -156,23 +157,45 @@ class Env:
         right = node.right_node_index
         left = node.left_node_index
         other = node.other_node_index
-        if visited[right][0] > depth + 1:         #run recursive bfs on right node
-            new_list = visited[index][1][:]
-            new_list.append(right) 
-            visited[right] = (depth + 1, new_list)
-            self.node_bfs(self.lis[right], depth+1, visited)
+        if visited[right][0] >= depth + 1:  #run recursive bfs on right node
+            if visited[right][0] == depth + 1:       
+                new_list = prev_list[:]
+                new_list.append(right) 
+                current_list = visited[right][1][:]
+                current_list.append(new_list)
+            else:
+                new_list = prev_list[:]
+                new_list.append(right)
+                current_list = [new_list]
+            visited[right] = (depth + 1, current_list)
+            self.node_bfs(self.lis[right], depth+1, visited, new_list)
+        
 
-        if visited[left][0] > depth + 1:       #run recursive bfs on left node
-            new_list = visited[index][1][:]
-            new_list.append(left) 
-            visited[left] = (depth + 1, new_list)
-            self.node_bfs(self.lis[left], depth+1, visited)
+        if visited[left][0] >= depth + 1:  #run recursive bfs on left node
+            if visited[left][0] == depth + 1:    
+                new_list = prev_list[:]
+                new_list.append(left) 
+                current_list = visited[left][1][:]
+                current_list.append(new_list)
+            else:
+                new_list = prev_list[:]
+                new_list.append(left)
+                current_list = [new_list]
+                visited[left] = (depth + 1, current_list)
+            self.node_bfs(self.lis[left], depth+1, visited, new_list)
 
-        if other != index and visited[other][0] > depth + 1:  #run recursive bfs on other node if exists
-            new_list = visited[index][1][:]
-            new_list.append(other)     
-            visited[other] = (depth + 1, new_list)
-            self.node_bfs(self.lis[other], depth+1, visited)
+        if other != index and visited[other][0] >= depth + 1:  #run recursive bfs on other node if exists
+            if visited[other][0] == depth + 1:    
+                new_list = prev_list[:]
+                new_list.append(other)   
+                current_list = visited[other][1][:]  
+                current_list.append(new_list)
+            else:
+                new_list = prev_list[:]
+                new_list.append(other)
+                current_list = [new_list]
+            visited[other] = (depth + 1, current_list)
+            self.node_bfs(self.lis[other], depth+1, visited, new_list)
 
         return visited
 

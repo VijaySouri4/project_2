@@ -30,21 +30,22 @@ def main():
             input_pos = random.choice(range(0,49))
 
         test_agent_1 = agent_1.Agent_1(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
-        result = test_agent_1.move()
-        if result == 1:
+        result_1 = test_agent_1.move()
+        if result_1 == 1:
             a1_caught += 1
-        elif result == 0:
+        elif result_1 == 0:
             a1_died += 1
-        elif result == -1:
+        elif result_1 == -1:
             a1_time_out +=1
         
-        test_agent_2 = agent_2.Agent_2(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
-        result = test_agent_2.move()
-        if result == 1:
+        #test_agent_2 = agent_2.Agent_2(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
+        #result = test_agent_2.move()
+        result_2 = False
+        if result_2 == 1:
             a2_caught += 1
-        elif result == 0:
+        elif result_2 == 0:
             a2_died += 1
-        elif result == -1:
+        elif result_2 == -1:
             a2_time_out +=1
 
     print()
