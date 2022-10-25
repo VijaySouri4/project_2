@@ -46,8 +46,8 @@ class Agent_1:
 
             #array of possible choices
             adjacent_nodes = [current_node.left_node_index,
-            current_node.left_node_index,
-            current_node.other_node_index]
+            current_node.right_node_index,
+            current_node.other_node_index] ## Corrected the adjacent_nodes. Previously there was only left_index, left_index and other_index. 
 
             #gets distances to predator from each direction
             left_pred_dist = shortest_paths[current_node.left_node_index][predator_pos][0]
@@ -71,9 +71,9 @@ class Agent_1:
             #please check if this what the writeup meant
             options = [[] for i in range(7)]
             for i in range(len(prey_dist_array)):
-                if prey_dist_array[i] < cur_prey_dist and pred_dist_array[i] > cur_pred_dist:
+                if prey_dist_array[i] < cur_prey_dist and pred_dist_array[i] > cur_pred_dist:  ## Neighbors that are closer to the Prey and farther from the Predator
                     options[0].append(adjacent_nodes[i])
-                elif prey_dist_array[i] < cur_prey_dist:
+                elif prey_dist_array[i] < cur_prey_dist and not pred_dist_array[i] < cur_pred_dist:  ## Neighbors that are closer to the Prey and not closer to the Predator. # I beleive that we have to check that the chosen node is not closer to the predator here as priority 2
                     options[1].append(adjacent_nodes[i])
                 elif prey_dist_array[i] == cur_prey_dist and pred_dist_array[i] > cur_pred_dist:
                     options[2].append(adjacent_nodes[i])
@@ -91,7 +91,6 @@ class Agent_1:
                 if result:
                     result_index = random.choice(result)
                     break
-
             self.pos = result_index
             #returns 0 if moves into predator or predator moves into it
             if predator_pos == self.pos or not self.predator.move(self.environment,self.pos):

@@ -22,6 +22,8 @@ class Env:
         self.lis = []
         # list that holds shortest paths for each node
         self.shortest_paths = []
+        #may be I could implement shortest path as a dictionary 
+        self.shortest_paths_dic = {}
         # set that contains all the edges with respect to the index of nodes
         edges_lis = set()
         # initialising the circular nodes
@@ -66,10 +68,9 @@ class Env:
                 choice = random.choices(neighbors,weights=None,k=1)
                 
 
-                try:    #not sure if needed anymore since I updated get_five_neightbors so only degree of < 3
-                    selected_node = self.lis[choice[0]]
-                except:
-                    continue
+                    #not sure if needed anymore since I updated get_five_neightbors so only degree of < 3
+                    #yup not needed anymore thanks Michael, you the best, like DJ khalid. # Damn sorry I get goofy when I write code
+                selected_node = self.lis[choice[0]]
                 if selected_node.degree < 3:
                     #print(choice[0])
 
@@ -88,7 +89,7 @@ class Env:
         #calls recursive bfs and stores results in 2D array
         self.generate_shortest_paths()
 
-        """
+        '''
         G = nx.Graph()
         #create circular position for graph
         for i in range(self.number_of_nodes):
@@ -99,7 +100,7 @@ class Env:
         G.add_edges_from(edges_lis)
         nx.draw_networkx(G, nx.get_node_attributes(G,'pos'), node_size=80, alpha=0.75, font_size=8, font_weight=0.5)
         plt.show()
-        """
+        '''
         #print(f"Additional Edges: {len(edges_lis)- self.number_of_nodes}")
 
     def get_five_neighbors(self,index):
@@ -116,6 +117,7 @@ class Env:
             else:
                 temp_index = temp_index + 1
                 if self.lis[temp_index].degree < 3 and temp_index != index + 1: #prevent it from adding indexes with degree of 3 or node that is directly next to it
+                    #nice catch I did not think of this immediate node thing 
                     output.append(temp_index)
         up_counter = 5
         temp_index = index
@@ -138,7 +140,6 @@ class Env:
     def generate_shortest_paths(self):
         for node in self.lis:
             self.shortest_paths.append(self.node_bfs(node))
-        #print(self.shortest_paths)
         return
 
 
@@ -147,6 +148,9 @@ class Env:
 
     def node_bfs(self, node, depth = 0, visited = None, prev_list = []):
         index = node.index
+        #depth gives cost of reaching a node
+
+        # visited is a list of tuples that contains cost of reaching from the current node in the 0th index and a list of nodes that make up the path 
         
         if visited is None:   #base case for first call
                   

@@ -1,4 +1,4 @@
-import agent_1, agent_2
+import agent_1, agent_2, agent_2_type2
 import prey
 import predator
 import environment
@@ -38,9 +38,9 @@ def main():
         elif result_1 == -1:
             a1_time_out +=1
         
-        #test_agent_2 = agent_2.Agent_2(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
+        test_agent_2 = agent_2_type2.Agent_2_2(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
         #result = test_agent_2.move()
-        result_2 = False
+        result_2 = test_agent_2.move()
         if result_2 == 1:
             a2_caught += 1
         elif result_2 == 0:
