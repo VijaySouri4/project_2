@@ -51,15 +51,17 @@ class Env:
                 self.lis.append(nd)
         
         # Randomly create edges between graph nodes
-        loop_iter = int(self.number_of_nodes / 2)
-        while loop_iter > 0:
+        check_nodes= [x for x in range(0,50)]
+        additional_edges = 0
+        while check_nodes:
             #loop_iter = loop_iter - 1
-            rand_node_1 = random.randint(0,self.number_of_nodes - 1) # now it should run well everytime
+            index = random.randint(0,len(check_nodes) - 1) # now it should run well everytime
+            rand_node_1 = check_nodes[index]
+            del check_nodes[index]
             # check if the selected node has a degree of 3, proceed if not
             temp_node = self.lis[rand_node_1] # This is breaking. Why? # lol, your range for generating random numbers is improper
             if temp_node.degree < 3:   
-                loop_iter = loop_iter - 1
-                temp_node.degree = temp_node.degree + 1
+                
                 
                 # implement a function to get the five surrounding neighbor's indexes
                 neighbors = self.get_five_neighbors(rand_node_1)
@@ -67,29 +69,31 @@ class Env:
                     continue
                 choice = random.choices(neighbors,weights=None,k=1)
                 
+                temp_node.degree = temp_node.degree + 1
 
                     #not sure if needed anymore since I updated get_five_neightbors so only degree of < 3
                     #yup not needed anymore thanks Michael, you the best, like DJ khalid. # Damn sorry I get goofy when I write code
                 selected_node = self.lis[choice[0]]
-                if selected_node.degree < 3:
-                    #print(choice[0])
+                
+                #print(choice[0])
 
-                    # Now change the other node value for both the objects and increment the degree by one to both the nodes
-                    temp_node.other_node_index = choice[0]
-                    selected_node.other_node_index = temp_node.index
+                # Now change the other node value for both the objects and increment the degree by one to both the nodes
+                temp_node.other_node_index = choice[0]
+                selected_node.other_node_index = temp_node.index
 
-                    selected_node.degree = selected_node.degree + 1
+                selected_node.degree = selected_node.degree + 1
 
-                    self.lis[rand_node_1] = temp_node
-                    self.lis[choice[0]] = selected_node
+                self.lis[rand_node_1] = temp_node
+                self.lis[choice[0]] = selected_node
 
-                    # add the edge into the edge set
-                    edges_lis.add((rand_node_1,choice[0]))
-
+                # add the edge into the edge set
+                edges_lis.add((rand_node_1,choice[0]))
+                additional_edges += 1
+        
         #calls recursive bfs and stores results in 2D array
         self.generate_shortest_paths()
 
-        '''
+        """
         G = nx.Graph()
         #create circular position for graph
         for i in range(self.number_of_nodes):
@@ -99,9 +103,10 @@ class Env:
             G.add_node(i,pos = (x_pos,y_pos))
         G.add_edges_from(edges_lis)
         nx.draw_networkx(G, nx.get_node_attributes(G,'pos'), node_size=80, alpha=0.75, font_size=8, font_weight=0.5)
-        plt.show()
-        '''
-        #print(f"Additional Edges: {len(edges_lis)- self.number_of_nodes}")
+        plt.show()"""
+        #print(additional_edges)
+        
+        
 
     def get_five_neighbors(self,index):
         up_counter = 5

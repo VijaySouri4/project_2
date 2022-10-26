@@ -40,7 +40,7 @@ class Agent_2_2:
 
     def move(self):
         #runs for 100 steps else returns false
-        while self.steps <= 200:
+        while self.steps <= 100:
             self.steps += 1
 
             '''
@@ -107,11 +107,11 @@ class Agent_2_2:
                 for i in range(len(prey_dist_array)):
                     if prey_dist_array[i] < cur_prey_dist and pred_dist_array[i] > cur_pred_dist:
                         options[0].append(adjacent_nodes[i])
-                    elif prey_dist_array[i] < cur_prey_dist:
+                    elif prey_dist_array[i] < cur_prey_dist and not pred_dist_array[i] < cur_pred_dist:
                         options[1].append(adjacent_nodes[i])
                     elif prey_dist_array[i] == cur_prey_dist and pred_dist_array[i] > cur_pred_dist:
                         options[2].append(adjacent_nodes[i])
-                    elif prey_dist_array[i] == cur_prey_dist:
+                    elif prey_dist_array[i] == cur_prey_dist and not pred_dist_array[i] < cur_pred_dist:
                         options[3].append(adjacent_nodes[i])
                     elif pred_dist_array[i] > cur_pred_dist:
                         options[4].append(adjacent_nodes[i])
@@ -128,15 +128,17 @@ class Agent_2_2:
 
                 self.pos = result_index
                 #returns 0 if moves into predator or predator moves into it
-                if self.predator.pos == self.pos or not self.predator.move(self.environment,self.pos):
-                    if self.verbose:
-                        self.status(predator_pos,prey_pos)
-                    return 0
-                #returns 1 if moves into prey or prey moves into it
-                if self.prey.pos == self.pos or not self.prey.move(self.environment,self.pos):
-                    if self.verbose:
-                        self.status(predator_pos,prey_pos)
-                    return 1
+                if predator_pos == self.pos: 
+                    return 0, self.steps
+                #returns 1 if moves into prey 
+                if prey_pos == self.pos:
+                    return 1, self.steps
+                #returns 1 if prey moves into it
+                if not self.prey.move(self.environment,self.pos):
+                    return 1, self.steps
+                #returns 0 if predator moves into it
+                if not self.predator.move(self.environment,self.pos):
+                    return 0, self.steps
 
         #returns -1 if timeout
         if self.verbose:

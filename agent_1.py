@@ -77,7 +77,7 @@ class Agent_1:
                     options[1].append(adjacent_nodes[i])
                 elif prey_dist_array[i] == cur_prey_dist and pred_dist_array[i] > cur_pred_dist:
                     options[2].append(adjacent_nodes[i])
-                elif prey_dist_array[i] == cur_prey_dist:
+                elif prey_dist_array[i] == cur_prey_dist and not pred_dist_array[i] < cur_pred_dist:
                     options[3].append(adjacent_nodes[i])
                 elif pred_dist_array[i] > cur_pred_dist:
                     options[4].append(adjacent_nodes[i])
@@ -93,10 +93,16 @@ class Agent_1:
                     break
             self.pos = result_index
             #returns 0 if moves into predator or predator moves into it
-            if predator_pos == self.pos or not self.predator.move(self.environment,self.pos):
-                return 0
-            #returns 1 if moves into prey or prey moves into it
-            if prey_pos == self.pos or not self.prey.move(self.environment,self.pos):
-                return 1
+            if predator_pos == self.pos: 
+                return 0, self.steps
+            #returns 1 if moves into prey 
+            if prey_pos == self.pos:
+                return 1, self.steps
+            #returns 1 if prey moves into it
+            if not self.prey.move(self.environment,self.pos):
+                return 1, self.steps
+            #returns 0 if predator moves into it
+            if not self.predator.move(self.environment,self.pos):
+                return 0, self.steps
         #returns -1 if timeout
-        return -1
+        return -1, self.steps
