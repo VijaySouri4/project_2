@@ -38,7 +38,7 @@ class Agent_3:
             self.pos = random.choice(range(0,49))
 
     def update_probability(self, num, surveyed): 
-        return (num) * ((surveyed/(1-surveyed)) + 1)
+        return (num) / (1 - surveyed)
     
     def survey(self, agent_move = False):   #if agent_move is true, use transition matrix to update probability (for when agent moves)
         if agent_move == True:  #on an agent move turn don't survey just set current agent pos to survey (always false) so it will get set to 0 and update probability
