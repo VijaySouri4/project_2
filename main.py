@@ -7,7 +7,7 @@ import copy
 
 def main():
 
-    total_runs = 1000
+    total_runs = 500
 
     a1_caught = 0
     a1_died = 0
@@ -60,7 +60,7 @@ def main():
             a1_died += 1
         elif result_1 == -1:
             a1_time_out +=1
-        """
+        
         test_agent_2 = agent_2.Agent_2(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
         result_2, steps = test_agent_2.move()
         a2_steps += steps
@@ -70,7 +70,6 @@ def main():
             a2_died += 1
         elif result_2 == -1:
             a2_time_out +=1
-        """
 
         test_agent_3 = agent_3.Agent_3(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
         result_3, steps = test_agent_3.move()
@@ -82,7 +81,7 @@ def main():
         elif result_3 == -1:
             a3_time_out +=1
 
-        """
+        
         test_agent_4 = agent_4.Agent_4(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
         result_4, steps = test_agent_4.move()
         a4_steps += steps
@@ -92,7 +91,7 @@ def main():
             a4_died += 1
         elif result_4 == -1:
             a4_time_out +=1
-        """
+        
        
         test_agent_5 = agent_5.Agent_5(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
         result_5, steps = test_agent_5.move()
