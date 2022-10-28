@@ -58,10 +58,12 @@ class Agent_5:
                 predator_trans_matrix = np.zeros((50,50))
                 for n in self.environment.lis:
                     paths = self.environment.shortest_paths[n.index][self.pos][1]
-                    for path in paths:
-                        paths_len = len(paths)
-                        predator_trans_matrix[n.index, path[0]] += 1/paths_len
-
+                    options_set = set()
+                    for i in paths:
+                        options_set.add(i[0])
+                    for option in options_set:
+                        num_options = len(options_set)
+                        predator_trans_matrix[n.index, option] += 1/num_options
                 
                 self.predator_probability_array = np.dot(self.predator_probability_array, predator_trans_matrix)
                 self.predator_probability_array = vfunction(self.predator_probability_array, self.predator_probability_array[self.pos])
