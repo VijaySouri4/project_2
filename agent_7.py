@@ -4,7 +4,7 @@ import prey
 import environment
 import numpy as np
 
-class Agent_3:
+class Agent_7:
 
     def __init__(self, input_predator = None, input_prey = None, input_environment = None, input_pos = None) -> None:
         if input_predator is None:
@@ -27,6 +27,10 @@ class Agent_3:
         else:
             self.pos = input_pos
 
+        predator_probability_array = [(1/49)] * 50
+        predator_probability_array[self.pos] = 0
+        self.predator_probability_array = np.array(predator_probability_array) #Belief array (sum of elements is 1)
+
         prey_probability_array = [(1/49)] * 50
         prey_probability_array[self.pos] = 0
         self.prey_probability_array = np.array(prey_probability_array) #Belief array (sum of elements is 1)
@@ -37,12 +41,62 @@ class Agent_3:
         while self.prey.pos == self.pos or self.predator.pos == self.pos:
             self.pos = random.choice(range(0,49))
 
-    def update_probability(self, num, surveyed): 
+    def update_probability(self, num, surveyed):
         if surveyed == 1:
-            return 0
+            return 0 
         return (num) / (1 - surveyed)   #same as 1 / sum of the current probabilites since surveyed will be set to 0
     
-    def survey(self, agent_move = False):   #if agent_move is true, use transition matrix to update probability (for when agent moves)
+    def predator_survey(self, agent_move = False):   #if agent_move is true, use transition matrix to update probability (for when agent moves)
+        if agent_move == True:  #on an agent move turn don't survey just set current agent pos to survey (always false) so it will get set to 0 and update probability
+            choice = self.pos
+        else:
+            array = np.where(self.predator_probability_array == np.amax(self.predator_probability_array))[0] #most likely position is surveyed (random if multiple)
+            choice = np.random.choice(array)
+
+        if choice != self.predator.pos:     #if survey is false
+            vfunction = np.vectorize(self.update_probability)     #apply update probabilty to the p vector
+            self.predator_probability_array = vfunction(self.predator_probability_array, self.predator_probability_array[choice])
+            self.predator_probability_array[choice] = 0
+
+            if agent_move == True:  #if agent has moved, update probilities with transition matrix to guess predator movement
+                predator_trans_matrix = np.zeros((50,50))
+                for n in self.environment.lis:
+                    paths = self.environment.shortest_paths[n.index][self.pos][1]
+                    for path in paths:
+                        paths_len = len(paths)
+                        predator_trans_matrix[n.index, path[0]] += 1/paths_len
+
+                
+                self.predator_probability_array = np.dot(self.predator_probability_array, predator_trans_matrix)
+                self.predator_probability_array = vfunction(self.predator_probability_array, self.predator_probability_array[self.pos])
+                self.predator_probability_array[self.pos] = 0
+            #pick highest probability node and return it
+            array = np.where(self.predator_probability_array == np.amax(self.predator_probability_array))[0]    #most likely position after removal of surveyed returned (random if multiple)
+            choice = np.random.choice(array)
+            return choice
+        else:       #if the survey is true
+            predator_node = self.environment.lis[choice]    #highest probability node
+
+            #sets all probabilites to zero except the potential next paths of predator
+            self.predator_probability_array.fill(0)
+            self.predator_probability_array[choice] = 1
+            return choice
+            paths = self.environment.shortest_paths[predator_node.index][self.pos][1]
+            for path in paths:
+                if 1/len(paths) == np.nan:
+                    print(1/len(self.environment.shortest_paths[predator_node.index][self.pos]))
+                self.predator_probability_array[path[0]] += 1/len(paths)
+            
+            vfunction = np.vectorize(self.update_probability)
+            self.predator_probability_array = vfunction(self.predator_probability_array, self.predator_probability_array[self.pos])
+            self.predator_probability_array[self.pos] = 0
+            
+            #pick highest probability node and return it
+            array = np.where(self.predator_probability_array == np.amax(self.predator_probability_array))[0]    #most likely position after removal of surveyed returned (random if multiple)
+            choice = np.random.choice(array)
+            return choice 
+        
+    def prey_survey(self, agent_move = False):   #if agent_move is true, use transition matrix to update probability (for when agent moves)
         if agent_move == True:  #on an agent move turn don't survey just set current agent pos to survey (always false) so it will get set to 0 and update probability
             choice = self.pos
         else:
@@ -77,10 +131,11 @@ class Agent_3:
         #runs for 100 steps else returns false
         while self.steps <= 100:
             self.steps += 1
-            predator_pos = self.predator.pos
+            actual_predator_pos = self.predator.pos
             actual_prey_pos = self.prey.pos
             #survey highest probability node and return next highest probability node if survey false other wise one of four possible nodes if true
-            prey_pos = self.survey()                          #not actual position just most likely
+            predator_pos = self.predator_survey()                          #not actual position just most likely
+            prey_pos = self.prey_survey()  
             current_node = self.environment.lis[self.pos]
             shortest_paths = self.environment.shortest_paths
 
@@ -134,7 +189,7 @@ class Agent_3:
                     break
             self.pos = result_index
             #returns 0 if moves into predator or predator moves into it
-            if predator_pos == self.pos: 
+            if actual_predator_pos == self.pos: 
                 return 0, self.steps
             #returns 1 if moves into prey 
             if actual_prey_pos == self.pos:
@@ -147,7 +202,8 @@ class Agent_3:
                 return 0, self.steps
 
             #update probabilites after movement (will only survey agents current pos not highest probability since True flag)
-            self.survey(True)
+            self.prey_survey(True)
+            self.predator_survey(True)
             
 
         #returns -1 if timeout

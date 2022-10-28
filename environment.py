@@ -22,8 +22,8 @@ class Env:
         self.lis = []
         # list that holds shortest paths for each node
         self.shortest_paths = []
-        # ndarray to hold transition matrix
-        self.trans_matrix = np.zeros((50,50))
+        # ndarray to hold transition matrix for prey
+        self.prey_trans_matrix = np.zeros((50,50))
         #may be I could implement shortest path as a dictionary 
         self.shortest_paths_dic = {}
         # set that contains all the edges with respect to the index of nodes
@@ -96,10 +96,16 @@ class Env:
         self.generate_shortest_paths()
 
         for n in self.lis:
-            self.trans_matrix[n.index, n.left_node_index] += 1/4
-            self.trans_matrix[n.index, n.right_node_index] += 1/4
-            self.trans_matrix[n.index, n.other_node_index] += 1/4
-            self.trans_matrix[n.index, n.index] += 1/4
+            #TODO FIX PROBS
+            if n.degree == 2:
+                self.prey_trans_matrix[n.index, n.left_node_index] += 1/3
+                self.prey_trans_matrix[n.index, n.right_node_index] += 1/3
+                self.prey_trans_matrix[n.index, n.index] += 1/3
+            else:
+                self.prey_trans_matrix[n.index, n.left_node_index] += 1/4
+                self.prey_trans_matrix[n.index, n.right_node_index] += 1/4
+                self.prey_trans_matrix[n.index, n.other_node_index] += 1/4
+                self.prey_trans_matrix[n.index, n.index] += 1/4
 
         """
         G = nx.Graph()
