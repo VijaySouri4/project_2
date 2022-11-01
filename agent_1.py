@@ -37,7 +37,7 @@ class Agent_1:
 
     def move(self):
         #runs for 100 steps else returns false
-        while self.steps <= 50:
+        while self.steps <= 100:
             self.steps += 1
             predator_pos = self.predator.pos
             prey_pos = self.prey.pos
@@ -50,19 +50,19 @@ class Agent_1:
             current_node.other_node_index] ## Corrected the adjacent_nodes. Previously there was only left_index, left_index and other_index. 
 
             #gets distances to predator from each direction
-            left_pred_dist = shortest_paths[current_node.left_node_index][predator_pos][0]
-            right_pred_dist = shortest_paths[current_node.right_node_index][predator_pos][0]
-            other_pred_dist = shortest_paths[current_node.other_node_index][predator_pos][0]
-            cur_pred_dist = shortest_paths[self.pos][predator_pos][0]
+            left_pred_dist = shortest_paths[current_node.left_node_index][predator_pos]
+            right_pred_dist = shortest_paths[current_node.right_node_index][predator_pos]
+            other_pred_dist = shortest_paths[current_node.other_node_index][predator_pos]
+            cur_pred_dist = shortest_paths[self.pos][predator_pos]
 
             #puts distances from predator in array
             pred_dist_array = [left_pred_dist, right_pred_dist, other_pred_dist]
 
             #gets distances to prey from each direction
-            left_prey_dist = shortest_paths[current_node.left_node_index][prey_pos][0]
-            right_prey_dist = shortest_paths[current_node.right_node_index][prey_pos][0]
-            other_prey_dist = shortest_paths[current_node.other_node_index][prey_pos][0]
-            cur_prey_dist = shortest_paths[self.pos][prey_pos][0]
+            left_prey_dist = shortest_paths[current_node.left_node_index][prey_pos]
+            right_prey_dist = shortest_paths[current_node.right_node_index][prey_pos]
+            other_prey_dist = shortest_paths[current_node.other_node_index][prey_pos]
+            cur_prey_dist = shortest_paths[self.pos][prey_pos]
 
             #puts distances from prey in array
             prey_dist_array = [left_prey_dist, right_prey_dist, other_prey_dist]

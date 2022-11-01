@@ -46,7 +46,7 @@ class Agent_5:
         if agent_move == True:  #on an agent move turn don't survey just set current agent pos to survey (always false) so it will get set to 0 and update probability
             choice = self.pos
         else:
-            array = np.where(self.predator_probability_array == np.amax(self.predator_probability_array))[0] #most likely position is surveyed (random if multiple)
+            array = np.where(np.isclose(self.predator_probability_array, np.amax(self.predator_probability_array)))[0] #most likely position is surveyed (random if multiple)
             choice = np.random.choice(array)
 
         if choice != self.predator.pos:     #if survey is false
@@ -57,12 +57,21 @@ class Agent_5:
             if agent_move == True:  #if agent has moved, update probilities with transition matrix to guess predator movement
                 predator_trans_matrix = np.zeros((50,50))
                 for n in self.environment.lis:
-                    paths = self.environment.shortest_paths[n.index][self.pos][1]
-                    options_set = set()
-                    for i in paths:
-                        options_set.add(i[0])
-                    for option in options_set:
-                        num_options = len(options_set)
+                    if n.degree == 2:
+                        options = np.array([n.index, n.left_node_index,  n.right_node_index])
+                        option_distances = [self.environment.shortest_paths[n.index][self.pos], 
+                        self.environment.shortest_paths[n.left_node_index][self.pos],  
+                        self.environment.shortest_paths[n.right_node_index][self.pos]]
+                    else:
+                        options = np.array([n.index, n.left_node_index,  n.right_node_index,  n.other_node_index])
+                        option_distances = np.array([self.environment.shortest_paths[n.index][self.pos], 
+                        self.environment.shortest_paths[n.left_node_index][self.pos],  
+                        self.environment.shortest_paths[n.right_node_index][self.pos],  
+                        self.environment.shortest_paths[n.other_node_index][self.pos]])
+                    options_list = np.where(np.isclose(option_distances, np.amin(option_distances)))[0] #shortest next paths
+                    for option_index in options_list:
+                        option = options[option_index]
+                        num_options = len(options_list)
                         predator_trans_matrix[n.index, option] += 1/num_options
                 
                 self.predator_probability_array = np.dot(self.predator_probability_array, predator_trans_matrix)
@@ -86,7 +95,7 @@ class Agent_5:
 
     def move(self):
         #runs for 100 steps else returns false
-        while self.steps <= 50:
+        while self.steps <= 100:
             self.steps += 1
             actual_predator_pos = self.predator.pos
             prey_pos = self.prey.pos
@@ -102,19 +111,19 @@ class Agent_5:
             current_node.other_node_index] ## Corrected the adjacent_nodes. Previously there was only left_index, left_index and other_index. 
 
             #gets distances to predator from each direction
-            left_pred_dist = shortest_paths[current_node.left_node_index][predator_pos][0]
-            right_pred_dist = shortest_paths[current_node.right_node_index][predator_pos][0]
-            other_pred_dist = shortest_paths[current_node.other_node_index][predator_pos][0]
-            cur_pred_dist = shortest_paths[self.pos][predator_pos][0]
+            left_pred_dist = shortest_paths[current_node.left_node_index][predator_pos]
+            right_pred_dist = shortest_paths[current_node.right_node_index][predator_pos]
+            other_pred_dist = shortest_paths[current_node.other_node_index][predator_pos]
+            cur_pred_dist = shortest_paths[self.pos][predator_pos]
 
             #puts distances from predator in array
             pred_dist_array = [left_pred_dist, right_pred_dist, other_pred_dist]
 
             #gets distances to prey from each direction
-            left_prey_dist = shortest_paths[current_node.left_node_index][prey_pos][0]
-            right_prey_dist = shortest_paths[current_node.right_node_index][prey_pos][0]
-            other_prey_dist = shortest_paths[current_node.other_node_index][prey_pos][0]
-            cur_prey_dist = shortest_paths[self.pos][prey_pos][0]
+            left_prey_dist = shortest_paths[current_node.left_node_index][prey_pos]
+            right_prey_dist = shortest_paths[current_node.right_node_index][prey_pos]
+            other_prey_dist = shortest_paths[current_node.other_node_index][prey_pos]
+            cur_prey_dist = shortest_paths[self.pos][prey_pos]
 
             #puts distances from prey in array
             prey_dist_array = [left_prey_dist, right_prey_dist, other_prey_dist]

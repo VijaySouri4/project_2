@@ -46,7 +46,7 @@ class Agent_3:
         if agent_move == True:  #on an agent move turn don't survey just set current agent pos to survey (always false) so it will get set to 0 and update probability
             choice = self.pos
         else:
-            array = np.where(self.prey_probability_array == np.amax(self.prey_probability_array))[0] #most likely position is surveyed (random if multiple)
+            array = np.where(np.isclose(self.prey_probability_array, np.amax(self.prey_probability_array)))[0] #most likely position is surveyed (random if multiple)
             choice = np.random.choice(array)
         if choice != self.prey.pos:     #if survey is false
             vfunction = np.vectorize(self.update_probability)       #apply update probabilty to the p vector
@@ -58,7 +58,7 @@ class Agent_3:
                 self.prey_probability_array = vfunction(self.prey_probability_array, self.prey_probability_array[self.pos])
                 self.prey_probability_array[self.pos] = 0
             #pick highest probability node and return it
-            array = np.where(self.prey_probability_array == np.amax(self.prey_probability_array))[0]    #most likely position after removal of surveyed returned (random if multiple)
+            array = np.where(np.isclose(self.prey_probability_array, np.amax(self.prey_probability_array)))[0]    #most likely position after removal of surveyed returned (random if multiple)
             choice = np.random.choice(array)
             return choice
         else:       #if the survey is true
@@ -75,7 +75,7 @@ class Agent_3:
 
     def move(self):
         #runs for 100 steps else returns false
-        while self.steps <= 50:
+        while self.steps <= 100:
             self.steps += 1
             predator_pos = self.predator.pos
             actual_prey_pos = self.prey.pos
@@ -91,19 +91,19 @@ class Agent_3:
             current_node.other_node_index] ## Corrected the adjacent_nodes. Previously there was only left_index, left_index and other_index. 
 
             #gets distances to predator from each direction
-            left_pred_dist = shortest_paths[current_node.left_node_index][predator_pos][0]
-            right_pred_dist = shortest_paths[current_node.right_node_index][predator_pos][0]
-            other_pred_dist = shortest_paths[current_node.other_node_index][predator_pos][0]
-            cur_pred_dist = shortest_paths[self.pos][predator_pos][0]
+            left_pred_dist = shortest_paths[current_node.left_node_index][predator_pos]
+            right_pred_dist = shortest_paths[current_node.right_node_index][predator_pos]
+            other_pred_dist = shortest_paths[current_node.other_node_index][predator_pos]
+            cur_pred_dist = shortest_paths[self.pos][predator_pos]
 
             #puts distances from predator in array
             pred_dist_array = [left_pred_dist, right_pred_dist, other_pred_dist]
 
             #gets distances to prey from each direction
-            left_prey_dist = shortest_paths[current_node.left_node_index][prey_pos][0]
-            right_prey_dist = shortest_paths[current_node.right_node_index][prey_pos][0]
-            other_prey_dist = shortest_paths[current_node.other_node_index][prey_pos][0]
-            cur_prey_dist = shortest_paths[self.pos][prey_pos][0]
+            left_prey_dist = shortest_paths[current_node.left_node_index][prey_pos]
+            right_prey_dist = shortest_paths[current_node.right_node_index][prey_pos]
+            other_prey_dist = shortest_paths[current_node.other_node_index][prey_pos]
+            cur_prey_dist = shortest_paths[self.pos][prey_pos]
 
             #puts distances from prey in array
             prey_dist_array = [left_prey_dist, right_prey_dist, other_prey_dist]

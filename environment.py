@@ -8,6 +8,7 @@ import networkx as nx
 import random
 import math
 import numpy as np
+import queue
 
 class Env:
 
@@ -118,7 +119,8 @@ class Env:
         G.add_edges_from(edges_lis)
         nx.draw_networkx(G, nx.get_node_attributes(G,'pos'), node_size=80, alpha=0.75, font_size=8, font_weight=0.5)
         plt.show()"""
-        #print(additional_edges)
+        #if additional_edges <= 22:
+            #print(additional_edges)
         
         
 
@@ -159,13 +161,15 @@ class Env:
     def generate_shortest_paths(self):
         for node in self.lis:
             self.shortest_paths.append(self.node_bfs(node))
+        #print(self.shortest_paths)
+        #print(shortest_paths2)
         return
 
 
     """Recursive BFS algo, returns array of shortest paths from node to i, where array [i] =
     (distance , path), the path for node to i is [node index, ... i - 1]"""
 
-    def node_bfs(self, node, depth = 0, visited = None, prev_list = []):
+    def old_node_bfs(self, node, depth = 0, visited = None, prev_list = []):
         index = node.index
         #depth gives cost of reaching a node
 
@@ -221,6 +225,28 @@ class Env:
             self.node_bfs(self.lis[other], depth+1, visited, new_list)
 
         return visited
+
+    def node_bfs(self, starting_node):
+        visited = [(math.inf,[])] * self.number_of_nodes
+        closed_set = set()
+        fringe = queue.Queue()
+
+        depth = 0
+        fringe.put((starting_node.index, depth))
+
+        while not fringe.empty():
+            cur_node, depth = fringe.get()
+            cur_node = self.lis[cur_node]
+            if cur_node not in closed_set:
+                closed_set.add(cur_node)
+                visited[cur_node.index] = depth
+
+                fringe.put((cur_node.right_node_index, depth + 1))
+                fringe.put((cur_node.left_node_index, depth + 1))
+                fringe.put((cur_node.other_node_index, depth + 1))
+        return visited
+            
+
 
 
 
