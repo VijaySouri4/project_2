@@ -1,4 +1,4 @@
-import agent_1, agent_2, agent_3, agent_4, agent_5, agent_6, agent_7, agent_8
+import agent_1, agent_2, agent_3, agent_4, agent_5, agent_6, agent_7, agent_8, agent_7_defect, agent_8_defect
 import prey
 import predator
 import environment
@@ -46,10 +46,20 @@ def main():
     a7_time_out = 0
     a7_steps = 0
 
+    a7d_caught = 0
+    a7d_died = 0
+    a7d_time_out = 0
+    a7d_steps = 0
+
     a8_caught = 0
     a8_died = 0
     a8_time_out = 0
     a8_steps = 0
+
+    a8d_caught = 0
+    a8d_died = 0
+    a8d_time_out = 0
+    a8d_steps = 0
 
     for i in range(num_environments):
         print(f"\nEnvironment: {i}")
@@ -135,6 +145,16 @@ def main():
                 a7_died += 1
             elif result_7 == -1:
                 a7_time_out +=1
+
+            test_agent_7_defect = agent_7_defect.Agent_7_defect(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
+            result_7_defect, steps = test_agent_7_defect.move()
+            a7d_steps += steps
+            if result_7_defect == 1:
+                a7d_caught += 1
+            elif result_7_defect == 0:
+                a7d_died += 1
+            elif result_7_defect == -1:
+                a7d_time_out +=1
             
             test_agent_8 = agent_8.Agent_8(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
             result_8, steps = test_agent_8.move()
@@ -145,6 +165,16 @@ def main():
                 a8_died += 1
             elif result_8 == -1:
                 a8_time_out +=1
+
+            test_agent_8_defect = agent_8_defect.Agent_8_defect(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
+            result_8_defect, steps = test_agent_8_defect.move()
+            a8d_steps += steps
+            if result_8_defect == 1:
+                a8d_caught += 1
+            elif result_8_defect == 0:
+                a8d_died += 1
+            elif result_8_defect == -1:
+                a8d_time_out +=1
             
     print()
             
@@ -177,9 +207,17 @@ def main():
     print(f"Caught (including timeout): {round((a7_caught/total_runs) * 100, 3)}% | Died (including timeout): {round((a7_died/total_runs) * 100, 3)}% | Timed Out %: {round((a7_time_out/total_runs) * 100, 3)}%")
     print(f"Caught (excluding timeout): {round((a7_caught/(total_runs-a7_time_out)) * 100, 3)}% | Died (exlcuding) timeout): {round((a7_died/(total_runs-a7_time_out) * 100),3)}% | Avg Steps: {a7_steps/total_runs}")
 
+    print("\nAgent 7 Defective:")
+    print(f"Caught (including timeout): {round((a7d_caught/total_runs) * 100, 3)}% | Died (including timeout): {round((a7d_died/total_runs) * 100, 3)}% | Timed Out %: {round((a7d_time_out/total_runs) * 100, 3)}%")
+    print(f"Caught (excluding timeout): {round((a7d_caught/(total_runs-a7d_time_out)) * 100, 3)}% | Died (exlcuding) timeout): {round((a7d_died/(total_runs-a7d_time_out) * 100),3)}% | Avg Steps: {a7d_steps/total_runs}")
+
     print("\nAgent 8:")
     print(f"Caught (including timeout): {round((a8_caught/total_runs) * 100, 3)}% | Died (including timeout): {round((a8_died/total_runs) * 100, 3)}% | Timed Out %: {round((a8_time_out/total_runs) * 100, 3)}%")
     print(f"Caught (excluding timeout): {round((a8_caught/(total_runs-a8_time_out)) * 100, 3)}% | Died (exlcuding) timeout): {round((a8_died/(total_runs-a8_time_out) * 100),3)}% | Avg Steps: {a8_steps/total_runs}")
+
+    print("\nAgent 8 Defective:")
+    print(f"Caught (including timeout): {round((a8d_caught/total_runs) * 100, 3)}% | Died (including timeout): {round((a8d_died/total_runs) * 100, 3)}% | Timed Out %: {round((a8d_time_out/total_runs) * 100, 3)}%")
+    print(f"Caught (excluding timeout): {round((a8d_caught/(total_runs-a8d_time_out)) * 100, 3)}% | Died (exlcuding) timeout): {round((a8d_died/(total_runs-a8d_time_out) * 100),3)}% | Avg Steps: {a8d_steps/total_runs}")
 
 if __name__ == '__main__':
     main()
