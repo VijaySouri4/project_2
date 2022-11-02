@@ -48,7 +48,16 @@ class Agent_5:
             choice = self.pos
         else:
             array = np.where(np.isclose(self.predator_probability_array, np.amax(self.predator_probability_array)))[0] #most likely position is surveyed (random if multiple)
-            choice = np.random.choice(array)
+            ties = []
+            closest = np.Infinity
+            for index in array:
+                if self.environment.shortest_paths[index][self.pos] < closest:
+                    closest = self.environment.shortest_paths[index][self.pos]
+                    ties = [index]
+                elif self.environment.shortest_paths[index][self.pos] == closest:
+                    closest = self.environment.shortest_paths[index][self.pos]
+                    ties.append(index)
+            choice = np.random.choice(ties)
 
         if choice != self.predator.pos:     #if survey is false
             vfunction = np.vectorize(self.update_probability)     #apply update probabilty to the p vector
@@ -78,9 +87,18 @@ class Agent_5:
                 self.predator_probability_array = np.dot(self.predator_probability_array, predator_trans_matrix)
                 self.predator_probability_array = vfunction(self.predator_probability_array, self.predator_probability_array[self.pos])
                 self.predator_probability_array[self.pos] = 0
-            #pick highest probability node and return it
-            array = np.where(self.predator_probability_array == np.amax(self.predator_probability_array))[0]    #most likely position after removal of surveyed returned (random if multiple)
-            choice = np.random.choice(array)
+                #pick highest probability node and return it
+                array = np.where(np.isclose(self.predator_probability_array, np.amax(self.predator_probability_array)))[0] #most likely position is surveyed (random if multiple)
+                ties = []
+                closest = np.Infinity
+                for index in array:
+                    if self.environment.shortest_paths[index][self.pos] < closest:
+                        closest = self.environment.shortest_paths[index][self.pos]
+                        ties = [index]
+                    elif self.environment.shortest_paths[index][self.pos] == closest:
+                        closest = self.environment.shortest_paths[index][self.pos]
+                        ties.append(index)
+                choice = np.random.choice(ties)
             return choice
         else:       #if the survey is true
             predator_node = self.environment.lis[choice]    #highest probability node

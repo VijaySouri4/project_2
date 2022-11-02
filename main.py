@@ -7,7 +7,7 @@ import copy
 
 def main():
 
-    num_runs = 45
+    num_runs = 100
     num_environments = 30
     total_runs = num_runs * num_environments
 
