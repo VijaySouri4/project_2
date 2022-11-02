@@ -185,9 +185,9 @@ class Agent_6:
                 #If closer to prey than predator, only focus on prey utility
                 #If close to predator, run away (may time out but prevents death)
                 #if closish to predator, find combined utility
-                if avg_pred_dist > avg_prey_dist:
+                """if avg_pred_dist > avg_prey_dist:
                     highest_utility_list = np.where(np.isclose(prey_utility_array, np.amax(prey_utility_array)))[0]
-                    self.pos = adjacent_nodes[random.choice(highest_utility_list)]
+                    self.pos = adjacent_nodes[random.choice(highest_utility_list)]"""
                 if avg_pred_dist < 3:
                     highest_utility_list = np.where(np.isclose(pred_utility_array, np.amax(pred_utility_array)))[0]
                     self.pos = adjacent_nodes[random.choice(highest_utility_list)]
