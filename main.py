@@ -1,4 +1,4 @@
-import agent_1, agent_2, agent_2_type2, agent_3, agent_4, agent_5, agent_6, agent_7, agent_8
+import agent_1, agent_2, agent_3, agent_4, agent_5, agent_6, agent_7, agent_8
 import prey
 import predator
 import environment
@@ -7,7 +7,9 @@ import copy
 
 def main():
 
-    total_runs = 1000
+    num_runs = 45
+    num_environments = 30
+    total_runs = num_runs * num_environments
 
     a1_caught = 0
     a1_died = 0
@@ -49,100 +51,101 @@ def main():
     a8_time_out = 0
     a8_steps = 0
 
-    for i in range(total_runs):
-        print(f"{i} ", end="", flush=True)
-
+    for i in range(num_environments):
+        print(f"\nEnvironment: {i}")
         input_environment = environment.Env(50)
-        input_predator = predator.Predator()
-        input_prey = prey.Prey() 
-        input_pos = random.choice(range(0,49))
+        for j in range(num_runs):
+            print(f"{j} ", end="", flush=True)
 
-        #make sure agent doesnt start in occupied node
-        while input_prey.pos == input_pos or input_predator.pos == input_pos:
+            input_environment = environment.Env(50)
+            input_predator = predator.Predator()
+            input_prey = prey.Prey() 
             input_pos = random.choice(range(0,49))
 
-        test_agent_1 = agent_1.Agent_1(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
-        result_1, steps = test_agent_1.move()
-        a1_steps += steps
-        if result_1 == 1:
-            a1_caught += 1
-        elif result_1 == 0:
-            a1_died += 1
-        elif result_1 == -1:
-            a1_time_out +=1
-        
-        test_agent_2 = agent_2.Agent_2(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
-        result_2, steps = test_agent_2.move()
-        a2_steps += steps
-        if result_2 == 1:
-            a2_caught += 1
-        elif result_2 == 0:
-            a2_died += 1
-        elif result_2 == -1:
-            a2_time_out +=1
-        
-        test_agent_3 = agent_3.Agent_3(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
-        result_3, steps = test_agent_3.move()
-        a3_steps += steps
-        if result_3 == 1:
-            a3_caught += 1
-        elif result_3 == 0:
-            a3_died += 1
-        elif result_3 == -1:
-            a3_time_out +=1
-        """
-        
-        test_agent_4 = agent_4.Agent_4(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
-        result_4, steps = test_agent_4.move()
-        a4_steps += steps
-        if result_4 == 1:
-            a4_caught += 1
-        elif result_4 == 0:
-            a4_died += 1
-        elif result_4 == -1:
-            a4_time_out +=1
-        """
-       
-        test_agent_5 = agent_5.Agent_5(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
-        result_5, steps = test_agent_5.move()
-        a5_steps += steps
-        if result_5 == 1:
-            a5_caught += 1
-        elif result_5 == 0:
-            a5_died += 1
-        elif result_5 == -1:
-            a5_time_out +=1
-        """
-        test_agent_6 = agent_6.Agent_6(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
-        result_6, steps = test_agent_6.move()
-        a6_steps += steps
-        if result_6 == 1:
-            a6_caught += 1
-        elif result_6 == 0:
-            a6_died += 1
-        elif result_6 == -1:
-            a6_time_out +=1
-        """
-        test_agent_7 = agent_7.Agent_7(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
-        result_7, steps = test_agent_7.move()
-        a7_steps += steps
-        if result_7 == 1:
-            a7_caught += 1
-        elif result_7 == 0:
-            a7_died += 1
-        elif result_7 == -1:
-            a7_time_out +=1
-        """
-        test_agent_8 = agent_8.Agent_8(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
-        result_8, steps = test_agent_8.move()
-        a8_steps += steps
-        if result_8 == 1:
-            a8_caught += 1
-        elif result_8 == 0:
-            a8_died += 1
-        elif result_8 == -1:
-            a8_time_out +=1"""
-        
+            #make sure agent doesnt start in occupied node
+            while input_prey.pos == input_pos or input_predator.pos == input_pos:
+                input_pos = random.choice(range(0,49))
+            
+            test_agent_1 = agent_1.Agent_1(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
+            result_1, steps = test_agent_1.move()
+            a1_steps += steps
+            if result_1 == 1:
+                a1_caught += 1
+            elif result_1 == 0:
+                a1_died += 1
+            elif result_1 == -1:
+                a1_time_out +=1
+            
+            test_agent_2 = agent_2.Agent_2(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
+            result_2, steps = test_agent_2.move()
+            a2_steps += steps
+            if result_2 == 1:
+                a2_caught += 1
+            elif result_2 == 0:
+                a2_died += 1
+            elif result_2 == -1:
+                a2_time_out +=1
+            
+            test_agent_3 = agent_3.Agent_3(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
+            result_3, steps = test_agent_3.move()
+            a3_steps += steps
+            if result_3 == 1:
+                a3_caught += 1
+            elif result_3 == 0:
+                a3_died += 1
+            elif result_3 == -1:
+                a3_time_out +=1
+            
+            test_agent_4 = agent_4.Agent_4(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
+            result_4, steps = test_agent_4.move()
+            a4_steps += steps
+            if result_4 == 1:
+                a4_caught += 1
+            elif result_4 == 0:
+                a4_died += 1
+            elif result_4 == -1:
+                a4_time_out +=1
+            
+            test_agent_5 = agent_5.Agent_5(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
+            result_5, steps = test_agent_5.move()
+            a5_steps += steps
+            if result_5 == 1:
+                a5_caught += 1
+            elif result_5 == 0:
+                a5_died += 1
+            elif result_5 == -1:
+                a5_time_out +=1
+            
+            test_agent_6 = agent_6.Agent_6(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
+            result_6, steps = test_agent_6.move()
+            a6_steps += steps
+            if result_6 == 1:
+                a6_caught += 1
+            elif result_6 == 0:
+                a6_died += 1
+            elif result_6 == -1:
+                a6_time_out +=1
+            
+            test_agent_7 = agent_7.Agent_7(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
+            result_7, steps = test_agent_7.move()
+            a7_steps += steps
+            if result_7 == 1:
+                a7_caught += 1
+            elif result_7 == 0:
+                a7_died += 1
+            elif result_7 == -1:
+                a7_time_out +=1
+            
+            test_agent_8 = agent_8.Agent_8(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
+            result_8, steps = test_agent_8.move()
+            a8_steps += steps
+            if result_8 == 1:
+                a8_caught += 1
+            elif result_8 == 0:
+                a8_died += 1
+            elif result_8 == -1:
+                a8_time_out +=1
+            
     print()
             
     print("\nAgent 1:")

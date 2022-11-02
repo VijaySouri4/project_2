@@ -27,16 +27,17 @@ class Agent_5:
         else:
             self.pos = input_pos
 
-        predator_probability_array = [(1/49)] * 50
-        predator_probability_array[self.pos] = 0
-        self.predator_probability_array = np.array(predator_probability_array) #Belief array (sum of elements is 1)
-
         self.steps = 0
 
         #make sure agent doesnt start in occupied node
         while self.prey.pos == self.pos or self.predator.pos == self.pos:
             self.pos = random.choice(range(0,49))
 
+        predator_probability_array = [0] * 50
+        predator_probability_array[self.predator.pos] = 1
+        self.predator_probability_array = np.array(predator_probability_array) #Belief array (sum of elements is 1)
+
+    #normalizes probability
     def update_probability(self, num, surveyed):
         if surveyed == 1:
             return 0 

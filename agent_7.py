@@ -26,6 +26,10 @@ class Agent_7:
         else:
             self.pos = input_pos
 
+        #make sure agent doesnt start in occupied node
+        while self.prey.pos == self.pos or self.predator.pos == self.pos:
+            self.pos = random.choice(range(0,49))
+
         predator_probability_array = [0] * 50
         predator_probability_array[self.predator.pos] = 1
         self.predator_probability_array = np.array(predator_probability_array) #Belief array (sum of elements is 1)
@@ -35,12 +39,9 @@ class Agent_7:
         self.prey_probability_array = np.array(prey_probability_array) #Belief array (sum of elements is 1)
 
         self.steps = 0
+        
 
-        #make sure agent doesnt start in occupied node
-        while self.prey.pos == self.pos or self.predator.pos == self.pos:
-            self.pos = random.choice(range(0,49))
-
-    #updates probability in the case of a false survey
+    #normalizes probability
     def update_probability(self, num, surveyed):
         if surveyed == 1:
             return 0 
@@ -72,7 +73,6 @@ class Agent_7:
 
             if agent_move == True:  #if agent has moved, update probilities with transition matrix to guess predator movement
                 predator_trans_matrix = np.zeros((50,50))
-                
                 for n in self.environment.lis:
                     if n.degree == 2:
                         options = np.array([n.index, n.left_node_index,  n.right_node_index])
@@ -90,8 +90,7 @@ class Agent_7:
                         option = options[option_index]
                         num_options = len(options_list)
                         predator_trans_matrix[n.index, option] += 1/num_options
-
-                
+                    
                 self.predator_probability_array = np.dot(self.predator_probability_array, predator_trans_matrix)
                 self.predator_probability_array = vfunction(self.predator_probability_array, self.predator_probability_array[self.pos])
                 self.predator_probability_array[self.pos] = 0
@@ -100,6 +99,7 @@ class Agent_7:
             choice = np.random.choice(array)
             return choice
         else:       #if the survey is true
+            predator_node = self.environment.lis[choice]    #highest probability node
 
             #sets all probabilites to zero except the potential next paths of predator
             self.predator_probability_array.fill(0)

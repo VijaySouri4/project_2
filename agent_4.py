@@ -3,7 +3,6 @@ import predator
 import prey
 import environment
 import numpy as np
-
 class Agent_4:
 
     def __init__(self, input_predator = None, input_prey = None, input_environment = None, input_pos = None) -> None:
@@ -26,18 +25,16 @@ class Agent_4:
             self.pos = random.choice(range(0,49))
         else:
             self.pos = input_pos
+        
+        #make sure agent doesnt start in occupied node
+        while self.prey.pos == self.pos or self.predator.pos == self.pos:
+            self.pos = random.choice(range(0,49))
 
         prey_probability_array = [(1/49)] * 50
         prey_probability_array[self.pos] = 0
         self.prey_probability_array = np.array(prey_probability_array) #Belief array (sum of elements is 1)
 
-        prey_predict_probability = np.copy(self.prey_probability_array)
-
-        self.steps = 0
-
-        #make sure agent doesnt start in occupied node
-        while self.prey.pos == self.pos or self.predator.pos == self.pos:
-            self.pos = random.choice(range(0,49))
+        self.steps = 0 
 
     def update_probability(self, num, surveyed): 
         if surveyed == 1:
@@ -71,22 +68,6 @@ class Agent_4:
             self.prey_probability_array[choice] = 1
             return choice
 
-    def predict_prob(self, steps_in_future = 1):
-        self.prey_predict_probability = np.copy(self.prey_probability_array)
-
-        for _ in range(steps_in_future):
-            self.prey_predict_probability = np.dot(self.prey_predict_probability, self.environment.prey_trans_matrix)
-
-        vfunction = np.vectorize(self.update_probability)       #apply update probabilty to the p vector
-        self.prey_predict_probability = vfunction(self.prey_predict_probability, self.prey_predict_probability[self.pos])
-        self.prey_predict_probability[self.pos] = 0
-
-        array = np.where(np.isclose(self.prey_predict_probability, np.amax(self.prey_predict_probability)))[0]    #most likely position after removal of surveyed returned (random if multiple)
-        prey_choice = np.random.choice(array) ##CONSIDER RETURNING THE CLOSEST, also exclude current pos duh, monty hall???
-
-        return prey_choice
-            
-
     """Movement function for agent 1
     returns 1 if catches prey, 0 if dies, -1 if timeout"""
 
@@ -94,66 +75,98 @@ class Agent_4:
         #runs for 100 steps else returns false
         while self.steps <= 100:
             self.steps += 1
-            predator_pos = self.predator.pos
+            actual_predator_pos = self.predator.pos
+            predator_pos = actual_predator_pos
             actual_prey_pos = self.prey.pos
             #survey highest probability node and return next highest probability node if survey false other wise one of four possible nodes if true
             prey_pos = self.survey()                          #not actual position just most likely
-            prey_pos = self.predict_prob(self.environment.shortest_paths[prey_pos][self.pos][0] - 1)
-            prey_pos = self.predict_prob(0)
             current_node = self.environment.lis[self.pos]
             shortest_paths = self.environment.shortest_paths
 
-            
-            #array of possible choices
-            adjacent_nodes = [current_node.left_node_index,
-            current_node.right_node_index,
-            current_node.other_node_index] ## Corrected the adjacent_nodes. Previously there was only left_index, left_index and other_index. 
+            #if not adjacent to prey
+            if shortest_paths[self.pos][prey_pos] != 1:
+                #List of all nodes adjacent nodes to agent
+                adjacent_nodes = [current_node.left_node_index,
+                current_node.right_node_index,
+                current_node.other_node_index, self.pos]
 
-            #gets distances to predator from each direction
-            left_pred_dist = shortest_paths[current_node.left_node_index][predator_pos][0]
-            right_pred_dist = shortest_paths[current_node.right_node_index][predator_pos][0]
-            other_pred_dist = shortest_paths[current_node.other_node_index][predator_pos][0]
-            cur_pred_dist = shortest_paths[self.pos][predator_pos][0]
-
-            #puts distances from predator in array
-            pred_dist_array = [left_pred_dist, right_pred_dist, other_pred_dist]
-
-            #gets distances to prey from each direction
-            left_prey_dist = shortest_paths[current_node.left_node_index][prey_pos][0]
-            right_prey_dist = shortest_paths[current_node.right_node_index][prey_pos][0]
-            other_prey_dist = shortest_paths[current_node.other_node_index][prey_pos][0]
-            cur_prey_dist = shortest_paths[self.pos][prey_pos][0]
-
-            #puts distances from prey in array
-            prey_dist_array = [left_prey_dist, right_prey_dist, other_prey_dist]
-
-            #creates array of length 7, each index corresponding to the possible scenarios outlined in writeup
-            #please check if this what the writeup meant
-            options = [[] for i in range(7)]
-            for i in range(len(prey_dist_array)):
-                if prey_dist_array[i] < cur_prey_dist and pred_dist_array[i] > cur_pred_dist:  ## Neighbors that are closer to the Prey and farther from the Predator
-                    options[0].append(adjacent_nodes[i])
-                elif prey_dist_array[i] < cur_prey_dist and not pred_dist_array[i] < cur_pred_dist:  ## Neighbors that are closer to the Prey and not closer to the Predator. # I beleive that we have to check that the chosen node is not closer to the predator here as priority 2
-                    options[1].append(adjacent_nodes[i])
-                elif prey_dist_array[i] == cur_prey_dist and pred_dist_array[i] > cur_pred_dist:
-                    options[2].append(adjacent_nodes[i])
-                elif prey_dist_array[i] == cur_prey_dist and not pred_dist_array[i] < cur_pred_dist:
-                    options[3].append(adjacent_nodes[i])
-                elif pred_dist_array[i] > cur_pred_dist:
-                    options[4].append(adjacent_nodes[i])
-                elif pred_dist_array[i] == cur_pred_dist:
-                    options[5].append(adjacent_nodes[i])
+                #gets distances to predator from each direction and subtracts 1 to get dist for next step, calculates utility based off the dist of current node being 0
+                cur_pred_utility = shortest_paths[predator_pos][self.pos] - 1
+                left_pred_utility = shortest_paths[predator_pos][current_node.left_node_index] - 1 - cur_pred_utility
+                right_pred_utility = shortest_paths[predator_pos][current_node.right_node_index] - 1 - cur_pred_utility
+                if current_node.degree == 3:
+                    other_pred_utility = shortest_paths[predator_pos][current_node.other_node_index] - 1 - cur_pred_utility
+                    avg_pred_dist = (shortest_paths[predator_pos][self.pos] - 1 + 
+                        shortest_paths[predator_pos][current_node.left_node_index] - 1 + 
+                        shortest_paths[predator_pos][current_node.right_node_index] - 1 + 
+                        shortest_paths[predator_pos][current_node.other_node_index] - 1) / 4
                 else:
-                    options[6].append(current_node.index)
-            
-            #randomly picks a choice if multiple good choices (could be optimized instead of picking randomly, but write up says randomly I believe)
-            for result in options:
-                if result:
-                    result_index = random.choice(result)
-                    break
-            self.pos = result_index
+                    other_pred_utility = np.NINF
+                    avg_pred_dist = (shortest_paths[predator_pos][self.pos] - 1 + 
+                        shortest_paths[predator_pos][current_node.left_node_index] - 1 + 
+                        shortest_paths[predator_pos][current_node.right_node_index] - 1) / 3
+                cur_pred_utility = shortest_paths[predator_pos][self.pos]- 1 - cur_pred_utility
+
+                pred_utility_array = [left_pred_utility, right_pred_utility, other_pred_utility, cur_pred_utility] 
+                    
+                left_prey_utility = 0
+                right_prey_utility = 0
+                other_prey_utility = 0
+                cur_prey_utility = 0
+                    
+                #determine the avg distance from each node agent to move to to the possible nodes the prey can move to
+                #normalize these values to utility by basing the current position as 0
+                avg_prey_dist = 0
+                prey_node = self.environment.lis[prey_pos]
+                if prey_node.degree == 2:
+                    prey_adjacent_nodes = [prey_node.index, prey_node.left_node_index,  prey_node.right_node_index]
+                else:
+                    prey_adjacent_nodes = [prey_node.index, prey_node.left_node_index,  prey_node.right_node_index,  prey_node.other_node_index]
+                    
+                for prey_pos_index in prey_adjacent_nodes:
+                    cur_prey_baseline = shortest_paths[self.pos][prey_pos_index]
+                    avg_prey_dist += cur_prey_baseline
+
+                    left_prey_utility += (cur_prey_baseline - shortest_paths[current_node.left_node_index][prey_pos_index]) / len(prey_adjacent_nodes)
+                    right_prey_utility += (cur_prey_baseline - shortest_paths[current_node.right_node_index][prey_pos_index]) / len(prey_adjacent_nodes)
+                    other_prey_utility += (cur_prey_baseline - shortest_paths[current_node.other_node_index][prey_pos_index]) / len(prey_adjacent_nodes)
+                    cur_prey_utility += (cur_prey_baseline - shortest_paths[self.pos][prey_pos_index]) / len(prey_adjacent_nodes)
+                avg_prey_dist /= len(prey_adjacent_nodes)
+
+                prey_utility_array = [left_prey_utility, right_prey_utility, other_prey_utility, cur_prey_utility]
+
+                #create combined utility array
+                utility_array = [[] for _ in range(4)]
+                utility_array[0] = left_prey_utility + pred_utility_array[0]
+                utility_array[1] = right_prey_utility + pred_utility_array[1]
+                utility_array[2] = other_prey_utility + pred_utility_array[2]
+                utility_array[3] = other_prey_utility + pred_utility_array[3]
+                    
+                #If closer to prey than predator, only focus on prey utility
+                #If close to predator, run away (may time out but prevents death)
+                #if closish to predator, find combined utility
+                if avg_pred_dist > avg_prey_dist:
+                    highest_utility_list = np.where(np.isclose(prey_utility_array, np.amax(prey_utility_array)))[0]
+                    self.pos = adjacent_nodes[random.choice(highest_utility_list)]
+                if avg_pred_dist < 3:
+                    highest_utility_list = np.where(np.isclose(pred_utility_array, np.amax(pred_utility_array)))[0]
+                    self.pos = adjacent_nodes[random.choice(highest_utility_list)]
+                else:
+                    highest_utility_list = np.where(np.isclose(utility_array, np.amax(utility_array)))[0]
+                    highest_utility_closest = np.array([prey_utility_array[x] for x in highest_utility_list])
+                    indexes = [x for x in highest_utility_list]
+                    self.pos = adjacent_nodes[indexes[random.choice(np.where(np.isclose(highest_utility_closest, np.amax(highest_utility_closest)))[0])]]
+                    
+            else:
+                #if right next to prey go to prey
+                if shortest_paths[current_node.left_node_index][prey_pos] == 0:
+                    self.pos = current_node.left_node_index
+                elif shortest_paths[current_node.right_node_index][prey_pos] == 0:
+                    self.pos = current_node.right_node_index
+                else:
+                    self.pos = current_node.other_node_index
             #returns 0 if moves into predator or predator moves into it
-            if predator_pos == self.pos: 
+            if actual_predator_pos == self.pos: 
                 return 0, self.steps
             #returns 1 if moves into prey 
             if actual_prey_pos == self.pos:
@@ -164,10 +177,9 @@ class Agent_4:
             #returns 0 if predator moves into it
             if not self.predator.move(self.environment,self.pos):
                 return 0, self.steps
-
+                
             #update probabilites after movement (will only survey agents current pos not highest probability since True flag)
             self.survey(True)
-            
 
         #returns -1 if timeout
         return -1, self.steps
