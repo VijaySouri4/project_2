@@ -96,13 +96,13 @@ class Agent_7_defect:
                         option = options[option_index]
                         num_options = len(options_list)
                         predator_trans_matrix[n.index, option] += 1/num_options
-                else:
-                    self.predator_probability_array[choice] = self.predator_probability_array[choice] * 0.1
-                    self.predator_probability_array = vfunction(self.predator_probability_array, sum(self.predator_probability_array))
                     
                     
                 self.predator_probability_array = np.dot(self.predator_probability_array, predator_trans_matrix)
                 self.predator_probability_array[self.pos] = 0
+                self.predator_probability_array = vfunction(self.predator_probability_array, sum(self.predator_probability_array))
+            else:
+                self.predator_probability_array[choice] = self.predator_probability_array[choice] * 0.1
                 self.predator_probability_array = vfunction(self.predator_probability_array, sum(self.predator_probability_array))
                 
             #pick highest probability node and return it

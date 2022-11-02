@@ -42,7 +42,7 @@ class Agent_8_defect:
 
     #normalizes probability, uses sum since it is not just removing a probability
     def update_probability(self, num, prob_sum):
-        return (num) / (prob_sum)
+        return (num) / (prob_sum)   #same as 1 / sum of the current probabilites since surveyed will be set to 0
     
     #combined surveys for prey and predator
     def survey(self, agent_move = False):
@@ -73,13 +73,11 @@ class Agent_8_defect:
 
         if choice != self.predator.pos:     #if survey is false
             vfunction = np.vectorize(self.update_probability)     #apply update probabilty to the p vector
-            
 
             if agent_move == True:  #if agent has moved, update probilities with transition matrix to guess predator movement
-                predator_trans_matrix = np.zeros((50,50))
                 self.predator_probability_array[choice] = 0
                 self.predator_probability_array = vfunction(self.predator_probability_array, sum(self.predator_probability_array))
-                
+                predator_trans_matrix = np.zeros((50,50))
                 for n in self.environment.lis:
                     if n.degree == 2:
                         options = np.array([n.index, n.left_node_index,  n.right_node_index])
@@ -97,13 +95,13 @@ class Agent_8_defect:
                         option = options[option_index]
                         num_options = len(options_list)
                         predator_trans_matrix[n.index, option] += 1/num_options
-                else:
-                    self.predator_probability_array[choice] =  0.1 * self.predator_probability_array[choice]
-                    self.predator_probability_array = vfunction(self.predator_probability_array, sum(self.predator_probability_array))
-
-                
+                    
+                    
                 self.predator_probability_array = np.dot(self.predator_probability_array, predator_trans_matrix)
                 self.predator_probability_array[self.pos] = 0
+                self.predator_probability_array = vfunction(self.predator_probability_array, sum(self.predator_probability_array))
+            else:
+                self.predator_probability_array[choice] = self.predator_probability_array[choice] * 0.1
                 self.predator_probability_array = vfunction(self.predator_probability_array, sum(self.predator_probability_array))
                 
             #pick highest probability node and return it
@@ -136,13 +134,12 @@ class Agent_8_defect:
                 self.prey_probability_array = vfunction(self.prey_probability_array, sum(self.prey_probability_array))
                 self.prey_probability_array = np.dot(self.prey_probability_array, self.environment.prey_trans_matrix)
                 self.prey_probability_array[self.pos] = 0
-                self.prey_probability_array = vfunction(self.prey_probability_array, sum(self.prey_probability_array))
-                
+                self.prey_probability_array = vfunction(self.prey_probability_array,sum(self.prey_probability_array))
             else:
-                self.prey_probability_array[choice] = 0.1 * self.predator_probability_array[choice]
+                self.prey_probability_array[choice] = self.predator_probability_array[choice] * 0.1
                 self.prey_probability_array = vfunction(self.prey_probability_array, sum(self.prey_probability_array))
                 
-
+                
             #pick highest probability node and return it
             array = np.where(self.prey_probability_array == np.amax(self.prey_probability_array))[0]    #most likely position after removal of surveyed returned (random if multiple)
             choice = np.random.choice(array)
