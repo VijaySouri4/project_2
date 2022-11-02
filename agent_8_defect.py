@@ -90,8 +90,8 @@ class Agent_8_defect:
                         num_options = len(options_list)
                         predator_trans_matrix[n.index, option] += 1/num_options
                 else:
+                    self.predator_probability_array[choice] =  0.1 * self.predator_probability_array[choice]
                     self.predator_probability_array = vfunction(self.predator_probability_array, sum(self.predator_probability_array))
-                    self.predator_probability_array[choice] = 0.1
 
                 
                 self.predator_probability_array = np.dot(self.predator_probability_array, predator_trans_matrix)
@@ -122,7 +122,7 @@ class Agent_8_defect:
                 self.prey_probability_array = vfunction(self.prey_probability_array, sum(self.prey_probability_array))
                 
             else:
-                self.prey_probability_array[choice] = 0.1
+                self.prey_probability_array[choice] = 0.1 * self.predator_probability_array[choice]
                 self.prey_probability_array = vfunction(self.prey_probability_array, sum(self.prey_probability_array))
                 
 

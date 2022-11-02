@@ -41,7 +41,7 @@ class Agent_7_defect:
         self.steps = 0
         
 
-    #normalizes probability
+    #normalizes probability, uses sum since it is not just removing a probability
     def update_probability(self, num, prob_sum):
         return (num) / (prob_sum)   #same as 1 / sum of the current probabilites since surveyed will be set to 0
     
@@ -89,7 +89,7 @@ class Agent_7_defect:
                         num_options = len(options_list)
                         predator_trans_matrix[n.index, option] += 1/num_options
                 else:
-                    self.predator_probability_array[choice] = 0.1
+                    self.predator_probability_array[choice] = self.predator_probability_array[choice] * 0.1
                     self.predator_probability_array = vfunction(self.predator_probability_array, sum(self.predator_probability_array))
                     
                     
@@ -120,7 +120,7 @@ class Agent_7_defect:
                 self.prey_probability_array[self.pos] = 0
                 self.prey_probability_array = vfunction(self.prey_probability_array,sum(self.prey_probability_array))
             else:
-                self.prey_probability_array[choice] = 0.1
+                self.prey_probability_array[choice] = self.predator_probability_array[choice] * 0.1
                 self.prey_probability_array = vfunction(self.prey_probability_array, sum(self.prey_probability_array))
                 
                 
