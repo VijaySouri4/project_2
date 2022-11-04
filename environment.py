@@ -25,6 +25,8 @@ class Env:
         self.shortest_paths = []
         # ndarray to hold transition matrix for prey
         self.prey_trans_matrix = np.zeros((50,50))
+        # ndarray to hold transition for distracted predator
+        self.distracted_trans_matrix = np.zeros((50,50))
         #may be I could implement shortest path as a dictionary 
         self.shortest_paths_dic = {}
         # set that contains all the edges with respect to the index of nodes
@@ -102,11 +104,19 @@ class Env:
                 self.prey_trans_matrix[n.index, n.left_node_index] += 1/3
                 self.prey_trans_matrix[n.index, n.right_node_index] += 1/3
                 self.prey_trans_matrix[n.index, n.index] += 1/3
+                
+                self.distracted_trans_matrix[n.index, n.left_node_index] += 1/2
+                self.distracted_trans_matrix[n.index, n.right_node_index] += 1/2
+
             else:
                 self.prey_trans_matrix[n.index, n.left_node_index] += 1/4
                 self.prey_trans_matrix[n.index, n.right_node_index] += 1/4
                 self.prey_trans_matrix[n.index, n.other_node_index] += 1/4
                 self.prey_trans_matrix[n.index, n.index] += 1/4
+
+                self.distracted_trans_matrix[n.index, n.left_node_index] += 1/3
+                self.distracted_trans_matrix[n.index, n.right_node_index] += 1/3
+                self.distracted_trans_matrix[n.index, n.other_node_index] += 1/3
 
         """
         G = nx.Graph()
