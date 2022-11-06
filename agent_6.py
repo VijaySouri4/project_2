@@ -150,15 +150,15 @@ class Agent_6:
                 predator_choices = np.array([routine_left_predator_utility, routine_right_predator_utility, np.Infinity, routine_cur_predator_utility])
 
             if current_node.degree == 3:
-                routine_left_prey_utility = 0.9 * (0.9 ** shortest_paths[current_node.left_node_index][actual_prey_pos])
-                routine_right_prey_utility = 0.9 * (0.9 ** shortest_paths[current_node.right_node_index][actual_prey_pos])
-                routine_cur_prey_utility = 0.9 * (0.9 ** shortest_paths[current_node.index][actual_prey_pos])
-                routine_other_prey_utility = 0.9 * (0.9 ** shortest_paths[current_node.other_node_index][actual_prey_pos])
+                routine_left_prey_utility = (0.9 ** shortest_paths[current_node.left_node_index][actual_prey_pos])
+                routine_right_prey_utility = (0.9 ** shortest_paths[current_node.right_node_index][actual_prey_pos])
+                routine_cur_prey_utility = (0.9 ** shortest_paths[current_node.index][actual_prey_pos])
+                routine_other_prey_utility = (0.9 ** shortest_paths[current_node.other_node_index][actual_prey_pos])
                 prey_choices = np.array([routine_left_prey_utility, routine_right_prey_utility, routine_other_prey_utility, routine_cur_prey_utility])
             else:
-                routine_left_prey_utility = 0.9 * (0.9 ** shortest_paths[current_node.left_node_index][actual_prey_pos])
-                routine_right_prey_utility = 0.9 * (0.9 ** shortest_paths[current_node.right_node_index][actual_prey_pos])
-                routine_cur_prey_utility = 0.9 * (0.9 ** shortest_paths[current_node.index][actual_prey_pos])
+                routine_left_prey_utility = (0.9 ** shortest_paths[current_node.left_node_index][actual_prey_pos])
+                routine_right_prey_utility = (0.9 ** shortest_paths[current_node.right_node_index][actual_prey_pos])
+                routine_cur_prey_utility = (0.9 ** shortest_paths[current_node.index][actual_prey_pos])
                 prey_choices = np.array([routine_left_prey_utility, routine_right_prey_utility, 0, routine_cur_prey_utility])
             
             choices = prey_choices - predator_choices

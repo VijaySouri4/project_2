@@ -94,15 +94,15 @@ class Agent_4:
             #Bellmans Eq for each of the possible routines (actions agent can take)
 
             if current_node.degree == 3:
-                routine_left_predator_utility = 0.9 * (0.9 ** shortest_paths[current_node.left_node_index][actual_predator_pos])
-                routine_right_predator_utility = 0.9 * (0.9 ** shortest_paths[current_node.right_node_index][actual_predator_pos])
-                routine_cur_predator_utility = 0.9 * (0.9 ** shortest_paths[current_node.index][actual_predator_pos])
-                routine_other_predator_utility = 0.9 * (0.9 ** shortest_paths[current_node.other_node_index][actual_predator_pos])
+                routine_left_predator_utility = (0.9 ** shortest_paths[current_node.left_node_index][actual_predator_pos])
+                routine_right_predator_utility = (0.9 ** shortest_paths[current_node.right_node_index][actual_predator_pos])
+                routine_cur_predator_utility = (0.9 ** shortest_paths[current_node.index][actual_predator_pos])
+                routine_other_predator_utility = (0.9 ** shortest_paths[current_node.other_node_index][actual_predator_pos])
                 predator_choices = np.array([routine_left_predator_utility, routine_right_predator_utility, routine_other_predator_utility, routine_cur_predator_utility])
             else:
-                routine_left_predator_utility = 0.9 * (0.9 ** shortest_paths[current_node.left_node_index][actual_predator_pos])
-                routine_right_predator_utility = 0.9 * (0.9 ** shortest_paths[current_node.right_node_index][actual_predator_pos])
-                routine_cur_predator_utility = 0.9 * (0.9 ** shortest_paths[current_node.index][actual_predator_pos])
+                routine_left_predator_utility = (0.9 ** shortest_paths[current_node.left_node_index][actual_predator_pos])
+                routine_right_predator_utility = (0.9 ** shortest_paths[current_node.right_node_index][actual_predator_pos])
+                routine_cur_predator_utility = (0.9 ** shortest_paths[current_node.index][actual_predator_pos])
                 predator_choices = np.array([routine_left_predator_utility, routine_right_predator_utility, np.Infinity, routine_cur_predator_utility])
 
             if current_node.degree == 3:

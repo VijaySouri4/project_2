@@ -75,7 +75,7 @@ def main():
             #make sure agent doesnt start in occupied node
             while input_prey.pos == input_pos or input_predator.pos == input_pos:
                 input_pos = random.choice(range(0,49))
-            
+            """
             test_agent_1 = agent_1.Agent_1(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
             result_1, steps = test_agent_1.move()
             a1_steps += steps
@@ -105,7 +105,7 @@ def main():
                 a3_died += 1
             elif result_3 == -1:
                 a3_time_out +=1
-            
+            """
             test_agent_4 = agent_4.Agent_4(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
             result_4, steps = test_agent_4.move()
             a4_steps += steps
@@ -115,7 +115,7 @@ def main():
                 a4_died += 1
             elif result_4 == -1:
                 a4_time_out +=1
-            
+            """
             test_agent_5 = agent_5.Agent_5(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
             result_5, steps = test_agent_5.move()
             a5_steps += steps
@@ -175,7 +175,7 @@ def main():
                 a8d_died += 1
             elif result_8_defect == -1:
                 a8d_time_out +=1
-            
+            """
     print()
             
     print("\nAgent 1:")
