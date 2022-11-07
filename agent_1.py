@@ -87,6 +87,12 @@ class Agent_1:
                     options[6].append(current_node.index)
             
             #randomly picks a choice if multiple good choices (could be optimized instead of picking randomly, but write up says randomly I believe)
+            '''
+            for w in options:
+                if len(w) > 0:
+                    result_index = random.choice(w)
+                    break
+            '''
             for result in options:
                 if result:
                     result_index = random.choice(result)
@@ -106,3 +112,25 @@ class Agent_1:
                 return 0, self.steps
         #returns -1 if timeout
         return -1, self.steps
+
+
+def main():
+    count1 = 0
+    count0 = 0
+    count11 = 0
+    cycles = 1000
+    for _ in range(cycles):
+        ag = Agent_1()
+        k = ag.move()
+        print(k[0])
+        if k[0] == 0:
+            count0 += 1
+        elif k[0] == 1:
+            count1 += 1
+        else:
+            count11 += 1
+    print("\nAgent 2:")
+    print(f"Caught (including timeout): {round(((count1)/cycles)*100,3)}% | Died (including timeout): {round(count0)}% | Timed Out %: {round((count11))}%")
+
+if __name__ == '__main__':
+    main()

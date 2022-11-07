@@ -1,5 +1,15 @@
 
 *.pyc
+agent_2_4.py
+agent_2_static.py
+agent_2_type1.py
+agent_3_2.py
+agent_3_static.py
+agent_4_1.py
+agent_5_2.py
+agent_6_my.py
+agent_5_static.py
+agent_7_static.py
 test.py
 *.pyc
 __pycache__/prey.cpython-310.pyc

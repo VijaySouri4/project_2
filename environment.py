@@ -30,33 +30,33 @@ class Env:
         #may be I could implement shortest path as a dictionary 
         self.shortest_paths_dic = {}
         # set that contains all the edges with respect to the index of nodes
-        edges_lis = set()
+        self.edges_lis = set()
         # initialising the circular nodes
         for i in range(self.number_of_nodes):
             if i == 0:
                 nd = node.Node(i,self.number_of_nodes - 1,i+1,degree=2)
-                if (i+1,i) not in edges_lis:        #prevent duplicate edges
-                    edges_lis.add((i,i+1))
-                if ((self.number_of_nodes - 1), i) not in edges_lis:    #prevent duplicate edges
-                    edges_lis.add((i,self.number_of_nodes - 1))
+                if (i+1,i) not in self.edges_lis:        #prevent duplicate edges
+                    self.edges_lis.add((i,i+1))
+                if ((self.number_of_nodes - 1), i) not in self.edges_lis:    #prevent duplicate edges
+                    self.edges_lis.add((i,self.number_of_nodes - 1))
                 self.lis.append(nd)
             elif i == self.number_of_nodes - 1: # lol sorry for the roundabout implementation 
                 nd = node.Node(i,i-1,0,degree=2)
-                if (0,i) not in edges_lis:  #prevent duplicate edges
-                    edges_lis.add((i,0))
-                if (i-1, i) not in edges_lis:
-                    edges_lis.add((i,i-1))  #prevent duplicate edges
+                if (0,i) not in self.edges_lis:  #prevent duplicate edges
+                    self.edges_lis.add((i,0))
+                if (i-1, i) not in self.edges_lis:
+                    self.edges_lis.add((i,i-1))  #prevent duplicate edges
                 self.lis.append(nd)
             else:
                 nd = node.Node(i,i-1,i+1,degree=2)
-                if (i+1, i) not in edges_lis:   #prevent duplicate edges
-                    edges_lis.add((i,i+1))
-                if (i-1, i) not in edges_lis:   #prevent duplicate edges
-                    edges_lis.add((i,i-1))
+                if (i+1, i) not in self.edges_lis:   #prevent duplicate edges
+                    self.edges_lis.add((i,i+1))
+                if (i-1, i) not in self.edges_lis:   #prevent duplicate edges
+                    self.edges_lis.add((i,i-1))
                 self.lis.append(nd)
         
         # Randomly create edges between graph nodes
-        check_nodes= [x for x in range(0,50)]
+        check_nodes= [x for x in range(0,self.number_of_nodes)]
         additional_edges = 0
         while check_nodes:
             #loop_iter = loop_iter - 1
@@ -64,7 +64,7 @@ class Env:
             rand_node_1 = check_nodes[index]
             del check_nodes[index]
             # check if the selected node has a degree of 3, proceed if not
-            temp_node = self.lis[rand_node_1] # This is breaking. Why? # lol, your range for generating random numbers is improper
+            temp_node = self.lis[rand_node_1] 
             if temp_node.degree < 3:   
                 
                 
@@ -92,7 +92,7 @@ class Env:
                 self.lis[choice[0]] = selected_node
 
                 # add the edge into the edge set
-                edges_lis.add((rand_node_1,choice[0]))
+                self.edges_lis.add((rand_node_1,choice[0]))
                 additional_edges += 1
         
         #calls recursive bfs and stores results in 2D array
@@ -170,7 +170,6 @@ class Env:
     def generate_shortest_paths(self):
         for node in self.lis:
             self.shortest_paths.append(self.node_bfs(node))
-        #print(self.shortest_paths)
         #print(shortest_paths2)
         return
 
@@ -203,8 +202,7 @@ class Env:
 
 
 def main():
-    test = Env(50)
+    test = Env(10)
 
 if __name__ == '__main__':
     main()
-

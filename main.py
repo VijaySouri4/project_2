@@ -1,4 +1,5 @@
 import agent_1, agent_2, agent_3, agent_4, agent_5, agent_6, agent_7, agent_8, agent_7_defect, agent_8_defect
+import agent_1_1,agent_3_1,agent_5_1,agent_7_1
 import prey
 import predator
 import environment
@@ -76,7 +77,7 @@ def main():
             while input_prey.pos == input_pos or input_predator.pos == input_pos:
                 input_pos = random.choice(range(0,49))
             
-            test_agent_1 = agent_1.Agent_1(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
+            test_agent_1 = agent_1_1.Agent_1(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
             result_1, steps = test_agent_1.move()
             a1_steps += steps
             if result_1 == 1:
@@ -96,7 +97,7 @@ def main():
             elif result_2 == -1:
                 a2_time_out +=1
             
-            test_agent_3 = agent_3.Agent_3(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
+            test_agent_3 = agent_3_1.Agent_3(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
             result_3, steps = test_agent_3.move()
             a3_steps += steps
             if result_3 == 1:
@@ -116,7 +117,7 @@ def main():
             elif result_4 == -1:
                 a4_time_out +=1
             
-            test_agent_5 = agent_5.Agent_5(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
+            test_agent_5 = agent_5_1.Agent_5(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
             result_5, steps = test_agent_5.move()
             a5_steps += steps
             if result_5 == 1:
@@ -136,7 +137,7 @@ def main():
             elif result_6 == -1:
                 a6_time_out +=1
 
-            test_agent_7 = agent_7.Agent_7(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
+            test_agent_7 = agent_7_1.Agent_7(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
             result_7, steps = test_agent_7.move()
             a7_steps += steps
             if result_7 == 1:
@@ -178,7 +179,7 @@ def main():
             
     print()
             
-    print("\nAgent 1:")
+    print("\nAgent 1_new:")
     print(f"Caught (including timeout): {round((a1_caught/total_runs) * 100, 3)}% | Died (including timeout): {round((a1_died/total_runs) * 100, 3)}% | Timed Out %: {round((a1_time_out/total_runs) * 100, 3)}%")
     print(f"Caught (excluding timeout): {round((a1_caught/(total_runs-a1_time_out)) * 100, 3)}% | Died (exlcuding) timeout): {round((a1_died/(total_runs-a1_time_out) * 100),3)}% | Avg Steps: {a1_steps/total_runs}")
 
@@ -186,7 +187,7 @@ def main():
     print(f"Caught (including timeout): {round((a2_caught/total_runs) * 100, 3)}% | Died (including timeout): {round((a2_died/total_runs) * 100, 3)}% | Timed Out %: {round((a2_time_out/total_runs) * 100, 3)}%")
     print(f"Caught (excluding timeout): {round((a2_caught/(total_runs-a2_time_out)) * 100, 3)}% | Died (exlcuding) timeout): {round((a2_died/(total_runs-a2_time_out) * 100),3)}% | Avg Steps: {a2_steps/total_runs}")
 
-    print("\nAgent 3:")
+    print("\nAgent 3_new:")
     print(f"Caught (including timeout): {round((a3_caught/total_runs) * 100, 3)}% | Died (including timeout): {round((a3_died/total_runs) * 100, 3)}% | Timed Out %: {round((a3_time_out/total_runs) * 100, 3)}%")
     print(f"Caught (excluding timeout): {round((a3_caught/(total_runs-a3_time_out)) * 100, 3)}% | Died (exlcuding) timeout): {round((a3_died/(total_runs-a3_time_out) * 100),3)}% | Avg Steps: {a3_steps/total_runs}")
 
@@ -195,7 +196,7 @@ def main():
     print(f"Caught (excluding timeout): {round((a4_caught/(total_runs-a4_time_out)) * 100, 3)}% | Died (exlcuding) timeout): {round((a4_died/(total_runs-a4_time_out) * 100),3)}% | Avg Steps: {a4_steps/total_runs}")
 
 
-    print("\nAgent 5:")
+    print("\nAgent 5_new:")
     print(f"Caught (including timeout): {round((a5_caught/total_runs) * 100, 3)}% | Died (including timeout): {round((a5_died/total_runs) * 100, 3)}% | Timed Out %: {round((a5_time_out/total_runs) * 100, 3)}%")
     print(f"Caught (excluding timeout): {round((a5_caught/(total_runs-a5_time_out)) * 100, 3)}% | Died (exlcuding) timeout): {round((a5_died/(total_runs-a5_time_out) * 100),3)}% | Avg Steps: {a5_steps/total_runs}")
 
@@ -203,7 +204,7 @@ def main():
     print(f"Caught (including timeout): {round((a6_caught/total_runs) * 100, 3)}% | Died (including timeout): {round((a6_died/total_runs) * 100, 3)}% | Timed Out %: {round((a6_time_out/total_runs) * 100, 3)}%")
     print(f"Caught (excluding timeout): {round((a6_caught/(total_runs-a6_time_out)) * 100, 3)}% | Died (exlcuding) timeout): {round((a6_died/(total_runs-a6_time_out) * 100),3)}% | Avg Steps: {a6_steps/total_runs}")
 
-    print("\nAgent 7:")
+    print("\nAgent 7_new:")
     print(f"Caught (including timeout): {round((a7_caught/total_runs) * 100, 3)}% | Died (including timeout): {round((a7_died/total_runs) * 100, 3)}% | Timed Out %: {round((a7_time_out/total_runs) * 100, 3)}%")
     print(f"Caught (excluding timeout): {round((a7_caught/(total_runs-a7_time_out)) * 100, 3)}% | Died (exlcuding) timeout): {round((a7_died/(total_runs-a7_time_out) * 100),3)}% | Avg Steps: {a7_steps/total_runs}")
 
