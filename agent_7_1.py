@@ -32,8 +32,11 @@ class Agent_7:
             self.pos = random.choice(range(0,49))
 
         self.agent_steps = [self.pos]
-        self.prey_steps = [self.prey.pos]
-        self.predator_steps = [self.prey.pos]
+        self.prey_steps = []
+        self.predator_steps = []
+        self.actual_prey_steps = [self.prey.pos]
+        self.actual_predator_steps = [self.predator.pos]
+        
 
         predator_probability_array = [0] * 50
         predator_probability_array[self.predator.pos] = 1
@@ -174,7 +177,10 @@ class Agent_7:
             actual_predator_pos = self.predator.pos
             actual_prey_pos = self.prey.pos
             #survey highest probability node and return next highest probability node if survey false other wise one of four possible nodes if true
-            predator_pos, prey_pos = self.survey()                          #not actual position just most likely
+            predator_pos, prey_pos = self.survey() #not actual position just most likely
+            if self.steps == 1:
+                self.predator_steps.append(predator_pos)
+                self.prey_steps.append(prey_pos)                          
             current_node = self.environment.lis[self.pos]
             shortest_paths = self.environment.shortest_paths
 
@@ -209,37 +215,44 @@ class Agent_7:
 
             self.pos = result_index
             # The steps list help in animating the graph by timestep.
-            self.predator_steps.append(self.predator.pos)
-            self.prey_steps.append(self.prey.pos)
+            self.predator_steps.append(predator_pos)
+            self.actual_predator_steps.append(self.predator.pos)
+            self.prey_steps.append(prey_pos)
+            self.actual_prey_steps.append(self.prey.pos)
             self.agent_steps.append(self.pos)
             self.agent_moved()
 
             #returns 0 if moves into predator or predator moves into it
             if actual_predator_pos == self.pos: 
-                return 0, self.steps, self.agent_steps, self.prey_steps, self.predator_steps
+                return 0, self.steps, self.agent_steps, self.prey_steps, self.predator_steps, self.actual_prey_steps, self.actual_predator_steps
             #returns 1 if moves into prey 
             if actual_prey_pos == self.pos:
-                return 1, self.steps, self.agent_steps, self.prey_steps, self.predator_steps
+                return 1, self.steps, self.agent_steps, self.prey_steps, self.predator_steps, self.actual_prey_steps, self.actual_predator_steps
             #returns 1 if prey moves into it
             if not self.prey.move(self.environment,self.pos):
-                self.prey_steps.append(self.prey.pos)
-                return 1, self.steps, self.agent_steps, self.prey_steps, self.predator_steps
+                predator_pos, prey_pos = self.survey()
+                self.prey_steps.append(prey_pos)
+                self.actual_prey_steps.append(self.prey.pos)
+                return 1, self.steps, self.agent_steps, self.prey_steps, self.predator_steps, self.actual_prey_steps, self.actual_predator_steps
             #returns 0 if predator moves into it
             if not self.predator.move_distractable(self.environment,self.pos):
-                self.prey_steps.append(self.prey.pos)
-                self.predator_steps.append(self.predator.pos)
-                return 0, self.steps, self.agent_steps, self.prey_steps, self.predator_steps
+                predator_pos, prey_pos = self.survey()
+                self.prey_steps.append(prey_pos)
+                self.predator_steps.append(predator_pos)
+                self.actual_prey_steps.append(self.prey.pos)
+                self.actual_predator_steps.append(self.predator.pos)
+                return 0, self.steps, self.agent_steps, self.prey_steps, self.predator_steps, self.actual_prey_steps, self.actual_predator_steps
 
             #update probabilites after movement (will only survey agents current pos not highest probability since True flag)
             self.transition()
             
 
         #returns -1 if timeout
-        return -1, self.steps
+        return -1, self.steps, self.agent_steps, self.prey_steps, self.predator_steps, self.actual_prey_steps, self.actual_predator_steps
 
 def main(Verbose=False):
     count = 0
-    rangee = 1000
+    rangee = 1
     for _ in range(rangee):
         ag = Agent_7()
         k = ag.move()
@@ -251,13 +264,23 @@ def main(Verbose=False):
     if Verbose == True:
         print('Agent moves:')
         print(ag.agent_steps)
-        print('Prey moves:')
+        print('Beleived Prey moves:')
         print(ag.prey_steps)
-        print('Predator moves:')
+        print('Actual Prey moves:')
+        print(ag.actual_prey_steps)
+        print('Believed Predator moves:')
         print(ag.predator_steps)
+        print('Actual Predator moves:')
+        print(ag.actual_predator_steps)
         print('pred, predy and agent last steps')
         print(ag.predator.pos)
         print(ag.prey.pos)
         print(ag.pos)
+        
+        print('Size of actual_prey'+str(len(ag.actual_prey_steps)))
+        print('Size of predicted prey'+str(len(ag.prey_steps)))
+        print('Size of predicted predator'+str(len(ag.predator_steps)))
+        print('Size of agent'+str(len(ag.agent_steps)))
+        print('Size of actual predator'+str(len(ag.actual_predator_steps)))
 if __name__ == '__main__':
-    main(Verbose=False)
+    main(Verbose=True)

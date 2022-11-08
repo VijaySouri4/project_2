@@ -6,14 +6,16 @@ import random
 import math
 import networkx as nx
 import copy
-import agent_1_1 as ag1
+import agent_3_1 as ag3
 
 class Animation:
-    def __init__(self,env = None,prey_moves = None,pred_moves = None,agent_moves = None) -> None:
+    def __init__(self,env = None,prey_moves = None,pred_moves = None,agent_moves = None, actual_prey_moves = None, actual_predator_moves = None) -> None:
         self.env = env
         self.prey_moves = prey_moves
         self.pred_moves = pred_moves
         self.agent_moves = agent_moves
+        self.actual_prey_moves = actual_prey_moves
+        self.actual_pred_moves = actual_predator_moves
 
         self.display_width = 1080
         self.display_height = 720
@@ -33,6 +35,7 @@ class Animation:
         self.green = (0, 255, 127) # Success
         self.violet = (51, 0, 102) # Alt agent
         self.blue = (240,248,255) #timeout
+        self.cream = (255, 253, 208) #alt to grey
 
         ## Initialise pygame constants
 
@@ -93,12 +96,21 @@ class Animation:
         
         #[pygame.draw.circle(screen, (255,255,200),tuple((x[0]*1000,x[1]*1000)), self.radius) for x in circular_cords]
         for w,i in enumerate(zip(self.x_pos,self.y_pos)):
-            if w == self.prey_pos and w == self.agent_pos: ## Denotes success
+            if w == self.actual_prey_pos and w == self.agent_pos: ## Denotes success
                 pygame.draw.circle(self.screen,self.success, i, self.radius) # default is filled circle
                 pygame.draw.circle(self.screen, self.success, i, self.radius-4)
+            elif w == self.agent_pos and w == self.actual_pred_pos:
+                pygame.draw.circle(self.screen,self.failure, i, self.radius) # default is filled circle
+                pygame.draw.circle(self.screen, self.failure, i, self.radius-4)
             elif w == self.agent_pos: # Denotes position of agent
                 pygame.draw.circle(self.screen,self.agent_color, i, self.radius) # default is filled circle
                 pygame.draw.circle(self.screen, self.agent_color, i, self.radius-4)
+            elif w == self.actual_prey_pos: # Denotes position of actual_prey
+                pygame.draw.circle(self.screen,self.actual_prey_color_outer, i, self.radius) # default is filled circle
+                pygame.draw.circle(self.screen, self.actual_prey_color, i, self.radius-4)
+            elif w == self.actual_pred_pos: # Denotes position of actual_prey
+                pygame.draw.circle(self.screen,self.actual_pred_color_outer, i, self.radius) # default is filled circle
+                pygame.draw.circle(self.screen, self.actual_pred_color, i, self.radius-4)
             elif w == self.pred_pos: # Denotes position of predator
                 pygame.draw.circle(self.screen,self.pred_color, i, self.radius) # default is filled circle
                 pygame.draw.circle(self.screen, self.pred_color, i, self.radius-4)
@@ -122,23 +134,28 @@ class Animation:
 
     def animation(self):
 
-        print('Entered animation')
-
         self.success = self.green
         self.agent_color = self.yellow
         self.prey_color = self.violet
         self.pred_color = self.red
+        self.actual_pred_color = self.red
+        self.actual_pred_color_outer = self.orange
+        self.actual_prey_color = self.violet
+        self.actual_prey_color_outer = self.green
         self.timeout = self.blue
         self.failure = self.black
-        self.non_actor_color = self.grey
+        self.non_actor_color = self.cream
 
-        moves_list = [self.agent_moves,self.prey_moves, self.pred_moves]
+        moves_list = [self.agent_moves,self.prey_moves, self.pred_moves, self.actual_prey_moves, self.actual_pred_moves]
+        len_list = [len(self.agent_moves),len(self.pred_moves),len(self.prey_moves), len(self.actual_prey_moves), len(self.actual_pred_moves)]
 
-        if len(self.agent_moves) == max([len(self.agent_moves),len(self.pred_moves),len(self.prey_moves)]):
+        print('Moves are as follows:'+str(moves_list))
+        print('The lengths of these lists are as follows:'+str(len_list))
+        if len(self.agent_moves) == max(len_list):
             pass
         else:
             for i in moves_list:
-                if len(i) != max([len(self.agent_moves),len(self.pred_moves),len(self.prey_moves)]):
+                if len(i) != max(len_list):
                     i.append(i[len(i)-1])
 
         self.agent_moves = moves_list[0]
@@ -146,11 +163,13 @@ class Animation:
         self.pred_moves = moves_list[2]
         
 
-        for i,j,k in zip(self.agent_moves,self.prey_moves,self.pred_moves):
-            print(i,j,k)
+        for i,j,k,l,m in zip(self.agent_moves,self.prey_moves,self.pred_moves,self.actual_prey_moves,self.actual_pred_moves):
+            print(i, j, k, l, m)
             self.agent_pos = i #yellow color
             self.prey_pos = j #black color
             self.pred_pos = k #red color
+            self.actual_prey_pos = l
+            self.actual_pred_pos = m
             
             self.update() # copy screen to display
 
@@ -182,9 +201,9 @@ def main():
     while input_prey.pos == input_pos or input_predator.pos == input_pos:
         input_pos = random.choice(range(0,49))
     
-    agent_1 = ag1.Agent_1(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(env), input_pos)
-    result_1, steps, agent_steps, prey_steps, predator_steps = agent_1.move()
-    test = Animation(env,prey_steps, predator_steps, agent_steps)
+    agent_1 = ag3.Agent_3(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(env), input_pos)
+    result_1, steps, agent_steps, prey_steps, predator_steps, actual_prey_steps, actual_predator_steps = agent_1.move()
+    test = Animation(env,prey_steps, predator_steps, agent_steps, actual_prey_steps, actual_predator_steps)
 
 if __name__ == '__main__':
     main() 
