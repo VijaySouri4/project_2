@@ -3,14 +3,14 @@ import predator
 import prey
 import environment
 import numpy as np
-class Agent_8_defect:
+class Agent_8_defect_updated:
 
     def __init__(self, input_predator = None, input_prey = None, input_environment = None, input_pos = None) -> None:
         if input_predator is None:
             self.predator = predator.Predator()
         else: 
             self.predator = input_predator
-        
+
         if input_prey is None:
             self.prey = prey.Prey()
         else:
@@ -20,7 +20,7 @@ class Agent_8_defect:
             self.environment = environment.Env(50)
         else:
             self.environment = input_environment
-        
+
         if input_pos is None:
             self.pos = random.choice(range(0,49))
         else:
@@ -69,15 +69,15 @@ class Agent_8_defect:
 
             if (self.predator.pos == choice or self.prey.pos == choice) and random.uniform(0,1) > 0.9:
                 defective = True
-                
-                
+
+
         return self.predator_survey(choice, defective), self.prey_survey(choice, defective)
-    
-    
+
+
     def predator_survey(self, choice = None, defective = False):   #if agent_move is true, use transition matrix to update probability (for when agent moves)
-        if choice != self.predator.pos or defective:     #if survey is false (or agent moved and lived)
+        if choice != self.predator.pos or defective == True:     #if survey is false (or agent moved and lived)
             vfunction = np.vectorize(self.update_probability)     #apply update probabilty to the p vector
-            self.predator_probability_array[choice] = 0
+            self.predator_probability_array[choice] = 0.1 * self.predator_probability_array[choice]
             self.predator_probability_array = vfunction(self.predator_probability_array, np.sum(self.predator_probability_array))
 
             array = np.where(np.isclose(self.predator_probability_array, np.amax(self.predator_probability_array)))[0]
@@ -96,12 +96,12 @@ class Agent_8_defect:
             self.predator_probability_array.fill(0)
             self.predator_probability_array[choice] = 1
         return choice
-        
+
     def prey_survey(self, choice = None, defective = False):   #if agent_move is true, use transition matrix to update probability (for when agent moves)
 
         if choice != self.prey.pos or defective:     #if survey is false
             vfunction = np.vectorize(self.update_probability)       #apply update probabilty to the p vector
-            self.prey_probability_array[choice] = 0
+            self.prey_probability_array[choice] = 0.1 * self.prey_probability_array[choice]
             self.prey_probability_array = vfunction(self.prey_probability_array, np.sum(self.prey_probability_array))
 
             #pick highest probability node and return it
@@ -149,7 +149,7 @@ class Agent_8_defect:
                 option = options[option_index]
                 num_options = len(options_list)
                 predator_trans_matrix[n.index, option] += 1/num_options
-                    
+
         focused_predator_vector = self.predator_probability_array.copy()
         focused_predator_vector = np.dot(focused_predator_vector, predator_trans_matrix)
 
@@ -161,15 +161,14 @@ class Agent_8_defect:
 
         self.predator_probability_array[self.pos] = 0
         self.predator_probability_array =  vfunction(self.predator_probability_array, np.sum(self.predator_probability_array))
-                                        
-            
+
+
     """Movement function for agent 1
     returns 1 if catches prey, 0 if dies, -1 if timeout"""
 
     def move(self):
         #runs for 100 steps else returns false
-        while self.steps <= 100:
-            
+        while self.steps < 100:
             actual_predator_pos = self.predator.pos
             actual_prey_pos = self.prey.pos
             self.survey()  
@@ -205,7 +204,7 @@ class Agent_8_defect:
                 routine_right_prey_utility = np.sum((0.9 ** np.array([shortest_paths[current_node.right_node_index][node] for node in range(50)])) * self.prey_probability_array)
                 routine_cur_prey_utility = np.sum((0.9 ** np.array([shortest_paths[current_node.index][node] for node in range(50)])) * self.prey_probability_array)
                 prey_choices = np.array([routine_left_prey_utility, routine_right_prey_utility, 0, routine_cur_prey_utility])
-            
+
             choices = prey_choices - predator_choices
 
             results =  np.where(np.isclose(choices, np.amax(choices)))[0]
@@ -229,7 +228,7 @@ class Agent_8_defect:
 
             #update probabilites after movement (will only survey agents current pos not highest probability since True flag)
             self.transition()
-            
+
 
         #returns -1 if timeout
         return -1, self.steps

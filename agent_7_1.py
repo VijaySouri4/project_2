@@ -173,7 +173,6 @@ class Agent_7:
     def move(self):
         #runs for 100 steps else returns false
         while self.steps <= 100:
-            self.steps += 1
             actual_predator_pos = self.predator.pos
             actual_prey_pos = self.prey.pos
             #survey highest probability node and return next highest probability node if survey false other wise one of four possible nodes if true
@@ -214,6 +213,7 @@ class Agent_7:
             #Assign the optimal node index to agent's position
 
             self.pos = result_index
+            self.steps += 1
             # The steps list help in animating the graph by timestep.
             self.predator_steps.append(predator_pos)
             self.actual_predator_steps.append(self.predator.pos)

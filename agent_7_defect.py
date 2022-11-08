@@ -3,6 +3,7 @@ import predator
 import prey
 import environment
 import numpy as np
+import get_optimal_node
 class Agent_7_defect:
 
     def __init__(self, input_predator = None, input_prey = None, input_environment = None, input_pos = None) -> None:
@@ -76,9 +77,9 @@ class Agent_7_defect:
     
     
     def predator_survey(self, choice = None, defective = False):   #if agent_move is true, use transition matrix to update probability (for when agent moves)
-        if choice != self.predator.pos or defective == True:     #if survey is false (or agent moved and lived)
+        if choice != self.predator.pos or defective:     #if survey is false (or agent moved and lived)
             vfunction = np.vectorize(self.update_probability)     #apply update probabilty to the p vector
-            self.predator_probability_array[choice] = 0.1 * self.predator_probability_array[choice]
+            self.predator_probability_array[choice] = 0
             self.predator_probability_array = vfunction(self.predator_probability_array, np.sum(self.predator_probability_array))
 
             array = np.where(np.isclose(self.predator_probability_array, np.amax(self.predator_probability_array)))[0]
@@ -102,7 +103,7 @@ class Agent_7_defect:
 
         if choice != self.prey.pos or defective:     #if survey is false
             vfunction = np.vectorize(self.update_probability)       #apply update probabilty to the p vector
-            self.prey_probability_array[choice] = 0.1 * self.prey_probability_array[choice]
+            self.prey_probability_array[choice] = 0
             self.prey_probability_array = vfunction(self.prey_probability_array, np.sum(self.prey_probability_array))
 
             #pick highest probability node and return it
@@ -170,7 +171,6 @@ class Agent_7_defect:
     def move(self):
         #runs for 100 steps else returns false
         while self.steps <= 100:
-            self.steps += 1
             actual_predator_pos = self.predator.pos
             actual_prey_pos = self.prey.pos
             #survey highest probability node and return next highest probability node if survey false other wise one of four possible nodes if true
@@ -202,31 +202,11 @@ class Agent_7_defect:
             #puts distances from prey in array
             prey_dist_array = [left_prey_dist, right_prey_dist, other_prey_dist]
 
-            #creates array of length 7, each index corresponding to the possible scenarios outlined in writeup
-            #please check if this what the writeup meant
-            options = [[] for i in range(7)]
-            for i in range(len(prey_dist_array)):
-                if prey_dist_array[i] < cur_prey_dist and pred_dist_array[i] > cur_pred_dist:  ## Neighbors that are closer to the Prey and farther from the Predator
-                    options[0].append(adjacent_nodes[i])
-                elif prey_dist_array[i] < cur_prey_dist and not pred_dist_array[i] < cur_pred_dist:  ## Neighbors that are closer to the Prey and not closer to the Predator. # I beleive that we have to check that the chosen node is not closer to the predator here as priority 2
-                    options[1].append(adjacent_nodes[i])
-                elif prey_dist_array[i] == cur_prey_dist and pred_dist_array[i] > cur_pred_dist:
-                    options[2].append(adjacent_nodes[i])
-                elif prey_dist_array[i] == cur_prey_dist and not pred_dist_array[i] < cur_pred_dist:
-                    options[3].append(adjacent_nodes[i])
-                elif pred_dist_array[i] > cur_pred_dist:
-                    options[4].append(adjacent_nodes[i])
-                elif pred_dist_array[i] == cur_pred_dist:
-                    options[5].append(adjacent_nodes[i])
-                else:
-                    options[6].append(current_node.index)
-            
-            #randomly picks a choice if multiple good choices (could be optimized instead of picking randomly, but write up says randomly I believe)
-            for result in options:
-                if result:
-                    result_index = random.choice(result)
-                    break
+            result_index = get_optimal_node.get(adjacent_nodes,prey_dist_array
+            ,cur_prey_dist,pred_dist_array,cur_pred_dist)
+            #Assign the optimal node index to agent's position
             self.pos = result_index
+            self.steps += 1
 
             self.agent_moved()
 

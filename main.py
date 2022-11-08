@@ -78,8 +78,9 @@ def main():
                 input_pos = random.choice(range(0,49))
             
             test_agent_1 = agent_1_1.Agent_1(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
-            result_1, steps = test_agent_1.move()
-            a1_steps += steps
+            k = test_agent_1.move()
+            a1_steps += k[1]
+            result_1 = k[0]
             if result_1 == 1:
                 a1_caught += 1
             elif result_1 == 0:
@@ -88,8 +89,9 @@ def main():
                 a1_time_out +=1
             
             test_agent_2 = agent_2.Agent_2(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
-            result_2, steps = test_agent_2.move()
-            a2_steps += steps
+            k = test_agent_2.move()
+            a2_steps += k[1]
+            result_2 = k[0]
             if result_2 == 1:
                 a2_caught += 1
             elif result_2 == 0:
@@ -98,8 +100,9 @@ def main():
                 a2_time_out +=1
             
             test_agent_3 = agent_3_1.Agent_3(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
-            result_3, steps = test_agent_3.move()
-            a3_steps += steps
+            k = test_agent_3.move()
+            a3_steps += k[1]
+            result_3 = k[0]
             if result_3 == 1:
                 a3_caught += 1
             elif result_3 == 0:
@@ -108,8 +111,9 @@ def main():
                 a3_time_out +=1
             
             test_agent_4 = agent_4.Agent_4(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
-            result_4, steps = test_agent_4.move()
-            a4_steps += steps
+            k = test_agent_4.move()
+            a4_steps += k[1]
+            result_4 = k[0]
             if result_4 == 1:
                 a4_caught += 1
             elif result_4 == 0:
@@ -118,8 +122,9 @@ def main():
                 a4_time_out +=1
             
             test_agent_5 = agent_5_1.Agent_5(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
-            result_5, steps = test_agent_5.move()
-            a5_steps += steps
+            k = test_agent_5.move()
+            a5_steps += k[1]
+            result_5 = k[0]
             if result_5 == 1:
                 a5_caught += 1
             elif result_5 == 0:
@@ -128,8 +133,9 @@ def main():
                 a5_time_out +=1
             
             test_agent_6 = agent_6.Agent_6(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
-            result_6, steps = test_agent_6.move()
-            a6_steps += steps
+            k = test_agent_6.move()
+            a6_steps += k[1]
+            result_6 = k[0]
             if result_6 == 1:
                 a6_caught += 1
             elif result_6 == 0:
@@ -138,8 +144,9 @@ def main():
                 a6_time_out +=1
 
             test_agent_7 = agent_7_1.Agent_7(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
-            result_7, steps = test_agent_7.move()
-            a7_steps += steps
+            k = test_agent_7.move()
+            a7_steps += k[1]
+            result_7 = k[0]
             if result_7 == 1:
                 a7_caught += 1
             elif result_7 == 0:
@@ -148,8 +155,9 @@ def main():
                 a7_time_out +=1
             
             test_agent_7_defect = agent_7_defect.Agent_7_defect(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
-            result_7_defect, steps = test_agent_7_defect.move()
-            a7d_steps += steps
+            k = test_agent_7_defect.move()
+            a7d_steps += k[1]
+            result_7_defect = k[0]
             if result_7_defect == 1:
                 a7d_caught += 1
             elif result_7_defect == 0:
@@ -158,8 +166,9 @@ def main():
                 a7d_time_out +=1
             
             test_agent_8 = agent_8.Agent_8(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
-            result_8, steps = test_agent_8.move()
-            a8_steps += steps
+            k = test_agent_8.move()
+            a8_steps += k[1]
+            result_8 = k[0]
             if result_8 == 1:
                 a8_caught += 1
             elif result_8 == 0:
@@ -168,8 +177,9 @@ def main():
                 a8_time_out +=1
             
             test_agent_8_defect = agent_8_defect.Agent_8_defect(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
-            result_8_defect, steps = test_agent_8_defect.move()
-            a8d_steps += steps
+            k = test_agent_8_defect.move()
+            a8d_steps += k[1]
+            result_8_defect = k[0]
             if result_8_defect == 1:
                 a8d_caught += 1
             elif result_8_defect == 0:

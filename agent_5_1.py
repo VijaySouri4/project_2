@@ -132,7 +132,6 @@ class Agent_5:
     def move(self):
         #runs for 100 steps else returns false
         while self.steps <= 100:
-            self.steps += 1
             actual_predator_pos = self.predator.pos
             prey_pos = self.prey.pos
             #survey highest probability node and return next highest probability node if survey false other wise one of four possible nodes if true
@@ -170,6 +169,7 @@ class Agent_5:
             ,cur_prey_dist,pred_dist_array,cur_pred_dist)
             
             self.pos = result_index
+            self.steps += 1
             self.predator_steps.append(predator_pos)
             self.actual_predator_steps.append(self.predator.pos)
             self.prey_steps.append(self.prey.pos)
@@ -206,7 +206,7 @@ class Agent_5:
 
 def main(verbose=False):
     count = 0
-    rangee = 1
+    rangee = 100
     for _ in range(rangee):
         ag = Agent_5()
         k = ag.move()
@@ -237,4 +237,4 @@ def main(verbose=False):
         print('Size of predicted predator'+str(len(ag.predator_steps)))
         print('Size of agent'+str(len(ag.agent_steps)))
 if __name__ == '__main__':
-    main(verbose=True)
+    main(verbose=False)
