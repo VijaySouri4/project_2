@@ -124,8 +124,7 @@ class Agent_5:
 
     def move(self):
         #runs for 100 steps else returns false
-        while self.steps <= 100:
-            self.steps += 1
+        while self.steps < 100:
             actual_predator_pos = self.predator.pos
             prey_pos = self.prey.pos
             #survey highest probability node and return next highest probability node if survey false other wise one of four possible nodes if true
@@ -182,9 +181,10 @@ class Agent_5:
                     result_index = random.choice(result)
                     break
             self.pos = result_index
+            self.steps += 1
             self.agent_moved()
             #returns 0 if moves into predator or predator moves into it
-            if actual_predator_pos == self.pos: 
+            if actual_predator_pos == self.pos:
                 return 0, self.steps
             #returns 1 if moves into prey 
             if prey_pos == self.pos:

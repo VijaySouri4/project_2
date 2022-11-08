@@ -39,6 +39,7 @@ class Agent_8_defect:
         self.prey_probability_array = np.array(prey_probability_array) #Belief array (sum of elements is 1)
 
         self.steps = 0
+        
 
     #normalizes probability
     def update_probability(self, num, prob_sum):
@@ -75,9 +76,9 @@ class Agent_8_defect:
     
     
     def predator_survey(self, choice = None, defective = False):   #if agent_move is true, use transition matrix to update probability (for when agent moves)
-        if choice != self.predator.pos or defective == True:     #if survey is false (or agent moved and lived)
+        if choice != self.predator.pos or defective:     #if survey is false (or agent moved and lived)
             vfunction = np.vectorize(self.update_probability)     #apply update probabilty to the p vector
-            self.predator_probability_array[choice] = 0.1 * self.predator_probability_array[choice]
+            self.predator_probability_array[choice] = 0
             self.predator_probability_array = vfunction(self.predator_probability_array, np.sum(self.predator_probability_array))
 
             array = np.where(np.isclose(self.predator_probability_array, np.amax(self.predator_probability_array)))[0]
@@ -101,7 +102,7 @@ class Agent_8_defect:
 
         if choice != self.prey.pos or defective:     #if survey is false
             vfunction = np.vectorize(self.update_probability)       #apply update probabilty to the p vector
-            self.prey_probability_array[choice] = 0.1 * self.prey_probability_array[choice]
+            self.prey_probability_array[choice] = 0
             self.prey_probability_array = vfunction(self.prey_probability_array, np.sum(self.prey_probability_array))
 
             #pick highest probability node and return it
@@ -161,15 +162,14 @@ class Agent_8_defect:
 
         self.predator_probability_array[self.pos] = 0
         self.predator_probability_array =  vfunction(self.predator_probability_array, np.sum(self.predator_probability_array))
-                                        
+           
             
     """Movement function for agent 1
     returns 1 if catches prey, 0 if dies, -1 if timeout"""
 
     def move(self):
         #runs for 100 steps else returns false
-        while self.steps <= 100:
-            self.steps += 1
+        while self.steps < 100:
             actual_predator_pos = self.predator.pos
             actual_prey_pos = self.prey.pos
             self.survey()  
@@ -210,7 +210,7 @@ class Agent_8_defect:
 
             results =  np.where(np.isclose(choices, np.amax(choices)))[0]
             self.pos = adjacent_nodes[np.random.choice(results)]
-
+            self.steps += 1
 
             self.agent_moved()
 

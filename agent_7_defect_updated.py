@@ -3,7 +3,7 @@ import predator
 import prey
 import environment
 import numpy as np
-class Agent_7_defect:
+class Agent_7_defect_updated:
 
     def __init__(self, input_predator = None, input_prey = None, input_environment = None, input_pos = None) -> None:
         if input_predator is None:
@@ -76,9 +76,9 @@ class Agent_7_defect:
     
     
     def predator_survey(self, choice = None, defective = False):   #if agent_move is true, use transition matrix to update probability (for when agent moves)
-        if choice != self.predator.pos or defective:     #if survey is false (or agent moved and lived)
+        if choice != self.predator.pos or defective == True:     #if survey is false (or agent moved and lived)
             vfunction = np.vectorize(self.update_probability)     #apply update probabilty to the p vector
-            self.predator_probability_array[choice] = 0
+            self.predator_probability_array[choice] = 0.1 * self.predator_probability_array[choice]
             self.predator_probability_array = vfunction(self.predator_probability_array, np.sum(self.predator_probability_array))
 
             array = np.where(np.isclose(self.predator_probability_array, np.amax(self.predator_probability_array)))[0]
@@ -102,7 +102,7 @@ class Agent_7_defect:
 
         if choice != self.prey.pos or defective:     #if survey is false
             vfunction = np.vectorize(self.update_probability)       #apply update probabilty to the p vector
-            self.prey_probability_array[choice] = 0
+            self.prey_probability_array[choice] = 0.1 * self.prey_probability_array[choice]
             self.prey_probability_array = vfunction(self.prey_probability_array, np.sum(self.prey_probability_array))
 
             #pick highest probability node and return it
@@ -162,7 +162,7 @@ class Agent_7_defect:
 
         self.predator_probability_array[self.pos] = 0
         self.predator_probability_array =  vfunction(self.predator_probability_array, np.sum(self.predator_probability_array))
-           
+                
 
     """Movement function for agent 1
     returns 1 if catches prey, 0 if dies, -1 if timeout"""

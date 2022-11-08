@@ -123,11 +123,10 @@ class Agent_6:
 
     def move(self):
         #runs for 100 steps else returns false
-        while self.steps <= 100:
-            self.steps += 1
+        while self.steps < 100:
             actual_predator_pos = self.predator.pos
             actual_prey_pos = self.prey.pos
-            self.survey()  
+            self.survey()
             current_node = self.environment.lis[self.pos]
             shortest_paths = self.environment.shortest_paths
 
@@ -165,9 +164,9 @@ class Agent_6:
 
             results =  np.where(np.isclose(choices, np.amax(choices)))[0]
             self.pos = adjacent_nodes[np.random.choice(results)]
+            self.steps += 1
 
             self.agent_moved()
-
             #returns 0 if moves into predator or predator moves into it
             if actual_predator_pos == self.pos: 
                 return 0, self.steps

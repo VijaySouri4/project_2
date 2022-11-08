@@ -41,6 +41,7 @@ class Agent_3:
         while self.prey.pos == self.pos or self.predator.pos == self.pos:
             self.pos = random.choice(range(0,49))
 
+
     #normalizes probability
     def update_probability(self, num, prob_sum):
         if prob_sum == 0:
@@ -82,8 +83,7 @@ class Agent_3:
 
     def move(self):
         #runs for 100 steps else returns false
-        while self.steps <= 100:
-            self.steps += 1
+        while self.steps < 100:
             predator_pos = self.predator.pos
             actual_prey_pos = self.prey.pos
             #survey highest probability node and return next highest probability node if survey false other wise one of four possible nodes if true
@@ -140,7 +140,9 @@ class Agent_3:
                     result_index = random.choice(result)
                     break
             self.pos = result_index
+            self.steps += 1
             self.agent_moved()
+            
             #returns 0 if moves into predator or predator moves into it
             if predator_pos == self.pos: 
                 return 0, self.steps

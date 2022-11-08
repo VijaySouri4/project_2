@@ -32,13 +32,13 @@ class Agent_1:
         while self.prey.pos == self.pos or self.predator.pos == self.pos:
             self.pos = random.choice(range(0,49))
 
+
     """Movement function for agent 1
     returns 1 if catches prey, 0 if dies, -1 if timeout"""
 
     def move(self):
         #runs for 100 steps else returns false
-        while self.steps <= 100:
-            self.steps += 1
+        while self.steps < 100:
             predator_pos = self.predator.pos
             prey_pos = self.prey.pos
             current_node = self.environment.lis[self.pos]
@@ -92,6 +92,7 @@ class Agent_1:
                     result_index = random.choice(result)
                     break
             self.pos = result_index
+            self.steps += 1
             #returns 0 if moves into predator or predator moves into it
             if predator_pos == self.pos: 
                 return 0, self.steps

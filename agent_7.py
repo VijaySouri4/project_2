@@ -164,8 +164,7 @@ class Agent_7:
 
     def move(self):
         #runs for 100 steps else returns false
-        while self.steps <= 100:
-            self.steps += 1
+        while self.steps < 100:
             actual_predator_pos = self.predator.pos
             actual_prey_pos = self.prey.pos
             #survey highest probability node and return next highest probability node if survey false other wise one of four possible nodes if true
@@ -222,6 +221,7 @@ class Agent_7:
                     result_index = random.choice(result)
                     break
             self.pos = result_index
+            self.steps += 1
 
             self.agent_moved()
 
