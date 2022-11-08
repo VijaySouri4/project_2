@@ -6,7 +6,7 @@ import random
 import math
 import networkx as nx
 import copy
-import agent_3_1 as ag3
+import agent_3 as ag3
 
 class Animation:
     def __init__(self,env = None,prey_moves = None,pred_moves = None,agent_moves = None, actual_prey_moves = None, actual_predator_moves = None) -> None:

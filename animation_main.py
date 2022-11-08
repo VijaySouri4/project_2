@@ -6,10 +6,10 @@ import random
 import math
 import networkx as nx
 import copy
-import agent_1_1 as ag1
-import agent_3_1 as ag3
-import agent_5_1 as ag5
-import agent_7_1 as ag7
+import agent_1 as ag1
+import agent_3 as ag3
+import agent_5 as ag5
+import agent_7 as ag7
 import animation
 
 

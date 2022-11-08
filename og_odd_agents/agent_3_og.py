@@ -3,7 +3,6 @@ import predator
 import prey
 import environment
 import numpy as np
-import get_optimal_node
 
 class Agent_3:
 
@@ -41,12 +40,6 @@ class Agent_3:
         #make sure agent doesnt start in occupied node
         while self.prey.pos == self.pos or self.predator.pos == self.pos:
             self.pos = random.choice(range(0,49))
-
-        self.agent_steps = [self.pos]
-        self.prey_steps = []
-        self.predator_steps = [self.predator.pos]
-        self.actual_prey_steps = [self.prey.pos]
-        self.actual_predator_steps = [self.predator.pos]
 
     #normalizes probability
     def update_probability(self, num, prob_sum):
@@ -90,13 +83,11 @@ class Agent_3:
     def move(self):
         #runs for 100 steps else returns false
         while self.steps < 100:
+            self.steps += 1
             predator_pos = self.predator.pos
             actual_prey_pos = self.prey.pos
             #survey highest probability node and return next highest probability node if survey false other wise one of four possible nodes if true
             prey_pos = self.survey()                          #not actual position just most likely
-            if self.steps == 1:
-                self.prey_steps.append(prey_pos)
-
             current_node = self.environment.lis[self.pos]
             shortest_paths = self.environment.shortest_paths
 
@@ -124,70 +115,48 @@ class Agent_3:
             #puts distances from prey in array
             prey_dist_array = [left_prey_dist, right_prey_dist, other_prey_dist]
 
-            # get optimal node from the adjacent nodes.
-            result_index = get_optimal_node.get(adjacent_nodes,prey_dist_array
-            ,cur_prey_dist,pred_dist_array,cur_pred_dist)
-            #Assign the optimal node index to agent's position
-
+            #creates array of length 7, each index corresponding to the possible scenarios outlined in writeup
+            #please check if this what the writeup meant
+            options = [[] for i in range(7)]
+            for i in range(len(prey_dist_array)):
+                if prey_dist_array[i] < cur_prey_dist and pred_dist_array[i] > cur_pred_dist:  ## Neighbors that are closer to the Prey and farther from the Predator
+                    options[0].append(adjacent_nodes[i])
+                elif prey_dist_array[i] < cur_prey_dist and not pred_dist_array[i] < cur_pred_dist:  ## Neighbors that are closer to the Prey and not closer to the Predator. # I beleive that we have to check that the chosen node is not closer to the predator here as priority 2
+                    options[1].append(adjacent_nodes[i])
+                elif prey_dist_array[i] == cur_prey_dist and pred_dist_array[i] > cur_pred_dist:
+                    options[2].append(adjacent_nodes[i])
+                elif prey_dist_array[i] == cur_prey_dist and not pred_dist_array[i] < cur_pred_dist:
+                    options[3].append(adjacent_nodes[i])
+                elif pred_dist_array[i] > cur_pred_dist:
+                    options[4].append(adjacent_nodes[i])
+                elif pred_dist_array[i] == cur_pred_dist:
+                    options[5].append(adjacent_nodes[i])
+                else:
+                    options[6].append(current_node.index)
+            
+            #randomly picks a choice if multiple good choices (could be optimized instead of picking randomly, but write up says randomly I believe)
+            for result in options:
+                if result:
+                    result_index = random.choice(result)
+                    break
             self.pos = result_index
-            self.steps += 1
-            self.predator_steps.append(self.predator.pos)
-            self.prey_steps.append(prey_pos)
-            self.actual_prey_steps.append(self.prey.pos)
-            self.agent_steps.append(self.pos)
-            self.actual_predator_steps.append(self.predator.pos)
             self.agent_moved()
             #returns 0 if moves into predator or predator moves into it
             if predator_pos == self.pos: 
-                return 0, self.steps, self.agent_steps, self.prey_steps, self.predator_steps, self.actual_prey_steps, self.actual_predator_steps
+                return 0, self.steps
             #returns 1 if moves into prey 
             if actual_prey_pos == self.pos:
-                return 1, self.steps, self.agent_steps, self.prey_steps, self.predator_steps, self.actual_prey_steps, self.actual_predator_steps
+                return 1, self.steps
             #returns 1 if prey moves into it
             if not self.prey.move(self.environment,self.pos):
-                self.prey_steps.append(self.survey())
-                self.actual_prey_steps.append(self.prey.pos)
-                return 1, self.steps, self.agent_steps, self.prey_steps, self.predator_steps, self.actual_prey_steps, self.actual_predator_steps
+                return 1, self.steps
             #returns 0 if predator moves into it
             if not self.predator.move(self.environment,self.pos):
-                self.prey_steps.append(self.survey())
-                self.actual_prey_steps.append(self.prey.pos)
-                self.predator_steps.append(self.predator.pos)
-                return 0, self.steps, self.agent_steps, self.prey_steps, self.predator_steps, self.actual_prey_steps, self.actual_predator_steps
+                return 0, self.steps
 
             #update probabilites after movement (will only survey agents current pos not highest probability since True flag)
             self.transition()
             
 
         #returns -1 if timeout
-        return -1, self.steps, self.agent_steps, self.prey_steps, self.predator_steps, self.actual_prey_steps, self.actual_predator_steps
-
-def main(Verbose=False):
-    count = 0
-    for _ in range(1):
-        ag = Agent_3()
-        k = ag.move()
-        if k[0] == 1:
-            count += 1 
-        print(k[0])
-    print('---------------------------')
-    print('Success count :' + str(count))
-    if Verbose == True:
-        print('Agent moves:')
-        print(ag.agent_steps)
-        print('Predicted Prey moves:')
-        print(ag.prey_steps)
-        print('Actual Prey moves:')
-        print(ag.actual_prey_steps)
-        print('Predator moves:')
-        print(ag.predator_steps)
-        print('Actual Predator moves:')
-        print(ag.actual_predator_steps)
-        print('Sizes of actual_prey, predicted_prey, predator and agent')
-        print(len(ag.actual_prey_steps))
-        print(len(ag.prey_steps))
-        print(len(ag.predator_steps))
-        print(len(ag.agent_steps))
-        print(len(ag.actual_predator_steps))
-if __name__ == '__main__':
-    main(Verbose=True)
+        return -1, self.steps
