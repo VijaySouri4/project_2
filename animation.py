@@ -15,9 +15,9 @@ class Animation:
         self.pred_moves = pred_moves
         self.agent_moves = agent_moves
 
-        self.display_width = 0
-        self.display_height = 0
-        self.radius = 15 #radius of node
+        self.display_width = 1080
+        self.display_height = 720
+        self.radius = self.display_width/100 #radius of node
         self.screen = pygame.display.set_mode((self.display_width,self.display_height))
         self.clock = pygame.time.Clock() #Pygame clock
         self.speed = 1.5 #FPS
@@ -52,12 +52,12 @@ class Animation:
         pos = nx.circular_layout(G, scale=800, center=[500,500], dim=2)
         circular_cords = pos.values()
         '''
-
+        w, h = pygame.display.get_surface().get_size()
         # Assigning coordinates to each of the nodes
         for i in range(self.env.number_of_nodes):
             con = 360/self.env.number_of_nodes * i
-            self.x_pos.append((600*math.cos(math.radians(con)))+1050) # 950 is the x offsett for my framework laptop screen
-            self.y_pos.append((600*math.sin(math.radians(con)))+700) # 700 is the y axis offset for my framework laptop screen
+            self.x_pos.append((h/2.2*math.cos(math.radians(con)))+w/2) # 950 is the x offsett for my framework laptop screen
+            self.y_pos.append((h/2.2*math.sin(math.radians(con)))+h/2) # 700 is the y axis offset for my framework laptop screen
 
         self.animation()
 
