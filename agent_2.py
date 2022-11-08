@@ -38,7 +38,7 @@ class Agent_2:
 
     def move(self):
         #runs for 100 steps else returns false
-        while self.steps <= 100:
+        while self.steps < 100:
             
             actual_predator_pos = self.predator.pos
             actual_prey_pos = self.prey.pos
