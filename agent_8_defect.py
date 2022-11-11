@@ -40,6 +40,9 @@ class Agent_8_defect:
 
         self.steps = 0
 
+        self.certain_prey_pos = 0
+        self.certain_predator_pos = 0
+
     #normalizes probability
     def update_probability(self, num, prob_sum):
         if prob_sum == 0:
@@ -168,11 +171,18 @@ class Agent_8_defect:
 
     def move(self):
         #runs for 100 steps else returns false
-        while self.steps < 100:
-            
+        while self.steps <= 5000:
+            self.steps += 1
             actual_predator_pos = self.predator.pos
             actual_prey_pos = self.prey.pos
-            self.survey()  
+            predator_pos, prey_pos = self.survey()  
+
+            if prey_pos == actual_prey_pos and np.isclose(self.prey_probability_array[prey_pos], 1):
+                self.certain_prey_pos += 1
+
+            if predator_pos == actual_predator_pos and np.isclose(self.predator_probability_array[predator_pos], 1):
+                self.certain_predator_pos += 1
+
             current_node = self.environment.lis[self.pos]
             shortest_paths = self.environment.shortest_paths
 
@@ -209,8 +219,7 @@ class Agent_8_defect:
             choices = prey_choices - predator_choices
 
             results =  np.where(np.isclose(choices, np.amax(choices)))[0]
-            self.pos = adjacent_nodes[np.random.choice(results)]
-            self.steps += 1
+            self.pos = adjacent_nodes[np.random.choice(results)]            
 
             self.agent_moved()
 

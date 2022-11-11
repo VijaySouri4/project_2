@@ -36,6 +36,8 @@ class Agent_4:
         self.prey_probability_array = np.array(prey_probability_array) #Belief array (sum of elements is 1)
 
         self.steps = 0
+
+        self.certain_prey_pos = 0
         
 
     #normalizes probability
@@ -79,10 +81,15 @@ class Agent_4:
 
     def move(self):
         #runs for 100 steps else returns false
-        while self.steps < 100:
+        while self.steps <= 5000:
+            self.steps += 1
             actual_predator_pos = self.predator.pos
             actual_prey_pos = self.prey.pos
-            self.survey()
+            prey_pos = self.survey()
+            
+            if prey_pos == actual_prey_pos and np.isclose(self.prey_probability_array[prey_pos], 1):
+                self.certain_prey_pos += 1
+
             current_node = self.environment.lis[self.pos]
             shortest_paths = self.environment.shortest_paths
 
@@ -120,7 +127,6 @@ class Agent_4:
 
             results =  np.where(np.isclose(choices, np.amax(choices)))[0]
             self.pos = adjacent_nodes[np.random.choice(results)]
-            self.steps += 1
 
             self.agent_moved()
             #returns 0 if moves into predator or predator moves into it

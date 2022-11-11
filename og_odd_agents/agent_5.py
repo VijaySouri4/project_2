@@ -44,6 +44,8 @@ class Agent_5:
         predator_probability_array[self.predator.pos] = 1
         self.predator_probability_array = np.array(predator_probability_array) #Belief array (sum of elements is 1)
 
+        self.certain_predator_pos = 0
+
     #normalizes probability, uses sum since it is not just removing a probability
     def update_probability(self, num, prob_sum):
         if prob_sum == 0:
@@ -131,11 +133,15 @@ class Agent_5:
 
     def move(self):
         #runs for 100 steps else returns false
-        while self.steps < 100:
+        while self.steps <= 5000:
             actual_predator_pos = self.predator.pos
             prey_pos = self.prey.pos
             #survey highest probability node and return next highest probability node if survey false other wise one of four possible nodes if true
             predator_pos = self.survey()                          #not actual position just most likely
+
+            if predator_pos == actual_predator_pos and np.isclose(self.predator_probability_array[predator_pos], 1):
+                self.certain_predator_pos += 1
+
             if self.steps == 1:
                 self.predator_steps.append(predator_pos)
             current_node = self.environment.lis[self.pos]

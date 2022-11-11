@@ -45,7 +45,8 @@ class Agent_1:
 
     def move(self):
         #runs for 50 steps else returns false
-        while self.steps < 100:
+        while self.steps <= 5000:
+            self.steps += 1
             predator_pos = self.predator.pos
             
             prey_pos = self.prey.pos
@@ -94,7 +95,6 @@ class Agent_1:
             result_index = get_optimal_node.get(adjacent_nodes,prey_dist_array
             ,cur_prey_dist,pred_dist_array,cur_pred_dist)
             self.pos = result_index
-            self.steps += 1
             self.predator_steps.append(self.predator.pos)
             self.prey_steps.append(self.prey.pos)
             self.agent_steps.append(self.pos)

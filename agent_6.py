@@ -36,6 +36,8 @@ class Agent_6:
 
         self.steps = 0
 
+        self.certain_predator_pos = 0
+
     #normalizes probability, uses sum since it is not just removing a probability
     def update_probability(self, num, prob_sum):
         if prob_sum == 0:
@@ -123,10 +125,15 @@ class Agent_6:
 
     def move(self):
         #runs for 100 steps else returns false
-        while self.steps < 100:
+        while self.steps <= 5000:
+            self.steps += 1
             actual_predator_pos = self.predator.pos
             actual_prey_pos = self.prey.pos
-            self.survey()  
+            predator_pos = self.survey()  
+
+            if predator_pos == actual_predator_pos and np.isclose(self.predator_probability_array[predator_pos], 1):
+                self.certain_predator_pos += 1
+
             current_node = self.environment.lis[self.pos]
             shortest_paths = self.environment.shortest_paths
 
@@ -164,7 +171,6 @@ class Agent_6:
 
             results =  np.where(np.isclose(choices, np.amax(choices)))[0]
             self.pos = adjacent_nodes[np.random.choice(results)]
-            self.steps += 1
 
             self.agent_moved()
 

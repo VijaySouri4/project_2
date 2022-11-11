@@ -40,6 +40,9 @@ class Agent_7_defect_updated:
         self.prey_probability_array = np.array(prey_probability_array) #Belief array (sum of elements is 1)
 
         self.steps = 0
+
+        self.certain_prey_pos = 0
+        self.certain_predator_pos = 0
     
     #normalizes probability
     def update_probability(self, num, prob_sum):
@@ -170,11 +173,19 @@ class Agent_7_defect_updated:
 
     def move(self):
         #runs for 100 steps else returns false
-        while self.steps < 100:
+        while self.steps <= 5000:
+            self.steps += 1
             actual_predator_pos = self.predator.pos
             actual_prey_pos = self.prey.pos
             #survey highest probability node and return next highest probability node if survey false other wise one of four possible nodes if true
             predator_pos, prey_pos = self.survey()                          #not actual position just most likely
+
+            if prey_pos == actual_prey_pos and np.isclose(self.prey_probability_array[prey_pos], 1):
+                self.certain_prey_pos += 1
+
+            if predator_pos == actual_predator_pos and np.isclose(self.predator_probability_array[predator_pos], 1):
+                self.certain_predator_pos += 1
+
             current_node = self.environment.lis[self.pos]
             shortest_paths = self.environment.shortest_paths
 
@@ -207,8 +218,7 @@ class Agent_7_defect_updated:
             ,cur_prey_dist,pred_dist_array,cur_pred_dist)
 
             #Assign the optimal node index to agent's position
-            self.pos = result_index
-            self.steps += 1
+            self.pos = result_index            
             self.agent_moved()
 
             #returns 0 if moves into predator or predator moves into it

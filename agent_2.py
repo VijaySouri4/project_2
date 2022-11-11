@@ -38,7 +38,8 @@ class Agent_2:
 
     def move(self):
         #runs for 100 steps else returns false
-        while self.steps < 100:
+        while self.steps <= 5000:
+            self.steps += 1
             
             actual_predator_pos = self.predator.pos
             actual_prey_pos = self.prey.pos
@@ -78,8 +79,7 @@ class Agent_2:
             choices = prey_choices - predator_choices
 
             results =  np.where(np.isclose(choices, np.amax(choices)))[0]
-            self.pos = adjacent_nodes[np.random.choice(results)]
-            self.steps += 1
+            self.pos = adjacent_nodes[np.random.choice(results)]       
 
             #returns 0 if moves into predator or predator moves into it
             if actual_predator_pos == self.pos: 
