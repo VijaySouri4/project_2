@@ -27,8 +27,6 @@ class Env:
         self.prey_trans_matrix = np.zeros((50,50))
         # ndarray to hold transition for distracted predator
         self.distracted_trans_matrix = np.zeros((50,50))
-        #may be I could implement shortest path as a dictionary 
-        self.shortest_paths_dic = {}
         # set that contains all the edges with respect to the index of nodes
         self.edges_lis = set()
         # initialising the circular nodes
