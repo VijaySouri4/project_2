@@ -6,7 +6,16 @@ import random
 import math
 import networkx as nx
 import copy
+import agent_1 as ag1
 import agent_3 as ag3
+import agent_2 as ag2
+import agent_4 as ag4
+import agent_5 as ag5
+import agent_6 as ag6
+import agent_7 as ag7
+import agent_8 as ag8
+import PIL
+import os
 
 class Animation:
     def __init__(self,env = None,prey_moves = None,pred_moves = None,agent_moves = None, actual_prey_moves = None, actual_predator_moves = None) -> None:
@@ -106,16 +115,16 @@ class Animation:
                 pygame.draw.circle(self.screen,self.agent_color, i, self.radius) # default is filled circle
                 pygame.draw.circle(self.screen, self.agent_color, i, self.radius-4)
             elif w == self.actual_prey_pos: # Denotes position of actual_prey
-                pygame.draw.circle(self.screen,self.actual_prey_color_outer, i, self.radius) # default is filled circle
+                pygame.draw.circle(self.screen,self.actual_prey_color, i, self.radius) # default is filled circle
                 pygame.draw.circle(self.screen, self.actual_prey_color, i, self.radius-4)
             elif w == self.actual_pred_pos: # Denotes position of actual_prey
-                pygame.draw.circle(self.screen,self.actual_pred_color_outer, i, self.radius) # default is filled circle
+                pygame.draw.circle(self.screen,self.actual_pred_color, i, self.radius) # default is filled circle
                 pygame.draw.circle(self.screen, self.actual_pred_color, i, self.radius-4)
             elif w == self.pred_pos: # Denotes position of predator
-                pygame.draw.circle(self.screen,self.pred_color, i, self.radius) # default is filled circle
+                pygame.draw.circle(self.screen,self.actual_pred_color_outer, i, self.radius) # default is filled circle
                 pygame.draw.circle(self.screen, self.pred_color, i, self.radius-4)
             elif w == self.prey_pos: # Denotes position of Prey 
-                pygame.draw.circle(self.screen,self.prey_color, i, self.radius) # default is filled circle
+                pygame.draw.circle(self.screen,self.actual_pred_color_outer, i, self.radius) # default is filled circle
                 pygame.draw.circle(self.screen, self.prey_color, i, self.radius-4)
             else: # Denotes non actor containing node
                 pygame.draw.circle(self.screen,self.non_actor_color, i, self.radius) # default is filled circle
@@ -131,6 +140,55 @@ class Animation:
             (0,150,150), (x,y), self.radius-4)
         '''
     #def create_graph(self):
+
+
+    def legend(self):
+        '''self.success = self.green
+        self.agent_color = self.yellow
+        self.prey_color = self.violet
+        self.pred_color = self.red
+        self.actual_pred_color = self.red
+        self.actual_pred_color_outer = self.orange
+        self.actual_prey_color = self.violet
+        self.actual_prey_color_outer = self.green'''
+        if self.agent_pos != self.prey_pos and self.agent_pos != self.pred_pos:
+
+            font = pygame.font.Font('freesansbold.ttf', 32)
+            text = font.render('Yellow Denotes Agent', True, self.yellow, self.black)
+            textRect = text.get_rect()
+            textRect.center = (self.display_width // 2, self.display_height // 2 )
+            self.screen.blit(text, textRect)
+            text = font.render('Violet Denotes prey', True, self.violet, self.cream)
+            textRect = text.get_rect()
+            textRect.center = (self.display_width // 2, (self.display_height // 2) + 40 )
+            self.screen.blit(text, textRect)
+            text = font.render('Red Denotes predator', True, self.red, self.black)
+            textRect = text.get_rect()
+            textRect.center = (self.display_width // 2, (self.display_height // 2) + 80 )
+            self.screen.blit(text, textRect)
+            text = font.render('Green Denotes Catch', True, self.green, self.black)
+            textRect = text.get_rect()
+            textRect.center = (self.display_width // 2, (self.display_height // 2) + 120)
+            self.screen.blit(text, textRect)
+        elif self.agent_pos == self.prey_pos and self.agent_pos == self.pred_pos:
+            font = pygame.font.Font('freesansbold.ttf', 32)
+            text = font.render('Unique Situation', True, self.green, self.black)
+            textRect = text.get_rect()
+            textRect.center = (self.display_width // 2, (self.display_height // 2) - 40 )
+            self.screen.blit(text, textRect)
+        elif self.agent_pos == self.prey_pos:
+            font = pygame.font.Font('freesansbold.ttf', 32)
+            text = font.render('Simulation Ended, Caught prey', True, self.green, self.black)
+            textRect = text.get_rect()
+            textRect.center = (self.display_width // 2, (self.display_height // 2) - 40 )
+            self.screen.blit(text, textRect)
+        elif self.agent_pos == self.pred_pos:
+            font = pygame.font.Font('freesansbold.ttf', 32)
+            text = font.render('Simulation Ended, Agent Died', True, self.green, self.black)
+            textRect = text.get_rect()
+            textRect.center = (self.display_width // 2, (self.display_height // 2) - 40 )
+            self.screen.blit(text, textRect)
+
 
     def animation(self):
 
@@ -184,15 +242,17 @@ class Animation:
     def draw_graph(self):
         self.draw_edges()
         self.create_circles()
+        self.legend()
 
 
     def update(self):
         self.draw_graph()
+        pygame.display.set_caption('Agent 1')
         pygame.display.update()
         self.clock.tick(self.speed)
 
 def main():
-    env = environment.Env(50)
+    input_environment = environment.Env(50)
     input_predator = predator.Predator()
     input_prey = prey.Prey() 
     input_pos = random.choice(range(0,49))
@@ -201,9 +261,20 @@ def main():
     while input_prey.pos == input_pos or input_predator.pos == input_pos:
         input_pos = random.choice(range(0,49))
     
+    '''
     agent_1 = ag3.Agent_3(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(env), input_pos)
     result_1, steps, agent_steps, prey_steps, predator_steps, actual_prey_steps, actual_predator_steps = agent_1.move()
     test = Animation(env,prey_steps, predator_steps, agent_steps, actual_prey_steps, actual_predator_steps)
+    '''
 
+    agent = ag2.Agent_2(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
+    k = agent.move()
+    prey_steps = agent.prey_steps
+    predator_steps = agent.predator_steps
+    agent_steps = agent.agent_steps
+    actual_prey_steps = agent.actual_prey_steps
+    actual_predator_steps = agent.actual_predator_steps
+
+    test = Animation(input_environment,prey_steps, predator_steps, agent_steps, actual_prey_steps, actual_predator_steps)
 if __name__ == '__main__':
     main() 

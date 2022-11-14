@@ -43,6 +43,12 @@ class Agent_8:
         self.certain_prey_pos = 0
         self.certain_predator_pos = 0
 
+        self.agent_steps = [self.pos]
+        self.prey_steps = []
+        self.predator_steps = []
+        self.actual_prey_steps = [self.prey.pos]
+        self.actual_predator_steps = [self.predator.pos]
+
     #normalizes probability
     def update_probability(self, num, prob_sum):
         if prob_sum == 0:
@@ -216,6 +222,12 @@ class Agent_8:
             results =  np.where(np.isclose(choices, np.amax(choices)))[0]
             self.pos = adjacent_nodes[np.random.choice(results)]
 
+            self.predator_steps.append(predator_pos)
+            self.actual_predator_steps.append(self.predator.pos)
+            self.prey_steps.append(prey_pos)
+            self.actual_prey_steps.append(self.prey.pos)
+            self.agent_steps.append(self.pos)
+
             self.agent_moved()
 
             #returns 0 if moves into predator or predator moves into it
@@ -226,9 +238,17 @@ class Agent_8:
                 return 1, self.steps
             #returns 1 if prey moves into it
             if not self.prey.move(self.environment,self.pos):
+                predator_pos, prey_pos = self.survey()
+                self.prey_steps.append(prey_pos)
+                self.actual_prey_steps.append(self.prey.pos)
                 return 1, self.steps
             #returns 0 if predator moves into it
             if not self.predator.move_distractable(self.environment,self.pos):
+                predator_pos, prey_pos = self.survey()
+                self.prey_steps.append(prey_pos)
+                self.predator_steps.append(predator_pos)
+                self.actual_prey_steps.append(self.prey.pos)
+                self.actual_predator_steps.append(self.predator.pos)
                 return 0, self.steps
 
             #update probabilites after movement (will only survey agents current pos not highest probability since True flag)

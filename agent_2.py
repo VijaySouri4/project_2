@@ -33,6 +33,12 @@ class Agent_2:
         while self.prey.pos == self.pos or self.predator.pos == self.pos:
             self.pos = random.choice(range(0,49))
 
+        self.agent_steps = [self.pos]
+        self.prey_steps = [self.prey.pos]
+        self.predator_steps = [self.prey.pos]
+        self.actual_prey_steps =self.prey_steps
+        self.actual_predator_steps = self.predator_steps
+
     """Movement function for agent 1
     returns 1 if catches prey, 0 if dies, -1 if timeout"""
 
@@ -79,7 +85,13 @@ class Agent_2:
             choices = prey_choices - predator_choices
 
             results =  np.where(np.isclose(choices, np.amax(choices)))[0]
-            self.pos = adjacent_nodes[np.random.choice(results)]       
+            self.pos = adjacent_nodes[np.random.choice(results)]  
+
+            self.predator_steps.append(self.predator.pos)
+            self.prey_steps.append(self.prey.pos)
+            self.agent_steps.append(self.pos)
+            self.actual_prey_steps =self.prey_steps
+            self.actual_predator_steps = self.predator_steps     
 
             #returns 0 if moves into predator or predator moves into it
             if actual_predator_pos == self.pos: 
@@ -89,9 +101,15 @@ class Agent_2:
                 return 1, self.steps
             #returns 1 if prey moves into it
             if not self.prey.move(self.environment,self.pos):
+                self.prey_steps.append(self.prey.pos)
+                self.actual_prey_steps =self.prey_steps
                 return 1, self.steps
             #returns 0 if predator moves into it
             if not self.predator.move(self.environment,self.pos):
+                self.prey_steps.append(self.prey.pos)
+                self.actual_prey_steps =self.prey_steps
+                self.predator_steps.append(self.predator.pos)
+                self.actual_predator_steps = self.predator_steps  
                 return 0, self.steps
         #returns -1 if timeout
         return -1, self.steps

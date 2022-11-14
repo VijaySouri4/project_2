@@ -7,8 +7,8 @@ import copy
 
 def main():
 
-    num_runs = 100
-    num_environments = 30
+    num_runs = 10
+    num_environments = 3
     total_runs = num_runs * num_environments
 
     a1_caught = 0
