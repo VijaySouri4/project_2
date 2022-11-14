@@ -3,11 +3,13 @@ import prey
 import predator
 import environment
 import random
+import numpy as np
 import copy
+import matplotlib.pyplot as plt
 
 def main():
 
-    num_runs = 10
+    num_runs = 3
     num_environments = 3
     total_runs = num_runs * num_environments
 
@@ -315,7 +317,68 @@ def main():
     print(f"Caught (including timeout): {round((a8du_caught/total_runs) * 100, 3)}% | Died (including timeout): {round((a8du_died/total_runs) * 100, 3)}% | Timed Out %: {round((a8du_time_out/total_runs) * 100, 3)}%")
     print(f"Caught (excluding timeout): {round((a8du_caught/(total_runs-a8du_time_out)) * 100, 3)}% | Died (exlcuding) timeout): {round((a8du_died/(total_runs-a8du_time_out) * 100),3)}% | Avg Steps: {a8du_steps/total_runs}")
     print(f"Steps where certain of prey pos (and correct): {round(a8du_prey_certain/a8du_steps * 100, 3)}%")
-    print(f"Steps where certain of predator pos (and correct): {round(a8du_predator_certain/a8du_steps * 100, 3)}%")  
+    print(f"Steps where certain of predator pos (and correct): {round(a8du_predator_certain/a8du_steps * 100, 3)}%") 
+
+
+    caught_data = {'Agent 1':round((a1_caught/total_runs) * 100, 3), 'Agent 2':round((a2_caught/total_runs) * 100, 3),
+     'Agent 3':round((a3_caught/total_runs) * 100, 3), 'Agent 4':round((a4_caught/total_runs) * 100, 3),
+      'Agent 5':round((a5_caught/total_runs) * 100, 3),
+       'Agent 6':round((a6_caught/total_runs) * 100, 3),
+        'Agent 7':round((a7_caught/total_runs) * 100, 3),
+         'Agent 7 Defective':round((a7d_caught/total_runs) * 100, 3),
+          'Agent 7 Defective Updated':round((a7du_caught/total_runs) * 100, 3),
+           'Agent 8':round((a8_caught/total_runs) * 100, 3),
+            'Agent 8 Defective':round((a8d_caught/total_runs) * 100, 3),
+             'Agent 8 Defective Updated':round((a7du_caught/total_runs) * 100, 3)}
+
+    death_data = {'Agent 1':round((a1_died/total_runs) * 100, 3),
+     'Agent 2':round((a2_died/total_runs) * 100, 3),
+     'Agent 3':round((a3_died/total_runs) * 100, 3),
+      'Agent 4':round((a4_died/total_runs) * 100, 3),
+      'Agent 5':round((a5_died/total_runs) * 100, 3),
+       'Agent 6':round((a6_died/total_runs) * 100, 3),
+        'Agent 7':round((a7_died/total_runs) * 100, 3),
+         'Agent 7 Defective':round((a7d_died/total_runs) * 100, 3),
+          'Agent 7 Defective Updated':round((a7du_died/total_runs) * 100, 3),
+           'Agent 8':round((a8_died/total_runs) * 100, 3),
+            'Agent 8 Defective':round((a8d_died/total_runs) * 100, 3),
+             'Agent 8 Defective Updated':round((a7du_died/total_runs) * 100, 3)}
+
+    time_out_data = {'Agent 1':round((a1_time_out/total_runs) * 100, 3),
+     'Agent 2':round((a2_time_out/total_runs) * 100, 3),
+     'Agent 3':round((a3_time_out/total_runs) * 100, 3),
+      'Agent 4':round((a4_time_out/total_runs) * 100, 3),
+      'Agent 5':round((a5_time_out/total_runs) * 100, 3),
+       'Agent 6':round((a6_time_out/total_runs) * 100, 3),
+        'Agent 7':round((a7_time_out/total_runs) * 100, 3),
+         'Agent 7 Defective':round((a7d_time_out/total_runs) * 100, 3),
+          'Agent 7 Defective Updated':round((a7du_time_out/total_runs) * 100, 3),
+           'Agent 8':round((a8_time_out/total_runs) * 100, 3),
+            'Agent 8 Defective':round((a8d_time_out/total_runs) * 100, 3),
+             'Agent 8 Defective Updated':round((a7du_time_out/total_runs) * 100, 3)}
+
+    Agent_names = list(caught_data.keys())
+    Catch_rates = list(caught_data.values())
+    Death_rates = list(death_data.values())
+    Time_Out_rates = list(time_out_data.values())
+    
+    fig = plt.figure(figsize = (40, 40), dpi=80) # Decrease dpi to get higher resolution
+    
+    X_axis = np.arange(len(Agent_names))
+    # creating the bar plot
+    plt.bar(Agent_names, Catch_rates, color ='green',
+            width = 0.2)
+    plt.bar(Agent_names, Death_rates, color ='maroon',
+            width = 0.4)
+    plt.bar(Agent_names, Time_Out_rates, color ='yellow',
+            width = 0.6)
+            
+    
+    plt.xlabel("Agents")
+    plt.ylabel("Success percentage")
+    plt.title("Comparision of Success rates of different Agents:")
+    plt.show() 
+    plt.savefig('Plot1.png')
 
 if __name__ == '__main__':
     main()

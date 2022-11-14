@@ -44,7 +44,7 @@ class Agent_5:
         predator_probability_array[self.predator.pos] = 1
         self.predator_probability_array = np.array(predator_probability_array) #Belief array (sum of elements is 1)
 
-        self.certain_predator_pos = 0
+        self.certain_predator_pos = 0 #Variable to count the number of times the agent accurately predicts the position of predator
 
     #normalizes probability, uses sum since it is not just removing a probability
     def update_probability(self, num, prob_sum):
