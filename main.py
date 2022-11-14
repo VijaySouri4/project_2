@@ -357,28 +357,244 @@ def main():
             'Agent 8 Defective':round((a8d_time_out/total_runs) * 100, 3),
              'Agent 8 Defective Updated':round((a7du_time_out/total_runs) * 100, 3)}
 
-    Agent_names = list(caught_data.keys())
+    steps_data = {'Agent 1':(a1_steps/total_runs),
+     'Agent 2':(a2_steps/total_runs),
+     'Agent 3':(a3_steps/total_runs),
+      'Agent 4':(a4_steps/total_runs),
+      'Agent 5':(a5_steps/total_runs),
+       'Agent 6':(a6_steps/total_runs),
+        'Agent 7':(a7_steps/total_runs),
+         'Agent 7 Defective':(a7d_steps/total_runs),
+          'Agent 7 Defective Updated':(a7du_steps/total_runs),
+           'Agent 8':(a8_steps/total_runs),
+            'Agent 8 Defective':(a8d_steps/total_runs),
+             'Agent 8 Defective Updated':(a8du_steps/total_runs)}
+
+    prey_certainty_data = {
+        'Agent 3':round(a3_prey_certain/a3_steps * 100, 3),
+        'Agent 4':round(a4_prey_certain/a4_steps * 100, 3),
+        'Agent 7':round(a7_prey_certain/a7_steps * 100, 3),
+        'Agent 7\nDefective':round(a7d_prey_certain/a7d_steps * 100, 3),
+        'Agent 7\nDefective\nUpdated':round(a7du_prey_certain/a7du_steps * 100, 3),
+        'Agent 8':round(a8_prey_certain/a8_steps * 100, 3),
+        'Agent 8\nDefective':round(a8d_prey_certain/a8d_steps * 100, 3),
+        'Agent 8\nDefective\nUpdated':round(a8du_prey_certain/a8du_steps * 100, 3)}
+
+    predator_certainty_data = {
+        'Agent 5':round(a5_predator_certain/a5_steps * 100, 3),
+        'Agent 6':round(a6_predator_certain/a6_steps * 100, 3),
+        'Agent 7':round(a7_predator_certain/a7_steps * 100, 3),
+        'Agent 7\nDefective':round(a7d_predator_certain/a7d_steps * 100, 3),
+        'Agent 7\nDefective\nUpdated':round(a7du_predator_certain/a7du_steps * 100, 3),
+        'Agent 8':round(a8_predator_certain/a8_steps * 100, 3),
+        'Agent 8\nDefective':round(a8d_predator_certain/a8d_steps * 100, 3),
+        'Agent 8\nDefective\nUpdated':round(a7du_predator_certain/a8du_steps * 100, 3)}
+             
+    
     Catch_rates = list(caught_data.values())
     Death_rates = list(death_data.values())
     Time_Out_rates = list(time_out_data.values())
+    Steps_rates = list(steps_data.values())
+    Agent_names = list(caught_data.keys())
+    Prey_certain_agents = list(prey_certainty_data.keys())
+    Prey_certain = list(prey_certainty_data.values())
+    Predator_certain_agents = list(predator_certainty_data.keys())
+    Predator_certain = list(predator_certainty_data.values())
+    ## Plots for complete information setting
+
+    fig_complete_info = plt.figure(figsize = (10, 7), dpi=80)
+
+    plt.bar(Agent_names[:2], Catch_rates[:2], color ='green',
+            width = 0.2)
+    plt.bar(Agent_names[:2], Death_rates[:2], color ='maroon',
+            width = 0.4)
+    plt.bar(Agent_names[:2], Time_Out_rates[:2], color ='yellow',
+            width = 0.6)
+
+    plt.xlabel("Agents")
+    plt.ylabel("Success percentage")
+    plt.title("Comparision of Success rates of different Agents:")
+    #plt.show() 
+    fig_complete_info.savefig('/home/vijay/Rutgers/course_work/520/Reports/project_2_plots/Plot1_complete_information_setting.png')
+
+    fig_complete_info_steps = plt.figure(figsize= (10,7), dpi = 100)
+
+    plt.bar(Agent_names[:2], Steps_rates[:2], color ='brown',
+            width = 0.2)
+
+    plt.xlabel("Agents")
+    plt.ylabel("Average Number of Steps")
+    plt.title("Comparision of average number of steps for Complete Information setting:")
+    #plt.show() 
+
+    fig_complete_info_steps.savefig('/home/vijay/Rutgers/course_work/520/Reports/project_2_plots/Plot2_complete_information_setting.png')
+
+
+    ## Plots for Partial Prey information setting 
+
+    fig_partial_prey = plt.figure(figsize = (10, 7), dpi=80)
+
+    plt.bar(Agent_names[2:4], Catch_rates[2:4], color ='green',
+            width = 0.2)
+    plt.bar(Agent_names[2:4], Death_rates[2:4], color ='maroon',
+            width = 0.4)
+    plt.bar(Agent_names[2:4], Time_Out_rates[2:4], color ='yellow',
+            width = 0.6)
+
+    plt.xlabel("Agents")
+    plt.ylabel("Success percentage")
+    plt.title("Comparision of Success rates of different Agents:")
+    #plt.show() 
+    fig_partial_prey.savefig('/home/vijay/Rutgers/course_work/520/Reports/project_2_plots/Plot1_partial_prey_information_setting.png')
+
+    fig_partial_prey_steps = plt.figure(figsize= (10,7), dpi = 100)
+
+    plt.bar(Agent_names[2:4], Steps_rates[2:4], color ='brown',
+            width = 0.2)
+
+    plt.xlabel("Agents")
+    plt.ylabel("Average Number of Steps")
+    plt.title("Comparision of average number of steps for Complete Information setting:")
+    #plt.show() 
+
+    fig_partial_prey_steps.savefig('/home/vijay/Rutgers/course_work/520/Reports/project_2_plots/Plot2_partial_prey_information_setting.png')
+
+    ## Plots for Partial predator setting 
+
+    fig_partial_predator = plt.figure(figsize = (10, 7), dpi=80)
+
+    plt.bar(Agent_names[4:6], Catch_rates[4:6], color ='green',
+            width = 0.2)
+    plt.bar(Agent_names[4:6], Death_rates[4:6], color ='maroon',
+            width = 0.4)
+    plt.bar(Agent_names[4:6], Time_Out_rates[4:6], color ='yellow',
+            width = 0.6)
+
+    plt.xlabel("Agents")
+    plt.ylabel("Success percentage")
+    plt.title("Comparision of Success rates of different Agents:")
+    #plt.show() 
+    fig_partial_predator.savefig('/home/vijay/Rutgers/course_work/520/Reports/project_2_plots/Plot1_partial_predator_information_setting.png')
+
+    fig_partial_predator_steps = plt.figure(figsize= (10,7), dpi = 100)
+
+    plt.bar(Agent_names[4:6], Steps_rates[4:6], color ='brown',
+            width = 0.2)
+
+    plt.xlabel("Agents")
+    plt.ylabel("Average Number of Steps")
+    plt.title("Comparision of average number of steps for Complete Information setting:")
+    #plt.show() 
+
+    fig_partial_predator_steps.savefig('/home/vijay/Rutgers/course_work/520/Reports/project_2_plots/Plot2_partial_predator_information_setting.png')
+
+    ## Plots for combined partial setting
+
+    fig_combined_partial = plt.figure(figsize = (15, 7), dpi=80)
+
+    plt.bar(Agent_names[6:12], Catch_rates[6:12], color ='green',
+            width = 0.2)
+    plt.bar(Agent_names[6:12], Death_rates[6:12], color ='maroon',
+            width = 0.4)
+    plt.bar(Agent_names[6:12], Time_Out_rates[6:12], color ='yellow',
+            width = 0.6)
+
+    plt.xlabel("Agents")
+    plt.ylabel("Success percentage")
+    plt.title("Comparision of Success rates of different Agents:")
+    plt.show() 
+    fig_combined_partial.savefig('/home/vijay/Rutgers/course_work/520/Reports/project_2_plots/Plot1_combined_information_setting.png')
+
+    fig_combined_partial_steps = plt.figure(figsize= (15,7), dpi = 100)
+
+    plt.bar(Agent_names[6:12], Steps_rates[6:12], color ='brown',
+            width = 0.2)
+
+    plt.xlabel("Agents")
+    plt.ylabel("Average Number of Steps")
+    plt.title("Comparision of average number of steps for Complete Information setting:")
+    #plt.show() 
+
+    fig_combined_partial_steps.savefig('/home/vijay/Rutgers/course_work/520/Reports/project_2_plots/Plot2_combined_information_setting.png') 
+
+    ## All Plot
     
-    fig = plt.figure(figsize = (40, 40), dpi=80) # Decrease dpi to get higher resolution
+    fig_all = plt.figure(figsize = (40,10), dpi=80) # Decrease dpi to get higher resolution
     
-    X_axis = np.arange(len(Agent_names))
     # creating the bar plot
     plt.bar(Agent_names, Catch_rates, color ='green',
             width = 0.2)
     plt.bar(Agent_names, Death_rates, color ='maroon',
             width = 0.4)
     plt.bar(Agent_names, Time_Out_rates, color ='yellow',
-            width = 0.6)
+            width = 0.5)
             
     
     plt.xlabel("Agents")
     plt.ylabel("Success percentage")
     plt.title("Comparision of Success rates of different Agents:")
-    plt.show() 
-    plt.savefig('Plot1.png')
+    #plt.show() 
+    fig_all.savefig('/home/vijay/Rutgers/course_work/520/Reports/project_2_plots/Plot1_all.png')
+
+
+    ## MISC plots
+
+    figs = plt.figure(figsize = (10, 7)) # Decrease dpi to get higher resolution
+    
+    plt.xlabel("Agents")
+    plt.ylabel("Percentage of Runs Agent Catches Prey")
+    plt.title("Agent Catches:")
+    plt.bar(Agent_names, Catch_rates, color ='green')
+    plt.tight_layout()
+    plt.xticks(rotation = 30)
+    #plt.show() 
+    figs.savefig('/home/vijay/Rutgers/course_work/520/Reports/project_2_plots/Success_Plot.png')
+
+    figs = plt.figure(figsize = (10, 7))
+
+    plt.xlabel("Agents")
+    plt.ylabel("Percentage of Runs Agent Dies")
+    plt.title("Agent Deaths:")
+    plt.bar(Agent_names, Death_rates, color ='maroon')
+    plt.tight_layout()
+    plt.xticks(rotation = 30)
+    #plt.show() 
+    figs.savefig('/home/vijay/Rutgers/course_work/520/Reports/project_2_plots/Failure_Plot.png')
+
+    figs = plt.figure(figsize = (10, 7))
+
+    plt.xlabel("Agents")
+    plt.ylabel("Average Steps taken by Agent")
+    plt.title("Steps:")
+    plt.bar(Agent_names, Steps_rates, color ='gold')
+    plt.tight_layout()
+    plt.xticks(rotation = 30)
+    #plt.show() 
+    figs.savefig('/home/vijay/Rutgers/course_work/520/Reports/project_2_plots/Avg_steps_plot.png')
+
+    figs = plt.figure(figsize = (10, 7))
+
+    plt.xlabel("Agents")
+    plt.ylabel("Percentage of Steps Certain of Prey Position (and Correct)")
+    plt.title("Percentage:")
+    plt.bar(Prey_certain_agents, Prey_certain, color ='purple')
+    plt.tight_layout()
+    plt.xticks(rotation = 30)
+    #plt.show() 
+    figs.savefig('/home/vijay/Rutgers/course_work/520/Reports/project_2_plots/Prey_certainity_Plot.png')
+
+    figs = plt.figure(figsize = (10, 7))
+
+    plt.xlabel("Agents")
+    plt.ylabel("Percentage of Steps Certain of Predator Position (and Correct)")
+    plt.title("Percentage:")
+    plt.bar(Predator_certain_agents, Predator_certain, color ='pink')
+    plt.tight_layout()
+    plt.xticks(rotation = 30)
+    #plt.show() 
+    figs.savefig('/home/vijay/Rutgers/course_work/520/Reports/project_2_plots/Predator_certainity_plot.png')
+
+
 
 if __name__ == '__main__':
     main()
