@@ -9,8 +9,8 @@ import matplotlib.pyplot as plt
 
 def main():
 
-    num_runs = 3
-    num_environments = 3
+    num_runs = 100
+    num_environments = 30
     total_runs = num_runs * num_environments
 
     a1_caught = 0
@@ -407,14 +407,17 @@ def main():
     plt.bar(Agent_names[:2], Catch_rates[:2], color ='green')
     plt.bar(Agent_names[:2], Death_rates[:2], color ='maroon')
     plt.bar(Agent_names[:2], Time_Out_rates[:2], color ='yellow')
-
+    colors = {'Deaths':'maroon', 'Captures':'green', 'Timeouts':'yellow'}         
+    labels = list(colors.keys())
+    handles = [plt.Rectangle((0,0),1,1, color=colors[label]) for label in labels]
+    plt.legend(handles, labels)
     plt.xlabel("Agents")
-    plt.ylabel("Success percentage")
-    plt.title("Comparision of Success rates of different Agents:")
+    plt.ylabel("Percentage of Occurence")
+    plt.title("Rate of Events Causing End Game")
     plt.tight_layout()
     plt.xticks(rotation = 30)
     #plt.show() 
-    fig_complete_info.savefig('/home/vijay/Rutgers/course_work/520/Reports/project_2_plots/Plot1_complete_information_setting.png')
+    fig_complete_info.savefig('plots/Plot1_complete_information_setting.png')
 
     fig_complete_info_steps = plt.figure(figsize= (10,7))
 
@@ -427,7 +430,7 @@ def main():
     plt.xticks(rotation = 30)
     #plt.show() 
 
-    fig_complete_info_steps.savefig('/home/vijay/Rutgers/course_work/520/Reports/project_2_plots/Plot2_complete_information_setting.png')
+    fig_complete_info_steps.savefig('plots/Plot2_complete_information_setting.png')
 
 
     ## Plots for Partial Prey information setting 
@@ -437,14 +440,17 @@ def main():
     plt.bar(Agent_names[2:4], Catch_rates[2:4], color ='green')
     plt.bar(Agent_names[2:4], Death_rates[2:4], color ='maroon')
     plt.bar(Agent_names[2:4], Time_Out_rates[2:4], color ='yellow')
-
+    colors = {'Deaths':'maroon', 'Captures':'green', 'Timeouts':'yellow'}         
+    labels = list(colors.keys())
+    handles = [plt.Rectangle((0,0),1,1, color=colors[label]) for label in labels]
+    plt.legend(handles, labels)
     plt.xlabel("Agents")
-    plt.ylabel("Success percentage")
-    plt.title("Comparision of Success rates of different Agents:")
+    plt.ylabel("Percentage of Occurence")
+    plt.title("Rate of Events Causing End Game")
     plt.tight_layout()
     plt.xticks(rotation = 30)
     #plt.show() 
-    fig_partial_prey.savefig('/home/vijay/Rutgers/course_work/520/Reports/project_2_plots/Plot1_partial_prey_information_setting.png')
+    fig_partial_prey.savefig('plots/Plot1_partial_prey_information_setting.png')
 
     fig_partial_prey_steps = plt.figure(figsize= (10,7))
 
@@ -457,7 +463,7 @@ def main():
     plt.xticks(rotation = 30)
     #plt.show() 
 
-    fig_partial_prey_steps.savefig('/home/vijay/Rutgers/course_work/520/Reports/project_2_plots/Plot2_partial_prey_information_setting.png')
+    fig_partial_prey_steps.savefig('plots/Plot2_partial_prey_information_setting.png')
 
     ## Plots for Partial predator setting 
 
@@ -466,13 +472,17 @@ def main():
     plt.bar(Agent_names[4:6], Catch_rates[4:6], color ='green')
     plt.bar(Agent_names[4:6], Death_rates[4:6], color ='maroon')
     plt.bar(Agent_names[4:6], Time_Out_rates[4:6], color ='yellow')
+    colors = {'Deaths':'maroon', 'Captures':'green', 'Timeouts':'yellow'}         
+    labels = list(colors.keys())
+    handles = [plt.Rectangle((0,0),1,1, color=colors[label]) for label in labels]
+    plt.legend(handles, labels)
     plt.xlabel("Agents")
-    plt.ylabel("Success percentage")
-    plt.title("Comparision of Success rates of different Agents:")
+    plt.ylabel("Percentage of Occurence")
+    plt.title("Rate of Events Causing End Game")
     plt.tight_layout()
     plt.xticks(rotation = 30)
     #plt.show() 
-    fig_partial_predator.savefig('/home/vijay/Rutgers/course_work/520/Reports/project_2_plots/Plot1_partial_predator_information_setting.png')
+    fig_partial_predator.savefig('plots/Plot1_partial_predator_information_setting.png')
 
     fig_partial_predator_steps = plt.figure(figsize= (10,7))
 
@@ -485,7 +495,7 @@ def main():
     plt.xticks(rotation = 30)
     #plt.show() 
 
-    fig_partial_predator_steps.savefig('/home/vijay/Rutgers/course_work/520/Reports/project_2_plots/Plot2_partial_predator_information_setting.png')
+    fig_partial_predator_steps.savefig('plots/Plot2_partial_predator_information_setting.png')
 
     ## Plots for combined partial setting
 
@@ -494,14 +504,17 @@ def main():
     plt.bar(Agent_names[6:12], Catch_rates[6:12], color ='green')
     plt.bar(Agent_names[6:12], Death_rates[6:12], color ='maroon')
     plt.bar(Agent_names[6:12], Time_Out_rates[6:12], color ='yellow')
-
+    colors = {'Deaths':'maroon', 'Captures':'green', 'Timeouts':'yellow'}         
+    labels = list(colors.keys())
+    handles = [plt.Rectangle((0,0),1,1, color=colors[label]) for label in labels]
+    plt.legend(handles, labels)
     plt.xlabel("Agents")
-    plt.ylabel("Success percentage")
-    plt.title("Comparision of Success rates of different Agents:")
+    plt.ylabel("Percentage of Occurence")
+    plt.title("Rate of Events Causing End Game")
     plt.tight_layout()
     plt.xticks(rotation = 30)
     #plt.show() 
-    fig_combined_partial.savefig('/home/vijay/Rutgers/course_work/520/Reports/project_2_plots/Plot1_combined_information_setting.png')
+    fig_combined_partial.savefig('plots/Plot1_combined_information_setting.png')
     fig_combined_partial_steps = plt.figure(figsize= (15,7))
     plt.bar(Agent_names[6:12], Steps_rates[6:12], color ='brown')
     plt.xlabel("Agents")
@@ -510,7 +523,7 @@ def main():
     plt.tight_layout()
     plt.xticks(rotation = 30)
 
-    fig_combined_partial_steps.savefig('/home/vijay/Rutgers/course_work/520/Reports/project_2_plots/Plot2_combined_information_setting.png') 
+    fig_combined_partial_steps.savefig('plots/Plot2_combined_information_setting.png') 
 
     ## All Plot
     
@@ -518,12 +531,16 @@ def main():
     plt.bar(Agent_names, Catch_rates, color ='green')
     plt.bar(Agent_names, Death_rates, color ='maroon')
     plt.bar(Agent_names, Time_Out_rates, color ='yellow')
+    colors = {'Deaths':'maroon', 'Captures':'green', 'Timeouts':'yellow'}         
+    labels = list(colors.keys())
+    handles = [plt.Rectangle((0,0),1,1, color=colors[label]) for label in labels]
+    plt.legend(handles, labels)
     plt.xlabel("Agents")
-    plt.ylabel("Success percentage")
-    plt.title("Comparision of Success rates of different Agents:")
+    plt.ylabel("Percentage of Occurence")
+    plt.title("Rate of Events Causing End Game")
     plt.tight_layout()
     plt.xticks(rotation = 30)
-    fig_all.savefig('/home/vijay/Rutgers/course_work/520/Reports/project_2_plots/Plot1_all.png')
+    fig_all.savefig('plots/Plot1_all.png')
 
 
     ## MISC plots
@@ -537,7 +554,7 @@ def main():
     plt.tight_layout()
     plt.xticks(rotation = 30)
     #plt.show() 
-    figs.savefig('/home/vijay/Rutgers/course_work/520/Reports/project_2_plots/Success_Plot.png')
+    figs.savefig('plots/Success_Plot.png')
 
     figs = plt.figure(figsize = (10, 7))
 
@@ -548,7 +565,7 @@ def main():
     plt.tight_layout()
     plt.xticks(rotation = 30)
     #plt.show() 
-    figs.savefig('/home/vijay/Rutgers/course_work/520/Reports/project_2_plots/Failure_Plot.png')
+    figs.savefig('plots/Failure_Plot.png')
 
     figs = plt.figure(figsize = (10, 7))
 
@@ -559,7 +576,7 @@ def main():
     plt.tight_layout()
     plt.xticks(rotation = 30)
     #plt.show() 
-    figs.savefig('/home/vijay/Rutgers/course_work/520/Reports/project_2_plots/Avg_steps_plot.png')
+    figs.savefig('plots/Avg_steps_plot.png')
 
     figs = plt.figure(figsize = (10, 7))
 
@@ -570,7 +587,7 @@ def main():
     plt.tight_layout()
     plt.xticks(rotation = 30)
     #plt.show() 
-    figs.savefig('/home/vijay/Rutgers/course_work/520/Reports/project_2_plots/Prey_certainity_Plot.png')
+    figs.savefig('plots/Prey_certainity_Plot.png')
 
     figs = plt.figure(figsize = (10, 7))
 
@@ -581,7 +598,7 @@ def main():
     plt.tight_layout()
     plt.xticks(rotation = 30)
     #plt.show() 
-    figs.savefig('/home/vijay/Rutgers/course_work/520/Reports/project_2_plots/Predator_certainity_plot.png')
+    figs.savefig('plots/Predator_certainity_plot.png')
 
 
 
