@@ -366,6 +366,7 @@ def main():
         'Agent 7':round(a7_predator_certain/a7_steps * 100, 3),
         'Agent 8':round(a8_predator_certain/a8_steps * 100, 3)}
              
+    figs_size = (10,10)
     
     Catch_rates = list(caught_data.values())
     Death_rates = list(death_data.values())
@@ -378,7 +379,7 @@ def main():
     Predator_certain = list(predator_certainty_data.values())
     ## Plots for complete information setting
 
-    fig_complete_info = plt.figure(figsize = (10, 7))
+    fig_complete_info = plt.figure(figsize = figs_size)
 
     plt.bar(Agent_names[:2], Catch_rates[:2], color ='green')
     plt.bar(Agent_names[:2], Death_rates[:2], color ='maroon')
@@ -395,7 +396,7 @@ def main():
     #plt.show() 
     fig_complete_info.savefig('plots/Plot1_complete_information_setting.png', bbox_inches='tight')
 
-    fig_complete_info_steps = plt.figure(figsize= (10,7))
+    fig_complete_info_steps = plt.figure(figsize= figs_size)
 
     plt.bar(Agent_names[:2], Steps_rates[:2], color ='brown')
 
@@ -411,7 +412,7 @@ def main():
 
     ## Plots for Partial Prey information setting 
 
-    fig_partial_prey = plt.figure(figsize = (10, 7))
+    fig_partial_prey = plt.figure(figsize = figs_size)
 
     plt.bar(Agent_names[2:4], Catch_rates[2:4], color ='green')
     plt.bar(Agent_names[2:4], Death_rates[2:4], color ='maroon')
@@ -428,7 +429,7 @@ def main():
     #plt.show() 
     fig_partial_prey.savefig('plots/Plot1_partial_prey_information_setting.png', bbox_inches='tight')
 
-    fig_partial_prey_steps = plt.figure(figsize= (10,7))
+    fig_partial_prey_steps = plt.figure(figsize= figs_size)
 
     plt.bar(Agent_names[2:4], Steps_rates[2:4], color ='brown')
 
@@ -443,7 +444,7 @@ def main():
 
     ## Plots for Partial predator setting 
 
-    fig_partial_predator = plt.figure(figsize = (10, 7))
+    fig_partial_predator = plt.figure(figsize = figs_size)
 
     plt.bar(Agent_names[4:6], Catch_rates[4:6], color ='green')
     plt.bar(Agent_names[4:6], Death_rates[4:6], color ='maroon')
@@ -460,7 +461,7 @@ def main():
     #plt.show() 
     fig_partial_predator.savefig('plots/Plot1_partial_predator_information_setting.png', bbox_inches='tight')
 
-    fig_partial_predator_steps = plt.figure(figsize= (10,7))
+    fig_partial_predator_steps = plt.figure(figsize = figs_size)
 
     plt.bar(Agent_names[4:6], Steps_rates[4:6], color ='brown')
 
@@ -475,7 +476,7 @@ def main():
 
     ## Plots for combined partial setting
 
-    fig_combined_partial = plt.figure(figsize = (15, 7))
+    fig_combined_partial = plt.figure(figsize = figs_size)
 
     plt.bar(Agent_names[6:12], Catch_rates[6:12], color ='green')
     plt.bar(Agent_names[6:12], Death_rates[6:12], color ='maroon')
@@ -521,7 +522,7 @@ def main():
 
     ## MISC plots
 
-    figs = plt.figure(figsize = (10, 7)) # Decrease dpi to get higher resolution
+    figs = plt.figure(figsize = figs_size) # Decrease dpi to get higher resolution
     
     plt.xlabel("Agents")
     plt.ylabel("Percentage of Runs Agent Catches Prey")
@@ -532,7 +533,7 @@ def main():
     #plt.show() 
     figs.savefig('plots/Success_Plot.png', bbox_inches='tight')
 
-    figs = plt.figure(figsize = (10, 7))
+    figs = plt.figure(figsize = figs_size)
 
     plt.xlabel("Agents")
     plt.ylabel("Percentage of Runs Agent Dies")
@@ -543,7 +544,7 @@ def main():
     #plt.show() 
     figs.savefig('plots/Failure_Plot.png', bbox_inches='tight')
 
-    figs = plt.figure(figsize = (10, 7))
+    figs = plt.figure(figsize = figs_size)
 
     plt.xlabel("Agents")
     plt.ylabel("Average Steps taken by Agent")
@@ -554,7 +555,7 @@ def main():
     #plt.show() 
     figs.savefig('plots/Avg_steps_plot.png', bbox_inches='tight')
 
-    figs = plt.figure(figsize = (10, 7))
+    figs = plt.figure(figsize = figs_size)
 
     plt.xlabel("Agents")
     plt.ylabel("Percentage")
@@ -565,7 +566,7 @@ def main():
     #plt.show() 
     figs.savefig('plots/Prey_certainity_Plot.png', bbox_inches='tight')
 
-    figs = plt.figure(figsize = (10, 7))
+    figs = plt.figure(figsize = figs_size)
 
     plt.xlabel("Agents")
     plt.ylabel("Percentage")
@@ -639,7 +640,7 @@ def main():
 
     ## Plots for combined partial setting
 
-    fig_combined_partial = plt.figure(figsize = (15, 7))
+    fig_combined_partial = plt.figure(figsize = figs_size)
 
     plt.bar(defective_Agent_names, defective_Catch_rates, color ='green')
     plt.bar(defective_Agent_names, defective_Death_rates, color ='maroon')
@@ -659,7 +660,7 @@ def main():
 
     ## MISC plots
 
-    figs = plt.figure(figsize = (10, 7)) # Decrease dpi to get higher resolution
+    figs = plt.figure(figsize = figs_size) # Decrease dpi to get higher resolution
         
     plt.xlabel("Agents")
     plt.ylabel("Percentage of Runs Agent Catches Prey")
@@ -670,7 +671,7 @@ def main():
     #plt.show() 
     figs.savefig('plots/Success_Plot_defective.png', bbox_inches='tight')
 
-    figs = plt.figure(figsize = (10, 7))
+    figs = plt.figure(figsize = figs_size)
 
     plt.xlabel("Agents")
     plt.ylabel("Percentage of Runs Agent Dies")
@@ -681,7 +682,7 @@ def main():
     #plt.show() 
     figs.savefig('plots/Failure_Plot_defective.png', bbox_inches='tight')
 
-    figs = plt.figure(figsize = (10, 7))
+    figs = plt.figure(figsize = figs_size)
 
     plt.xlabel("Agents")
     plt.ylabel("Average Steps taken by Agent")
@@ -692,7 +693,7 @@ def main():
     #plt.show() 
     figs.savefig('plots/Avg_steps_plot_defective.png', bbox_inches='tight')
 
-    figs = plt.figure(figsize = (10, 7))
+    figs = plt.figure(figsize = figs_size)
 
     plt.xlabel("Agents")
     plt.ylabel("Percentage")
@@ -703,7 +704,7 @@ def main():
     #plt.show() 
     figs.savefig('plots/Prey_certainity_Plot_defective.png', bbox_inches='tight')
 
-    figs = plt.figure(figsize = (10, 7))
+    figs = plt.figure(figsize = figs_size)
 
     plt.xlabel("Agents")
     plt.ylabel("Perfectage")

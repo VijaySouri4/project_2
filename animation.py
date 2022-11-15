@@ -120,10 +120,10 @@ class Animation:
             elif w == self.actual_pred_pos: # Denotes position of actual_prey
                 pygame.draw.circle(self.screen,self.actual_pred_color, i, self.radius) # default is filled circle
                 pygame.draw.circle(self.screen, self.actual_pred_color, i, self.radius-4)
-            elif w == self.pred_pos: # Denotes position of predator
+            elif w == self.pred_pos: # Denotes position of believed predator
                 pygame.draw.circle(self.screen,self.actual_pred_color_outer, i, self.radius) # default is filled circle
                 pygame.draw.circle(self.screen, self.pred_color, i, self.radius-4)
-            elif w == self.prey_pos: # Denotes position of Prey 
+            elif w == self.prey_pos: # Denotes position of believed Prey 
                 pygame.draw.circle(self.screen,self.actual_pred_color_outer, i, self.radius) # default is filled circle
                 pygame.draw.circle(self.screen, self.prey_color, i, self.radius-4)
             else: # Denotes non actor containing node
@@ -151,7 +151,25 @@ class Animation:
         self.actual_pred_color_outer = self.orange
         self.actual_prey_color = self.violet
         self.actual_prey_color_outer = self.green'''
-        if self.agent_pos != self.prey_pos and self.agent_pos != self.pred_pos:
+        if self.agent_pos == self.actual_prey_pos and self.agent_pos == self.actual_pred_pos:
+            font = pygame.font.Font('freesansbold.ttf', 32)
+            text = font.render('Unique Situation', True, self.green, self.black)
+            textRect = text.get_rect()
+            textRect.center = (self.display_width // 2, (self.display_height // 2) - 40 )
+            self.screen.blit(text, textRect)
+        elif self.agent_pos == self.actual_prey_pos:
+            font = pygame.font.Font('freesansbold.ttf', 32)
+            text = font.render('Simulation Ended, Caught prey', True, self.green, self.black)
+            textRect = text.get_rect()
+            textRect.center = (self.display_width // 2, (self.display_height // 2) - 40 )
+            self.screen.blit(text, textRect)
+        elif self.agent_pos == self.actual_pred_pos:
+            font = pygame.font.Font('freesansbold.ttf', 32)
+            text = font.render('Simulation Ended, Agent Died', True, self.green, self.black)
+            textRect = text.get_rect()
+            textRect.center = (self.display_width // 2, (self.display_height // 2) - 40 )
+            self.screen.blit(text, textRect)
+        elif self.agent_pos != self.prey_pos and self.agent_pos != self.pred_pos:
 
             font = pygame.font.Font('freesansbold.ttf', 32)
             text = font.render('Yellow Denotes Agent', True, self.yellow, self.black)
@@ -170,23 +188,13 @@ class Animation:
             textRect = text.get_rect()
             textRect.center = (self.display_width // 2, (self.display_height // 2) + 120)
             self.screen.blit(text, textRect)
-        elif self.agent_pos == self.prey_pos and self.agent_pos == self.pred_pos:
-            font = pygame.font.Font('freesansbold.ttf', 32)
-            text = font.render('Unique Situation', True, self.green, self.black)
+            text = font.render('Green Denotes Catch', True, self.green, self.black)
             textRect = text.get_rect()
-            textRect.center = (self.display_width // 2, (self.display_height // 2) - 40 )
+            textRect.center = (self.display_width // 2, (self.display_height // 2) + 120)
             self.screen.blit(text, textRect)
-        elif self.agent_pos == self.prey_pos:
-            font = pygame.font.Font('freesansbold.ttf', 32)
-            text = font.render('Simulation Ended, Caught prey', True, self.green, self.black)
+            text = font.render('Hollow Denotes Belief', True, self.orange, self.black)
             textRect = text.get_rect()
-            textRect.center = (self.display_width // 2, (self.display_height // 2) - 40 )
-            self.screen.blit(text, textRect)
-        elif self.agent_pos == self.pred_pos:
-            font = pygame.font.Font('freesansbold.ttf', 32)
-            text = font.render('Simulation Ended, Agent Died', True, self.green, self.black)
-            textRect = text.get_rect()
-            textRect.center = (self.display_width // 2, (self.display_height // 2) - 40 )
+            textRect.center = (self.display_width // 2, (self.display_height // 2) + 120)
             self.screen.blit(text, textRect)
 
 
@@ -247,7 +255,7 @@ class Animation:
 
     def update(self):
         self.draw_graph()
-        pygame.display.set_caption('Agent 1')
+        pygame.display.set_caption('Simulation')
         pygame.display.update()
         self.clock.tick(self.speed)
 
@@ -267,7 +275,7 @@ def main():
     test = Animation(env,prey_steps, predator_steps, agent_steps, actual_prey_steps, actual_predator_steps)
     '''
 
-    agent = ag2.Agent_2(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
+    agent = ag4.Agent_4(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
     k = agent.move()
     prey_steps = agent.prey_steps
     predator_steps = agent.predator_steps
