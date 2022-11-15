@@ -7,36 +7,35 @@ import numpy as np
 class Agent_6:
 
     def __init__(self, input_predator = None, input_prey = None, input_environment = None, input_pos = None) -> None:
+    #Sets predator object if not specified
         if input_predator is None:
             self.predator = predator.Predator()
         else: 
             self.predator = input_predator
-        
+        #Sets prey object if not specified
         if input_prey is None:
             self.prey = prey.Prey()
         else:
             self.prey = input_prey
-
+        #Sets environment if not specified
         if input_environment is None:
             self.environment = environment.Env(50)
         else:
             self.environment = input_environment
-        
+
+        #Sets agent position if not specified
         if input_pos is None:
             self.pos = random.choice(range(0,49))
         else:
             self.pos = input_pos
+
+        self.steps = 0
+
         #make sure agent doesnt start in occupied node
         while self.prey.pos == self.pos or self.predator.pos == self.pos:
             self.pos = random.choice(range(0,49))
 
-        predator_probability_array = [0] * 50
-        predator_probability_array[self.predator.pos] = 1
-        self.predator_probability_array = np.array(predator_probability_array) #Belief array (sum of elements is 1)
-
-        self.steps = 0
-
-        self.certain_predator_pos = 0
+        #keeps track of positions for animations
 
         self.agent_steps = [self.pos]
         self.prey_steps = [self.prey.pos]
@@ -44,11 +43,20 @@ class Agent_6:
         self.actual_prey_steps = [self.prey.pos]
         self.actual_predator_steps = [self.predator.pos]
 
+        #intilizes belief vector to 1 at predator position
+        predator_probability_array = [0] * 50
+        predator_probability_array[self.predator.pos] = 1
+        self.predator_probability_array = np.array(predator_probability_array) #Belief array (sum of elements is 1)
+
+        self.certain_predator_pos = 0 #Variable to count the number of times the agent accurately predicts the position of predator
+
     #normalizes probability, uses sum since it is not just removing a probability
     def update_probability(self, num, prob_sum):
         if prob_sum == 0:
             return 0
         return (num) / (prob_sum) 
+    
+    """Function to handle surveying of a node and belief updates, returns highest belief predator pos"""
     
     def survey(self):   #if agent_move is true, use transition matrix to update probability (for when agent moves)
         array = np.where(np.isclose(self.predator_probability_array, np.amax(self.predator_probability_array)))[0] #most likely position is surveyed (random if multiple)
@@ -67,28 +75,32 @@ class Agent_6:
             vfunction = np.vectorize(self.update_probability)     #apply update probabilty to the p vector
             self.predator_probability_array[choice] = 0
             self.predator_probability_array = vfunction(self.predator_probability_array, np.sum(self.predator_probability_array))
-
-            array = np.where(np.isclose(self.predator_probability_array, np.amax(self.predator_probability_array)))[0]
+            
+            array = np.where(np.isclose(self.predator_probability_array, np.amax(self.predator_probability_array)))[0] #get all highest belief nodes
             ties = []
             closest = np.Infinity
-            for index in array:
+            for index in array: #gets closest max belief
                 if self.environment.shortest_paths[index][self.pos] < closest:
                     closest = self.environment.shortest_paths[index][self.pos]
                     ties = [index]
                 elif self.environment.shortest_paths[index][self.pos] == closest:
                     closest = self.environment.shortest_paths[index][self.pos]
                     ties.append(index)
-            choice = np.random.choice(ties)
+            choice = np.random.choice(ties) #chooses ties for highest probablity randomly
         else:       #if the survey is true
             #sets all probabilites to zero except the potential next paths of predator
             self.predator_probability_array.fill(0)
             self.predator_probability_array[choice] = 1
         return choice
 
+    """Function to handle agent movement belief updates"""
+
     def agent_moved(self):
         vfunction = np.vectorize(self.update_probability)
         self.predator_probability_array[self.pos] = 0
         self.predator_probability_array = vfunction(self.predator_probability_array, np.sum(self.predator_probability_array))
+
+    """Function to handle belief updates after actor movement"""
 
     def transition(self):
 
@@ -112,6 +124,8 @@ class Agent_6:
                 num_options = len(options_list)
                 predator_trans_matrix[n.index, option] += 1/num_options
 
+        #update belief based off two transition matricies to two copies of current belief vector
+
         vfunction = np.vectorize(self.update_probability)
                 
         focused_predator_vector = self.predator_probability_array.copy()
@@ -120,12 +134,14 @@ class Agent_6:
         distracted_predator_vector = self.predator_probability_array.copy()
         distracted_predator_vector = np.dot(distracted_predator_vector, self.environment.distracted_trans_matrix)
 
+        #combine belief vectors with respective weights
         self.predator_probability_array = distracted_predator_vector * 0.4 + focused_predator_vector * 0.6
         self.predator_probability_array =  vfunction(self.predator_probability_array, np.sum(self.predator_probability_array))
 
+        #set current position belief to 0
         self.predator_probability_array[self.pos] = 0
-        self.predator_probability_array =  vfunction(self.predator_probability_array, np.sum(self.predator_probability_array)) 
-
+        self.predator_probability_array =  vfunction(self.predator_probability_array, np.sum(self.predator_probability_array))
+        
     """Movement function for agent 1
     returns 1 if catches prey, 0 if dies, -1 if timeout"""
 

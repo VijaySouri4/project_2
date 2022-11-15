@@ -8,21 +8,23 @@ import environment
 class Agent_1:
 
     def __init__(self, input_predator = None, input_prey = None, input_environment = None, input_pos = None, verbose = False) -> None:
+        #Sets predator object if not specified
         if input_predator is None:
             self.predator = predator.Predator()
         else: 
             self.predator = input_predator
-        
+        #Sets prey object if not specified
         if input_prey is None:
             self.prey = prey.Prey()
         else:
             self.prey = input_prey
-
+        #Sets environment if not specified
         if input_environment is None:
             self.environment = environment.Env(50)
         else:
             self.environment = input_environment
-        
+
+        #Sets agent position if not specified
         if input_pos is None:
             self.pos = random.choice(range(0,49))
         else:
@@ -34,6 +36,7 @@ class Agent_1:
         while self.prey.pos == self.pos or self.predator.pos == self.pos:
             self.pos = random.choice(range(0,49))
 
+        #Values for keeping track of positions for animation
         self.agent_steps = [self.pos]
         self.prey_steps = [self.prey.pos]
         self.predator_steps = [self.prey.pos]
@@ -95,6 +98,7 @@ class Agent_1:
             result_index = get_optimal_node.get(adjacent_nodes,prey_dist_array
             ,cur_prey_dist,pred_dist_array,cur_pred_dist)
             self.pos = result_index
+            #Keep track of positions for animations
             self.predator_steps.append(self.predator.pos)
             self.prey_steps.append(self.prey.pos)
             self.agent_steps.append(self.pos)

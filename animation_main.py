@@ -25,7 +25,7 @@ def main():
         input_pos = random.choice(range(0,49))
 
     agent_1 = ag1.Agent_1(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
-    result_1, steps, agent_steps, prey_steps, predator_steps = agent_1.move()
+    _, _, agent_steps, prey_steps, predator_steps, actual_prey_steps, actual_predator_steps = agent_1.move()
     print('Agent 1')
     print('------------------------------------------')
     print('Agent moves:')
@@ -34,12 +34,12 @@ def main():
     print(prey_steps)
     print('Predator moves:')
     print(predator_steps)
-    test = animation.Animation(input_environment,prey_steps, predator_steps, agent_steps)
+    test = animation.Animation(input_environment,prey_steps, predator_steps, agent_steps, actual_prey_steps, actual_predator_steps)
 
 
     agent_3 = ag3.Agent_3(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
-    result_1, steps, agent_steps, prey_steps, predator_steps = agent_3.move()
-    test = animation.Animation(input_environment,prey_steps, predator_steps, agent_steps)
+    _, _, agent_steps, prey_steps, predator_steps, actual_prey_steps, actual_predator_steps= agent_3.move()
+    test = animation.Animation(input_environment,prey_steps, predator_steps, agent_steps, actual_prey_steps, actual_predator_steps)
 
     print('------------------------------------------')
     print('Agent 3')
@@ -52,8 +52,8 @@ def main():
 
 
     agent_5 = ag5.Agent_5(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
-    result_1, steps, agent_steps, prey_steps, predator_steps = agent_5.move()
-    test = animation.Animation(input_environment,prey_steps, predator_steps, agent_steps)
+    _, _, agent_steps, prey_steps, predator_steps, actual_prey_steps, actual_predator_steps= agent_5.move()
+    test = animation.Animation(input_environment,prey_steps, predator_steps, agent_steps, actual_prey_steps, actual_predator_steps)
 
     print('------------------------------------------')
     print('Agent 5')
@@ -66,8 +66,8 @@ def main():
 
 
     agent_7 = ag7.Agent_7(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
-    result_1, steps, agent_steps, prey_steps, predator_steps = agent_7.move()
-    test = animation.Animation(input_environment,prey_steps, predator_steps, agent_steps)
+    _, _, agent_steps, prey_steps, predator_steps, actual_prey_steps, actual_predator_steps= agent_7.move()
+    test = animation.Animation(input_environment,prey_steps, predator_steps, agent_steps, actual_prey_steps, actual_predator_steps)
 
     print('------------------------------------------')
     print('Agent 7')

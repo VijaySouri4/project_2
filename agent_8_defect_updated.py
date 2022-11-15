@@ -6,39 +6,50 @@ import numpy as np
 class Agent_8_defect_updated:
 
     def __init__(self, input_predator = None, input_prey = None, input_environment = None, input_pos = None) -> None:
+        #Sets predator object if not specified
         if input_predator is None:
             self.predator = predator.Predator()
         else: 
             self.predator = input_predator
-
+        #Sets prey object if not specified
         if input_prey is None:
             self.prey = prey.Prey()
         else:
             self.prey = input_prey
-
+        #Sets environment if not specified
         if input_environment is None:
             self.environment = environment.Env(50)
         else:
             self.environment = input_environment
 
+        #Sets agent position if not specified
         if input_pos is None:
             self.pos = random.choice(range(0,49))
         else:
             self.pos = input_pos
 
+        self.steps = 0
+
         #make sure agent doesnt start in occupied node
         while self.prey.pos == self.pos or self.predator.pos == self.pos:
             self.pos = random.choice(range(0,49))
 
+        #initilizes variables for animations
+        self.agent_steps = [self.pos]
+        self.prey_steps = []
+        self.predator_steps = []
+        self.actual_prey_steps = [self.prey.pos]
+        self.actual_predator_steps = [self.predator.pos]
+            
+        #initilizes predator array to all zeros and 1 at predator position
         predator_probability_array = [0] * 50
         predator_probability_array[self.predator.pos] = 1
         self.predator_probability_array = np.array(predator_probability_array) #Belief array (sum of elements is 1)
 
+        #initilizes prey array to 1/49 belief for all nodes
         prey_probability_array = [(1/49)] * 50
         prey_probability_array[self.pos] = 0
         self.prey_probability_array = np.array(prey_probability_array) #Belief array (sum of elements is 1)
-
-        self.steps = 0
 
         self.certain_prey_pos = 0
         self.certain_predator_pos = 0
@@ -49,7 +60,7 @@ class Agent_8_defect_updated:
             return 0
         return (num) / (prob_sum) 
 
-    #combined surveys for prey and predator
+    """Function to handle surveying of a node and belief updates, returns highest belief predator and prey pos"""
     def survey(self):
         defective = False
         if np.isclose(np.amax(self.predator_probability_array), 1):
@@ -76,11 +87,12 @@ class Agent_8_defect_updated:
 
         return self.predator_survey(choice, defective), self.prey_survey(choice, defective)
 
-
+    """Function to handle surveying of a node and belief updates, returns highest belief predator pos"""
     def predator_survey(self, choice = None, defective = False):   #if agent_move is true, use transition matrix to update probability (for when agent moves)
         if choice != self.predator.pos or defective == True:     #if survey is false (or agent moved and lived)
             vfunction = np.vectorize(self.update_probability)     #apply update probabilty to the p vector
-            self.predator_probability_array[choice] = 0.1 * self.predator_probability_array[choice]
+            """Updated belief update"""
+            self.predator_probability_array[choice] = 0.1 * self.predator_probability_array[choice] 
             self.predator_probability_array = vfunction(self.predator_probability_array, np.sum(self.predator_probability_array))
 
             array = np.where(np.isclose(self.predator_probability_array, np.amax(self.predator_probability_array)))[0]
@@ -100,11 +112,13 @@ class Agent_8_defect_updated:
             self.predator_probability_array[choice] = 1
         return choice
 
+    """Function to handle surveying of a node and belief updates, returns highest belief prey pos"""
     def prey_survey(self, choice = None, defective = False):   #if agent_move is true, use transition matrix to update probability (for when agent moves)
 
         if choice != self.prey.pos or defective:     #if survey is false
             vfunction = np.vectorize(self.update_probability)       #apply update probabilty to the p vector
-            self.prey_probability_array[choice] = 0.1 * self.prey_probability_array[choice]
+            """Updated belief update"""
+            self.prey_probability_array[choice] = 0.1 * self.prey_probability_array[choice] 
             self.prey_probability_array = vfunction(self.prey_probability_array, np.sum(self.prey_probability_array))
 
             #pick highest probability node and return it
@@ -117,6 +131,8 @@ class Agent_8_defect_updated:
             self.prey_probability_array[choice] = 1
         return choice
 
+
+    """Function to handle agent movement belief updates"""
     def agent_moved(self):
         vfunction = np.vectorize(self.update_probability)
         self.prey_probability_array[self.pos] = 0
@@ -124,6 +140,7 @@ class Agent_8_defect_updated:
         self.predator_probability_array[self.pos] = 0
         self.predator_probability_array = vfunction(self.predator_probability_array, np.sum(self.predator_probability_array))   
 
+    """Function to handle belief updates after actor movement (combines transition from partial prey and predator)"""
     def transition(self):
 
         vfunction = np.vectorize(self.update_probability)
