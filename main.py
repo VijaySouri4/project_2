@@ -547,7 +547,7 @@ def main():
 
     plt.xlabel("Agents")
     plt.ylabel("Average Steps taken by Agent")
-    plt.title("Steps taken by Agents Steps")
+    plt.title("Steps taken by Agents")
     plt.bar(Agent_names, Steps_rates, color ='gold')
     plt.tight_layout()
     plt.xticks(rotation = 30)
