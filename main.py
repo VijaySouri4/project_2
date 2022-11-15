@@ -325,11 +325,7 @@ def main():
       'Agent 5':round((a5_caught/total_runs) * 100, 3),
        'Agent 6':round((a6_caught/total_runs) * 100, 3),
         'Agent 7':round((a7_caught/total_runs) * 100, 3),
-         'Agent 7 Defective':round((a7d_caught/total_runs) * 100, 3),
-          'Agent 7 Defective Updated':round((a7du_caught/total_runs) * 100, 3),
-           'Agent 8':round((a8_caught/total_runs) * 100, 3),
-            'Agent 8 Defective':round((a8d_caught/total_runs) * 100, 3),
-             'Agent 8 Defective Updated':round((a7du_caught/total_runs) * 100, 3)}
+           'Agent 8':round((a8_caught/total_runs) * 100, 3)}
 
     death_data = {'Agent 1':round((a1_died/total_runs) * 100, 3),
      'Agent 2':round((a2_died/total_runs) * 100, 3),
@@ -338,11 +334,7 @@ def main():
       'Agent 5':round((a5_died/total_runs) * 100, 3),
        'Agent 6':round((a6_died/total_runs) * 100, 3),
         'Agent 7':round((a7_died/total_runs) * 100, 3),
-         'Agent 7 Defective':round((a7d_died/total_runs) * 100, 3),
-          'Agent 7 Defective Updated':round((a7du_died/total_runs) * 100, 3),
-           'Agent 8':round((a8_died/total_runs) * 100, 3),
-            'Agent 8 Defective':round((a8d_died/total_runs) * 100, 3),
-             'Agent 8 Defective Updated':round((a7du_died/total_runs) * 100, 3)}
+           'Agent 8':round((a8_died/total_runs) * 100, 3)}
 
     time_out_data = {'Agent 1':round((a1_time_out/total_runs) * 100, 3),
      'Agent 2':round((a2_time_out/total_runs) * 100, 3),
@@ -351,11 +343,7 @@ def main():
       'Agent 5':round((a5_time_out/total_runs) * 100, 3),
        'Agent 6':round((a6_time_out/total_runs) * 100, 3),
         'Agent 7':round((a7_time_out/total_runs) * 100, 3),
-         'Agent 7 Defective':round((a7d_time_out/total_runs) * 100, 3),
-          'Agent 7 Defective Updated':round((a7du_time_out/total_runs) * 100, 3),
-           'Agent 8':round((a8_time_out/total_runs) * 100, 3),
-            'Agent 8 Defective':round((a8d_time_out/total_runs) * 100, 3),
-             'Agent 8 Defective Updated':round((a7du_time_out/total_runs) * 100, 3)}
+           'Agent 8':round((a8_time_out/total_runs) * 100, 3)}
 
     steps_data = {'Agent 1':(a1_steps/total_runs),
      'Agent 2':(a2_steps/total_runs),
@@ -364,31 +352,19 @@ def main():
       'Agent 5':(a5_steps/total_runs),
        'Agent 6':(a6_steps/total_runs),
         'Agent 7':(a7_steps/total_runs),
-         'Agent 7 Defective':(a7d_steps/total_runs),
-          'Agent 7 Defective Updated':(a7du_steps/total_runs),
-           'Agent 8':(a8_steps/total_runs),
-            'Agent 8 Defective':(a8d_steps/total_runs),
-             'Agent 8 Defective Updated':(a8du_steps/total_runs)}
+           'Agent 8':(a8_steps/total_runs),}
 
     prey_certainty_data = {
         'Agent 3':round(a3_prey_certain/a3_steps * 100, 3),
         'Agent 4':round(a4_prey_certain/a4_steps * 100, 3),
         'Agent 7':round(a7_prey_certain/a7_steps * 100, 3),
-        'Agent 7\nDefective':round(a7d_prey_certain/a7d_steps * 100, 3),
-        'Agent 7\nDefective\nUpdated':round(a7du_prey_certain/a7du_steps * 100, 3),
-        'Agent 8':round(a8_prey_certain/a8_steps * 100, 3),
-        'Agent 8\nDefective':round(a8d_prey_certain/a8d_steps * 100, 3),
-        'Agent 8\nDefective\nUpdated':round(a8du_prey_certain/a8du_steps * 100, 3)}
+        'Agent 8':round(a8_prey_certain/a8_steps * 100, 3)}
 
     predator_certainty_data = {
         'Agent 5':round(a5_predator_certain/a5_steps * 100, 3),
         'Agent 6':round(a6_predator_certain/a6_steps * 100, 3),
         'Agent 7':round(a7_predator_certain/a7_steps * 100, 3),
-        'Agent 7\nDefective':round(a7d_predator_certain/a7d_steps * 100, 3),
-        'Agent 7\nDefective\nUpdated':round(a7du_predator_certain/a7du_steps * 100, 3),
-        'Agent 8':round(a8_predator_certain/a8_steps * 100, 3),
-        'Agent 8\nDefective':round(a8d_predator_certain/a8d_steps * 100, 3),
-        'Agent 8\nDefective\nUpdated':round(a7du_predator_certain/a8du_steps * 100, 3)}
+        'Agent 8':round(a8_predator_certain/a8_steps * 100, 3)}
              
     
     Catch_rates = list(caught_data.values())
@@ -412,7 +388,7 @@ def main():
     handles = [plt.Rectangle((0,0),1,1, color=colors[label]) for label in labels]
     plt.legend(handles, labels)
     plt.xlabel("Agents")
-    plt.ylabel("Percentage of Occurence")
+    plt.ylabel("Percentage of Occurence for Complete Information Setting")
     plt.title("Rate of Events Causing End Game")
     plt.tight_layout()
     plt.xticks(rotation = 30)
@@ -425,7 +401,7 @@ def main():
 
     plt.xlabel("Agents")
     plt.ylabel("Average Number of Steps")
-    plt.title("Comparision of average number of steps for Complete Information setting:")
+    plt.title("Comparision of average number of steps for Complete Information setting")
     plt.tight_layout()
     plt.xticks(rotation = 30)
     #plt.show() 
@@ -446,7 +422,7 @@ def main():
     plt.legend(handles, labels)
     plt.xlabel("Agents")
     plt.ylabel("Percentage of Occurence")
-    plt.title("Rate of Events Causing End Game")
+    plt.title("Rate of Events Causing End Game for Partial Prey Information Setting")
     plt.tight_layout()
     plt.xticks(rotation = 30)
     #plt.show() 
@@ -458,7 +434,7 @@ def main():
 
     plt.xlabel("Agents")
     plt.ylabel("Average Number of Steps")
-    plt.title("Comparision of average number of steps for Complete Information setting:")
+    plt.title("Comparision of average number of steps for Partial Prey Information setting")
     plt.tight_layout()
     plt.xticks(rotation = 30)
     #plt.show() 
@@ -478,7 +454,7 @@ def main():
     plt.legend(handles, labels)
     plt.xlabel("Agents")
     plt.ylabel("Percentage of Occurence")
-    plt.title("Rate of Events Causing End Game")
+    plt.title("Rate of Events Causing End Game for Partial Predator Information Setting")
     plt.tight_layout()
     plt.xticks(rotation = 30)
     #plt.show() 
@@ -490,7 +466,7 @@ def main():
 
     plt.xlabel("Agents")
     plt.ylabel("Average Number of Steps")
-    plt.title("Comparision of average number of steps for Complete Information setting:")
+    plt.title("Comparision of average number of steps for Partial Predator Information Setting")
     plt.tight_layout()
     plt.xticks(rotation = 30)
     #plt.show() 
@@ -510,7 +486,7 @@ def main():
     plt.legend(handles, labels)
     plt.xlabel("Agents")
     plt.ylabel("Percentage of Occurence")
-    plt.title("Rate of Events Causing End Game")
+    plt.title("Rate of Events Causing End Game for Combined Information setting")
     plt.tight_layout()
     plt.xticks(rotation = 30)
     #plt.show() 
@@ -519,7 +495,7 @@ def main():
     plt.bar(Agent_names[6:12], Steps_rates[6:12], color ='brown')
     plt.xlabel("Agents")
     plt.ylabel("Average Number of Steps")
-    plt.title("Comparision of average number of steps for Complete Information setting:")
+    plt.title("Comparision of average number of steps for Combined Information setting")
     plt.tight_layout()
     plt.xticks(rotation = 30)
 
@@ -549,7 +525,7 @@ def main():
     
     plt.xlabel("Agents")
     plt.ylabel("Percentage of Runs Agent Catches Prey")
-    plt.title("Agent Catches:")
+    plt.title("Agent Catches")
     plt.bar(Agent_names, Catch_rates, color ='green')
     plt.tight_layout()
     plt.xticks(rotation = 30)
@@ -560,7 +536,7 @@ def main():
 
     plt.xlabel("Agents")
     plt.ylabel("Percentage of Runs Agent Dies")
-    plt.title("Agent Deaths:")
+    plt.title("Agent Deaths")
     plt.bar(Agent_names, Death_rates, color ='maroon')
     plt.tight_layout()
     plt.xticks(rotation = 30)
@@ -571,7 +547,7 @@ def main():
 
     plt.xlabel("Agents")
     plt.ylabel("Average Steps taken by Agent")
-    plt.title("Steps:")
+    plt.title("Steps taken by Agents Steps")
     plt.bar(Agent_names, Steps_rates, color ='gold')
     plt.tight_layout()
     plt.xticks(rotation = 30)
@@ -581,8 +557,8 @@ def main():
     figs = plt.figure(figsize = (10, 7))
 
     plt.xlabel("Agents")
-    plt.ylabel("Percentage of Steps Certain of Prey Position (and Correct)")
-    plt.title("Percentage:")
+    plt.ylabel("Percentage")
+    plt.title("Percentage of Steps Certain of Prey Position (and Correct)")
     plt.bar(Prey_certain_agents, Prey_certain, color ='purple')
     plt.tight_layout()
     plt.xticks(rotation = 30)
@@ -592,13 +568,153 @@ def main():
     figs = plt.figure(figsize = (10, 7))
 
     plt.xlabel("Agents")
-    plt.ylabel("Percentage of Steps Certain of Predator Position (and Correct)")
-    plt.title("Percentage:")
+    plt.ylabel("Percentage")
+    plt.title("Percentage of Steps Certain of Predator Position (and Correct)")
     plt.bar(Predator_certain_agents, Predator_certain, color ='pink')
     plt.tight_layout()
     plt.xticks(rotation = 30)
     #plt.show() 
     figs.savefig('plots/Predator_certainity_plot.png')
+
+    ##DEFECTIVE AGENT PLOTS
+
+    defective_caught_data = {
+        'Agent 7':round((a7_caught/total_runs) * 100, 3),
+        'Agent 7\nDefective':round((a7d_caught/total_runs) * 100, 3),
+        'Agent 7\nDefective\nUpdated':round((a7du_caught/total_runs) * 100, 3),
+        'Agent 8':round((a8_caught/total_runs) * 100, 3),
+        'Agent 8\nDefective':round((a8d_caught/total_runs) * 100, 3),
+        'Agent 8\nDefective\nUpdated':round((a7du_caught/total_runs) * 100, 3)}
+
+    defective_death_data = {
+        'Agent 7':round((a7_died/total_runs) * 100, 3),
+        'Agent 7\nDefective':round((a7d_died/total_runs) * 100, 3),
+        'Agent 7\nDefective\nUpdated':round((a7du_died/total_runs) * 100, 3),
+        'Agent 8':round((a8_died/total_runs) * 100, 3),
+            'Agent 8\nDefective':round((a8d_died/total_runs) * 100, 3),
+            'Agent 8\nDefective\nUpdated':round((a7du_died/total_runs) * 100, 3)}
+
+    defective_time_out_data = {
+        'Agent 7':round((a7_time_out/total_runs) * 100, 3),
+        'Agent 7\nDefective':round((a7d_time_out/total_runs) * 100, 3),
+        'Agent 7\nDefective\nUpdated':round((a7du_time_out/total_runs) * 100, 3),
+        'Agent 8':round((a8_time_out/total_runs) * 100, 3),
+        'Agent 8\nDefective':round((a8d_time_out/total_runs) * 100, 3),
+        'Agent 8\nDefective\nUpdated':round((a7du_time_out/total_runs) * 100, 3)}
+
+    defective_steps_data = {
+        'Agent 7':(a7_steps/total_runs),
+        'Agent 7\nDefective':(a7d_steps/total_runs),
+        'Agent 7\nDefective\nUpdated':(a7du_steps/total_runs),
+        'Agent 8':(a8_steps/total_runs),
+        'Agent 8 Defective':(a8d_steps/total_runs),
+        'Agent 8 Defective Updated':(a8du_steps/total_runs)}
+
+    defective_prey_certainty_data = {
+        'Agent 7':round(a7_prey_certain/a7_steps * 100, 3),
+        'Agent 7\nDefective':round(a7d_prey_certain/a7d_steps * 100, 3),
+        'Agent 7\nDefective\nUpdated':round(a7du_prey_certain/a7du_steps * 100, 3),
+        'Agent 8':round(a8_prey_certain/a8_steps * 100, 3),
+        'Agent 8\nDefective':round(a8d_prey_certain/a8d_steps * 100, 3),
+        'Agent 8\nDefective\nUpdated':round(a8du_prey_certain/a8du_steps * 100, 3)}
+
+    defective_predator_certainty_data = {
+        'Agent 7':round(a7_predator_certain/a7_steps * 100, 3),
+        'Agent 7\nDefective':round(a7d_predator_certain/a7d_steps * 100, 3),
+        'Agent 7\nDefective\nUpdated':round(a7du_predator_certain/a7du_steps * 100, 3),
+        'Agent 8':round(a8_predator_certain/a8_steps * 100, 3),
+        'Agent 8\nDefective':round(a8d_predator_certain/a8d_steps * 100, 3),
+        'Agent 8\nDefective\nUpdated':round(a7du_predator_certain/a8du_steps * 100, 3)}
+                
+        
+    defective_Catch_rates = list(defective_caught_data.values())
+    defective_Death_rates = list(defective_death_data.values())
+    defective_Time_Out_rates = list(defective_time_out_data.values())
+    defective_Steps_rates = list(defective_steps_data.values())
+    defective_Agent_names = list(defective_caught_data.keys())
+    defective_Prey_certain_agents = list(defective_prey_certainty_data.keys())
+    defective_Prey_certain = list(defective_prey_certainty_data.values())
+    defective_Predator_certain_agents = list(defective_predator_certainty_data.keys())
+    defective_Predator_certain = list(defective_predator_certainty_data.values())
+
+    ## Plots for combined partial setting
+
+    fig_combined_partial = plt.figure(figsize = (15, 7))
+
+    plt.bar(defective_Agent_names[6:12], defective_Catch_rates[6:12], color ='green')
+    plt.bar(defective_Agent_names[6:12], defective_Death_rates[6:12], color ='maroon')
+    plt.bar(defective_Agent_names[6:12], defective_Time_Out_rates[6:12], color ='yellow')
+    colors = {'Deaths':'maroon', 'Captures':'green', 'Timeouts':'yellow'}         
+    labels = list(colors.keys())
+    handles = [plt.Rectangle((0,0),1,1, color=colors[label]) for label in labels]
+    plt.legend(handles, labels)
+    plt.xlabel("Agents")
+    plt.ylabel("Percentage of Occurence")
+    plt.title("Rate of Events Causing End Game for Defective Agents")
+    plt.tight_layout()
+    plt.xticks(rotation = 30)
+    #plt.show() 
+    fig_combined_partial.savefig('plots/Plot1_combined_information_setting_defective.png')
+
+
+    ## MISC plots
+
+    figs = plt.figure(figsize = (10, 7)) # Decrease dpi to get higher resolution
+        
+    plt.xlabel("Agents")
+    plt.ylabel("Percentage of Runs Agent Catches Prey")
+    plt.title("Agent Catches for Defective Agents")
+    plt.bar(defective_Agent_names, defective_Catch_rates, color ='green')
+    plt.tight_layout()
+    plt.xticks(rotation = 30)
+    #plt.show() 
+    figs.savefig('plots/Success_Plot_defective.png')
+
+    figs = plt.figure(figsize = (10, 7))
+
+    plt.xlabel("Agents")
+    plt.ylabel("Percentage of Runs Agent Dies")
+    plt.title("Agent Deaths for Defective Agents")
+    plt.bar(defective_Agent_names, defective_Death_rates, color ='maroon')
+    plt.tight_layout()
+    plt.xticks(rotation = 30)
+    #plt.show() 
+    figs.savefig('plots/Failure_Plot_defective.png')
+
+    figs = plt.figure(figsize = (10, 7))
+
+    plt.xlabel("Agents")
+    plt.ylabel("Average Steps taken by Agent")
+    plt.title("Steps taken by Defective Agents")
+    plt.bar(defective_Agent_names, defective_Steps_rates, color ='gold')
+    plt.tight_layout()
+    plt.xticks(rotation = 30)
+    #plt.show() 
+    figs.savefig('plots/Avg_steps_plot_defective.png')
+
+    figs = plt.figure(figsize = (10, 7))
+
+    plt.xlabel("Agents")
+    plt.ylabel("Percentage")
+    plt.title("Percentage of Steps Certain of Prey Position (and Correct) for Defective Agents")
+    plt.bar(defective_Prey_certain_agents, defective_Prey_certain, color ='purple')
+    plt.tight_layout()
+    plt.xticks(rotation = 30)
+    #plt.show() 
+    figs.savefig('plots/Prey_certainity_Plot_defective.png')
+
+    figs = plt.figure(figsize = (10, 7))
+
+    plt.xlabel("Agents")
+    plt.ylabel("Perfectage")
+    plt.title("Percentage of Steps Certain of Predator Position (and Correct) for Defective Agents")
+    plt.bar(defective_Predator_certain_agents, defective_Predator_certain, color ='pink')
+    plt.tight_layout()
+    plt.xticks(rotation = 30)
+    #plt.show() 
+    figs.savefig('plots/Predator_certainity_plot_defective.png')
+
+    
 
 
 
