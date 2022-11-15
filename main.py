@@ -9,8 +9,8 @@ import matplotlib.pyplot as plt
 
 def main():
 
-    num_runs = 3
-    num_environments = 3
+    num_runs = 100
+    num_environments = 30
     total_runs = num_runs * num_environments
 
     a1_caught = 0
@@ -393,7 +393,7 @@ def main():
     plt.tight_layout()
     plt.xticks(rotation = 30)
     #plt.show() 
-    fig_complete_info.savefig('plots/Plot1_complete_information_setting.png')
+    fig_complete_info.savefig('plots/Plot1_complete_information_setting.png', bbox_inches='tight')
 
     fig_complete_info_steps = plt.figure(figsize= (10,7))
 
@@ -406,7 +406,7 @@ def main():
     plt.xticks(rotation = 30)
     #plt.show() 
 
-    fig_complete_info_steps.savefig('plots/Plot2_complete_information_setting.png')
+    fig_complete_info_steps.savefig('plots/Plot2_complete_information_setting.png', bbox_inches='tight')
 
 
     ## Plots for Partial Prey information setting 
@@ -426,7 +426,7 @@ def main():
     plt.tight_layout()
     plt.xticks(rotation = 30)
     #plt.show() 
-    fig_partial_prey.savefig('plots/Plot1_partial_prey_information_setting.png')
+    fig_partial_prey.savefig('plots/Plot1_partial_prey_information_setting.png', bbox_inches='tight')
 
     fig_partial_prey_steps = plt.figure(figsize= (10,7))
 
@@ -439,7 +439,7 @@ def main():
     plt.xticks(rotation = 30)
     #plt.show() 
 
-    fig_partial_prey_steps.savefig('plots/Plot2_partial_prey_information_setting.png')
+    fig_partial_prey_steps.savefig('plots/Plot2_partial_prey_information_setting.png', bbox_inches='tight')
 
     ## Plots for Partial predator setting 
 
@@ -458,7 +458,7 @@ def main():
     plt.tight_layout()
     plt.xticks(rotation = 30)
     #plt.show() 
-    fig_partial_predator.savefig('plots/Plot1_partial_predator_information_setting.png')
+    fig_partial_predator.savefig('plots/Plot1_partial_predator_information_setting.png', bbox_inches='tight')
 
     fig_partial_predator_steps = plt.figure(figsize= (10,7))
 
@@ -471,7 +471,7 @@ def main():
     plt.xticks(rotation = 30)
     #plt.show() 
 
-    fig_partial_predator_steps.savefig('plots/Plot2_partial_predator_information_setting.png')
+    fig_partial_predator_steps.savefig('plots/Plot2_partial_predator_information_setting.png', bbox_inches='tight')
 
     ## Plots for combined partial setting
 
@@ -490,7 +490,7 @@ def main():
     plt.tight_layout()
     plt.xticks(rotation = 30)
     #plt.show() 
-    fig_combined_partial.savefig('plots/Plot1_combined_information_setting.png')
+    fig_combined_partial.savefig('plots/Plot1_combined_information_setting.png', bbox_inches='tight')
     fig_combined_partial_steps = plt.figure(figsize= (15,7))
     plt.bar(Agent_names[6:12], Steps_rates[6:12], color ='brown')
     plt.xlabel("Agents")
@@ -499,7 +499,7 @@ def main():
     plt.tight_layout()
     plt.xticks(rotation = 30)
 
-    fig_combined_partial_steps.savefig('plots/Plot2_combined_information_setting.png') 
+    fig_combined_partial_steps.savefig('plots/Plot2_combined_information_setting.png', bbox_inches='tight') 
 
     ## All Plot
     
@@ -516,7 +516,7 @@ def main():
     plt.title("Rate of Events Causing End Game")
     plt.tight_layout()
     plt.xticks(rotation = 30)
-    fig_all.savefig('plots/Plot1_all.png')
+    fig_all.savefig('plots/Plot1_all.png', bbox_inches='tight')
 
 
     ## MISC plots
@@ -530,7 +530,7 @@ def main():
     plt.tight_layout()
     plt.xticks(rotation = 30)
     #plt.show() 
-    figs.savefig('plots/Success_Plot.png')
+    figs.savefig('plots/Success_Plot.png', bbox_inches='tight')
 
     figs = plt.figure(figsize = (10, 7))
 
@@ -541,7 +541,7 @@ def main():
     plt.tight_layout()
     plt.xticks(rotation = 30)
     #plt.show() 
-    figs.savefig('plots/Failure_Plot.png')
+    figs.savefig('plots/Failure_Plot.png', bbox_inches='tight')
 
     figs = plt.figure(figsize = (10, 7))
 
@@ -552,7 +552,7 @@ def main():
     plt.tight_layout()
     plt.xticks(rotation = 30)
     #plt.show() 
-    figs.savefig('plots/Avg_steps_plot.png')
+    figs.savefig('plots/Avg_steps_plot.png', bbox_inches='tight')
 
     figs = plt.figure(figsize = (10, 7))
 
@@ -563,7 +563,7 @@ def main():
     plt.tight_layout()
     plt.xticks(rotation = 30)
     #plt.show() 
-    figs.savefig('plots/Prey_certainity_Plot.png')
+    figs.savefig('plots/Prey_certainity_Plot.png', bbox_inches='tight')
 
     figs = plt.figure(figsize = (10, 7))
 
@@ -574,7 +574,7 @@ def main():
     plt.tight_layout()
     plt.xticks(rotation = 30)
     #plt.show() 
-    figs.savefig('plots/Predator_certainity_plot.png')
+    figs.savefig('plots/Predator_certainity_plot.png', bbox_inches='tight')
 
     ##DEFECTIVE AGENT PLOTS
 
@@ -654,7 +654,7 @@ def main():
     plt.tight_layout()
     plt.xticks(rotation = 30)
     #plt.show() 
-    fig_combined_partial.savefig('plots/Plot1_combined_information_setting_defective.png')
+    fig_combined_partial.savefig('plots/Plot1_combined_information_setting_defective.png', bbox_inches='tight')
 
 
     ## MISC plots
@@ -668,7 +668,7 @@ def main():
     plt.tight_layout()
     plt.xticks(rotation = 30)
     #plt.show() 
-    figs.savefig('plots/Success_Plot_defective.png')
+    figs.savefig('plots/Success_Plot_defective.png', bbox_inches='tight')
 
     figs = plt.figure(figsize = (10, 7))
 
@@ -679,7 +679,7 @@ def main():
     plt.tight_layout()
     plt.xticks(rotation = 30)
     #plt.show() 
-    figs.savefig('plots/Failure_Plot_defective.png')
+    figs.savefig('plots/Failure_Plot_defective.png', bbox_inches='tight')
 
     figs = plt.figure(figsize = (10, 7))
 
@@ -690,7 +690,7 @@ def main():
     plt.tight_layout()
     plt.xticks(rotation = 30)
     #plt.show() 
-    figs.savefig('plots/Avg_steps_plot_defective.png')
+    figs.savefig('plots/Avg_steps_plot_defective.png', bbox_inches='tight')
 
     figs = plt.figure(figsize = (10, 7))
 
@@ -701,7 +701,7 @@ def main():
     plt.tight_layout()
     plt.xticks(rotation = 30)
     #plt.show() 
-    figs.savefig('plots/Prey_certainity_Plot_defective.png')
+    figs.savefig('plots/Prey_certainity_Plot_defective.png', bbox_inches='tight')
 
     figs = plt.figure(figsize = (10, 7))
 
@@ -712,7 +712,7 @@ def main():
     plt.tight_layout()
     plt.xticks(rotation = 30)
     #plt.show() 
-    figs.savefig('plots/Predator_certainity_plot_defective.png')
+    figs.savefig('plots/Predator_certainity_plot_defective.png', bbox_inches='tight')
 
     
 
