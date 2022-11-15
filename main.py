@@ -9,8 +9,8 @@ import matplotlib.pyplot as plt
 
 def main():
 
-    num_runs = 100
-    num_environments = 30
+    num_runs = 3
+    num_environments = 3
     total_runs = num_runs * num_environments
 
     a1_caught = 0
@@ -641,9 +641,9 @@ def main():
 
     fig_combined_partial = plt.figure(figsize = (15, 7))
 
-    plt.bar(defective_Agent_names[6:12], defective_Catch_rates[6:12], color ='green')
-    plt.bar(defective_Agent_names[6:12], defective_Death_rates[6:12], color ='maroon')
-    plt.bar(defective_Agent_names[6:12], defective_Time_Out_rates[6:12], color ='yellow')
+    plt.bar(defective_Agent_names, defective_Catch_rates, color ='green')
+    plt.bar(defective_Agent_names, defective_Death_rates, color ='maroon')
+    plt.bar(defective_Agent_names, defective_Time_Out_rates, color ='yellow')
     colors = {'Deaths':'maroon', 'Captures':'green', 'Timeouts':'yellow'}         
     labels = list(colors.keys())
     handles = [plt.Rectangle((0,0),1,1, color=colors[label]) for label in labels]
