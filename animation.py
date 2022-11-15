@@ -275,7 +275,7 @@ def main():
     test = Animation(env,prey_steps, predator_steps, agent_steps, actual_prey_steps, actual_predator_steps)
     '''
 
-    agent = ag4.Agent_4(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
+    agent = ag6.Agent_6(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
     k = agent.move()
     prey_steps = agent.prey_steps
     predator_steps = agent.predator_steps

@@ -39,7 +39,7 @@ class Agent_6:
 
         self.agent_steps = [self.pos]
         self.prey_steps = [self.prey.pos]
-        self.predator_steps = []
+        self.predator_steps = [self.predator.pos]
         self.actual_prey_steps = [self.prey.pos]
         self.actual_predator_steps = [self.predator.pos]
 

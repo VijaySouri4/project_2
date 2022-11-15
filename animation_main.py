@@ -96,24 +96,6 @@ def main():
     actual_predator_steps = agent.actual_predator_steps
     test = an.Animation(input_environment,prey_steps, predator_steps, agent_steps, actual_prey_steps, actual_predator_steps)
 
-    agent = ag7d.Agent_7_defect(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
-    k = agent.move()
-    prey_steps = agent.prey_steps
-    predator_steps = agent.predator_steps
-    agent_steps = agent.agent_steps
-    actual_prey_steps = agent.actual_prey_steps
-    actual_predator_steps = agent.actual_predator_steps
-    test = an.Animation(input_environment,prey_steps, predator_steps, agent_steps, actual_prey_steps, actual_predator_steps)
-
-    agent = ag7du.Agent_7_defect_updated(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
-    k = agent.move()
-    prey_steps = agent.prey_steps
-    predator_steps = agent.predator_steps
-    agent_steps = agent.agent_steps
-    actual_prey_steps = agent.actual_prey_steps
-    actual_predator_steps = agent.actual_predator_steps
-    test = an.Animation(input_environment,prey_steps, predator_steps, agent_steps, actual_prey_steps, actual_predator_steps)
-
     agent = ag8.Agent_8(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
     k = agent.move()
     prey_steps = agent.prey_steps
@@ -123,23 +105,6 @@ def main():
     actual_predator_steps = agent.actual_predator_steps
     test = an.Animation(input_environment,prey_steps, predator_steps, agent_steps, actual_prey_steps, actual_predator_steps)
 
-    agent = ag8d.Agent_8_defect(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
-    k = agent.move()
-    prey_steps = agent.prey_steps
-    predator_steps = agent.predator_steps
-    agent_steps = agent.agent_steps
-    actual_prey_steps = agent.actual_prey_steps
-    actual_predator_steps = agent.actual_predator_steps
-    test = an.Animation(input_environment,prey_steps, predator_steps, agent_steps, actual_prey_steps, actual_predator_steps)
-
-    agent = ag8du.Agent_8_defect_updated(copy.deepcopy(input_predator), copy.deepcopy(input_prey), copy.deepcopy(input_environment), input_pos)
-    k = agent.move()
-    prey_steps = agent.prey_steps
-    predator_steps = agent.predator_steps
-    agent_steps = agent.agent_steps
-    actual_prey_steps = agent.actual_prey_steps
-    actual_predator_steps = agent.actual_predator_steps
-    test = an.Animation(input_environment,prey_steps, predator_steps, agent_steps, actual_prey_steps, actual_predator_steps)
 
 
 

@@ -37,8 +37,8 @@ class Agent_7:
 
         #initilizes variables for animations
         self.agent_steps = [self.pos]
-        self.prey_steps = []
-        self.predator_steps = []
+        self.prey_steps = [random.choice(range(0,49))]
+        self.predator_steps = [self.predator.pos]
         self.actual_prey_steps = [self.prey.pos]
         self.actual_predator_steps = [self.predator.pos]
         
